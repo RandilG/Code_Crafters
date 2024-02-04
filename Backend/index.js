@@ -1,12 +1,15 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const app = express();
 
-app.use (express.json())
+dotenv.config()
 
-const routes = require('./Routes/routes')
+app.use(express.json());
 
-app.use('/', routes)
+const routes = require('./Routes/routes');
 
-app.listen(3000, ()  => {
-    console.log("Server started in port: ",3000)
+app.use('/', routes);
+
+app.listen(process.env.PORT, () => {
+    console.log("Server started in port: ", process.env.PORT)
 })
