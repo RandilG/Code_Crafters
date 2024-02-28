@@ -6,7 +6,9 @@ const postData = require('../Functions/Test/postData')
 const deleteData = require('../Functions/Test/deleteData')
 const updateData = require('../Functions/Test/updateData')
 const login = require('../Admin/SuperAdmin/login')
-const register = require('../Admin/SuperAdmin/register')
+const adminRegister = require('./../Admin/SuperAdmin/register');
+const emailverify = require('../Functions/otp/emailverification')
+
 
 router.get('/getData', (req, res) => {
     getData(req, res)
@@ -24,17 +26,16 @@ router.put('/putData', (req, res) => {
     updateData(req, res)
 })
 
-// router.get('/', (req, res) => {
-//     res.send('Welcome to the login and registration system!');
-//   });
-
-
 router.post('/login', (req, res) => {
   login(req, res)
   });
 
-router.post('/register', (req, res) => {
-  register(req, res)
-  });
+router.post('/register', (req, res)=> {
+  adminRegister(req, res);
+  })
+
+router.post('/sendotp', (req, res) => {
+  emailverify(req, res)
+})
 
 module.exports = router
