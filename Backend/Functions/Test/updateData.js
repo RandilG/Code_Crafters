@@ -2,17 +2,18 @@ const connection = require('./../../Services/connection');
 
 module.exports = async function updateData(req, res) {
 
-    const updateQuery = "UPDATE randil_db.user SET username = ?, fname = ?, lname = ?, city = ?, tpno = ? WHERE iduser = ?;";
+    const updateQuery = "UPDATE gihani_db. job_poster SET UserName = ?, CompanyName = ?, Addresss = ?, TpNumber = ?, EmailAddress = ?, Password = ? WHERE JobPosterID = ?;";
 
     // console.log(iduser)
 
     const values = [
-        req.body.username,
-        req.body.first_name,
-        req.body.last_name,
-        req.body.city,
-        req.body.tp_no,
-        req.body.iduser
+        req.body.UserName,
+        req.body.CompanyName,
+        req.body.Addresss,
+        req.body.TpNumber,
+        req.body.EmailAddress,
+        req.body.Password,
+        req.body.JobPosterID
     ];
 
     connection.query(updateQuery, values, (err, data) => {

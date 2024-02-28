@@ -1,15 +1,18 @@
-const express = require('express')
-const dotenv = require('dotenv')
-const app = express();
+const express=require('express')  //express directory
+const dotenv=require('dotenv')
 
+
+//dot env config
 dotenv.config()
 
-app.use(express.json());
+const app=express();
 
-const routes = require('./Routes/routes');
+app.use(express.json()) //parse JSON bodies (as sent by API)
 
-app.use('/', routes);
+const routes=require('./Routes/routes')
 
-app.listen(process.env.PORT, () => {
-    console.log("Server started in port: ", process.env.PORT)
-})
+app.use('/',routes) // define routes
+
+app.listen(process.env.PORT,()=>{
+    console.log("Server started in port:",process.env.PORT)
+})  //assign the port
