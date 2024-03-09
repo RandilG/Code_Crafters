@@ -2,7 +2,7 @@ const connection = require('./../../Services/connection');
 
 module.exports = async function updateData(req, res) {
 
-    const updateQuery = "UPDATE gihani_db. job_poster SET UserName = ?, CompanyName = ?, Addresss = ?, TpNumber = ?, EmailAddress = ?, Password = ? WHERE JobPosterID = ?;";
+    const updateQuery = "UPDATE parttime_srilanka . job_poster SET UserName = ?, CompanyName = ?, Addresss = ?, TpNumber = ?, EmailAddress = ?, Password = ? WHERE JobPosterID = ?;";
 
     // console.log(iduser)
 

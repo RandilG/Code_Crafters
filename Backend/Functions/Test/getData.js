@@ -2,7 +2,7 @@ const connection=require('./../../Services/connection')
 
 module.exports=async function getData(req,res){
 
-    const query="SELECT * FROM gihani_db. job_poster WHERE UserName =?;"
+    const query="SELECT * FROM parttime_srilanka . job_poster WHERE UserName = ?;"
 
     const value = req.query.UserName
 

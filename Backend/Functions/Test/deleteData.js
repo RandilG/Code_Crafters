@@ -5,7 +5,7 @@ module.exports = async function deleteData(req, res) {
 
     console.log(req.query.iduser);
 
-    const deleteQuery = "DELETE FROM randil_db.user WHERE iduser = ?;";
+    const deleteQuery = "DELETE FROM parttime_srilanka .job_poster WHERE JobPosterId= ?;";
 
     connection.query(deleteQuery, [iduser], (err, data) => {
         if (err) return res.json(err);
