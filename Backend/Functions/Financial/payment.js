@@ -16,9 +16,7 @@ module.exports = async function Payment(req, res) {
       amount: req.body.amount,
       currency: 'usd',
       customer: customer.id,
-      automatic_payment_methods: {
-        enabled: true,
-      }
+      payment_method_types: ['card']
     });
 
     const query = "INSERT INTO `parttime_srilanka`.`payment` (`amount`, `payment_date`, `payment_id`, `JobPoster`) VALUES (?, ?, ?, ?);";
@@ -28,7 +26,7 @@ module.exports = async function Payment(req, res) {
 
     let response = await queryAsync(query, values);
 
-    console.log(response)
+    console.log(paymentIntent)
 
     if(response.affectedRows==0){
         return res.json("Error")
