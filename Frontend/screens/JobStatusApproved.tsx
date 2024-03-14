@@ -21,6 +21,12 @@ import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 const JobStatusApproved = (props: any) => {
   const [isHoveredPay, setIsHoveredPay] = useState(false);
   const [isHoveredCancel, setIsHoveredCancel] = useState(false);
+  const [status,setStatus] = useState<string>("pending");
+
+  function handleStatus(statusIs:string){
+    setStatus(statusIs);
+    console.log(`Status changed to: ${status}`);
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -33,17 +39,17 @@ const JobStatusApproved = (props: any) => {
             borderBottomRightRadius: 10,
             zIndex: 1,
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{paddingTop: 30, paddingLeft:22, paddingBottom:30, padding:230,}}>
+  <Pressable style={{flexDirection: 'row'}} onPress={() => props.navigation.navigate('Test')}>
             <VectorIcon
-              type="FontAwesome6"
-              name="arrow-left"
+              type="MaterialIcons"
+              name="keyboard-arrow-left"
               color="#FFFFFF"
               size={25}
-              zIndex="-1"
-              onPress={() => props.navigation.navigate('Test')}
-            />
+              zIndex="-1"/>
             <Text style={styles.heading}>Job Status</Text>
-          </View>
+    </Pressable>
+</View>
 
           <View
             style={{
@@ -55,21 +61,21 @@ const JobStatusApproved = (props: any) => {
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusPending')}>
+                onPress={() => handleStatus("pending")}>
                 <Text style={styles.buttonText}>Pending</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.buttonApproved}
-                onPress={() => props.navigation.navigate('JobStatusApproved')}>
+                onPress={() => handleStatus("approved")}>
                 <Text style={styles.buttonTextApproved}>Approved</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusDecline')}>
+                onPress={() => handleStatus("decline")}>
                 <Text style={styles.buttonText}>Decline</Text>
               </Pressable>
             </TouchableOpacity>
@@ -314,12 +320,17 @@ const JobStatusApproved = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  arrow: {
+    marginLeft:24,
+    // marginBottom: 4,
+    //elevation:5,
+      },
   heading: {
     fontSize: 20,
     color: '#FFFFFF',
-    marginTop: 30,
-    marginLeft: 30,
-    marginBottom: 40,
+    // marginTop: 30,
+    marginLeft: 1,
+    // marginBottom: 40,
     fontWeight: '800',
     letterSpacing: 0.25,
   },
@@ -377,8 +388,8 @@ const styles = StyleSheet.create({
   contentBox: {
     position: 'absolute',
     zIndex: 3,
-    backgroundColor: '#ffffff',
-    height: '100%',
+    backgroundColor: '#FFFFFF',
+    height: 600,
     width: '95%',
     alignSelf: 'center',
     marginTop: '40%',

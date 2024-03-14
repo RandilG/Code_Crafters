@@ -34,18 +34,16 @@ const JobStatusPending = (props: any) => {
             borderBottomRightRadius: 10,
             zIndex: 1,
           }}>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+<Pressable onPress={() => props.navigation.navigate('Test')} style={{flexDirection: 'row', alignItems: 'center'}}>
             <VectorIcon
-              type="FontAwesome6"
-              name="arrow-left"
+            style={styles.arrow}
+              type="MaterialIcons"
+              name="keyboard-arrow-left"
               color="#FFFFFF"
               size={25}
-              zIndex="-1"
-              onPress={() => props.navigation.navigate('Test')}
-            />
+              zIndex="-1"/>
             <Text style={styles.heading}>Job Status</Text>
-          </View>
-
+</Pressable>
           <View
             style={{
               alignItems: 'center',
@@ -142,11 +140,17 @@ const JobStatusPending = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  arrow: {
+marginLeft:24,
+marginBottom: 9,
+//elevation:5,
+  },
+
   heading: {
     fontSize: 20,
     color: '#FFFFFF',
     marginTop: 30,
-    marginLeft: 30,
+    marginLeft: 5,
     marginBottom: 40,
     fontWeight: '800',
     letterSpacing: 0.25,
