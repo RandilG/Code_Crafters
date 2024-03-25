@@ -16,7 +16,7 @@ const Test = (props:any) => {
         </View>
       </Pressable>
       <Button title="Click me to navigate to screen 3" onPress={() => props.navigation.navigate("Test3")} />
-      <Button title="Click me to navigate to jobStatus" onPress={() => props.navigation.navigate("JobStatusApproved")} />
+      <Button title="Click me to navigate to jobStatus" onPress={() => props.navigation.navigate("JobStatus")} />
     </SafeAreaView>
   );
 

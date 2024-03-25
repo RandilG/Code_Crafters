@@ -19,6 +19,14 @@ import VectorIcon from '../utils/Vectoricons';
 // import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 
 const JobStatusDecline = (props: any) => {
+
+  const [status, setStatus] = useState<string>('pending');
+
+  function handleStatus(statusIs: string) {
+    setStatus(statusIs);
+    console.log(`Status changed to: ${status}`);
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1}}>
@@ -28,6 +36,7 @@ const JobStatusDecline = (props: any) => {
             flex: 2,
             borderBottomLeftRadius: 10,
             borderBottomRightRadius: 10,
+            
             zIndex: 1,
           }}>
           <Pressable onPress={() => props.navigation.navigate('Test')} style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -50,21 +59,21 @@ const JobStatusDecline = (props: any) => {
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusPending')}>
+                onPress={() => handleStatus('pending')}>
                 <Text style={styles.buttonText}>Pending</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusApproved')}>
+                onPress={() => handleStatus('approved')}>
                 <Text style={styles.buttonText}>Approved</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.buttonDecline}
-                onPress={() => props.navigation.navigate('JobStatusDecline')}>
+                onPress={() => handleStatus('decline')}>
                 <Text style={styles.buttonTextDecline}>Decline</Text>
               </Pressable>
             </TouchableOpacity>
@@ -107,7 +116,7 @@ const JobStatusDecline = (props: any) => {
             </View>
             <Text style={styles.attributeBoldReason}>Reason for decline: </Text>
             <Text style={styles.cardAttributeReason}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro deleniti quos quasi veniam ea id beatae
+              Lorem ipsum dolor sit  consectetur adipisicing  Lorem ipsum dolor sit quos a id
             </Text>
           </Card>
         </ScrollView>
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     color: '#FFFFFF',
-    marginTop: 30,
+    // marginTop: 20,
     marginLeft: 5,
     marginBottom: 40,
     fontWeight: '800',

@@ -8,6 +8,8 @@ import Test3 from "./screens/Test3";
 import JobStatusApproved from "./screens/JobStatusApproved";
 import JobStatusPending from "./screens/JobStatusPending";
 import JobStatusDecline from "./screens/JobStatusDecline";
+import JobStatus from "./screens/JobStatus";
+import payment from "./screens/payment";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,8 @@ const Navigation = (props:any) => {
         <Stack.Screen name="JobStatusApproved" component={JobStatusApproved} options={{ headerShown:false}}/>
         <Stack.Screen name="JobStatusPending" component={JobStatusPending} options={{ headerShown:false}}/>
         <Stack.Screen name="JobStatusDecline" component={JobStatusDecline} options={{ headerShown:false}}/>
+        <Stack.Screen name="JobStatus" component={JobStatus} options={{ headerShown:false}}/>
+        <Stack.Screen name="Payment" component={payment} options={{ headerShown:false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

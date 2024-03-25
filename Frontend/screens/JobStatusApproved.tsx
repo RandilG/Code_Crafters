@@ -15,15 +15,13 @@ import {Button, Card, Text} from 'react-native-paper';
 //import { Icon } from 'react-native-elements';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 import VectorIcon from '../utils/Vectoricons';
-import {IconSource} from 'react-native-paper/lib/typescript/components/Icon';
-import {ThemeProp} from 'react-native-paper/lib/typescript/types';
 
 const JobStatusApproved = (props: any) => {
   const [isHoveredPay, setIsHoveredPay] = useState(false);
   const [isHoveredCancel, setIsHoveredCancel] = useState(false);
-  const [status,setStatus] = useState<string>("pending");
+  const [status, setStatus] = useState<string>('pending');
 
-  function handleStatus(statusIs:string){
+  function handleStatus(statusIs: string) {
     setStatus(statusIs);
     console.log(`Status changed to: ${status}`);
   }
@@ -39,17 +37,26 @@ const JobStatusApproved = (props: any) => {
             borderBottomRightRadius: 10,
             zIndex: 1,
           }}>
-          <View style={{paddingTop: 30, paddingLeft:22, paddingBottom:30, padding:230,}}>
-  <Pressable style={{flexDirection: 'row'}} onPress={() => props.navigation.navigate('Test')}>
-            <VectorIcon
-              type="MaterialIcons"
-              name="keyboard-arrow-left"
-              color="#FFFFFF"
-              size={25}
-              zIndex="-1"/>
-            <Text style={styles.heading}>Job Status</Text>
-    </Pressable>
-</View>
+          <View
+            style={{
+              paddingTop: 30,
+              paddingLeft: 22,
+              paddingBottom: 30,
+              padding: 230,
+            }}>
+            <Pressable
+              style={{flexDirection: 'row'}}
+              onPress={() => props.navigation.navigate('Test')}>
+              <VectorIcon
+                type="MaterialIcons"
+                name="keyboard-arrow-left"
+                color="#FFFFFF"
+                size={25}
+                zIndex="-1"
+              />
+              <Text style={styles.heading}>Job Status</Text>
+            </Pressable>
+          </View>
 
           <View
             style={{
@@ -61,21 +68,21 @@ const JobStatusApproved = (props: any) => {
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => handleStatus("pending")}>
+                onPress={() => handleStatus('pending')}>
                 <Text style={styles.buttonText}>Pending</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.buttonApproved}
-                onPress={() => handleStatus("approved")}>
+                onPress={() => handleStatus('approved')}>
                 <Text style={styles.buttonTextApproved}>Approved</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => handleStatus("decline")}>
+                onPress={() => handleStatus('decline')}>
                 <Text style={styles.buttonText}>Decline</Text>
               </Pressable>
             </TouchableOpacity>
@@ -85,63 +92,6 @@ const JobStatusApproved = (props: any) => {
         <View style={{backgroundColor: '#FFFFFF', flex: 4, zIndex: 2}}></View>
 
         <ScrollView style={styles.contentBox}>
-
-          <Card style={styles.cardContainer}>
-            <Text style={styles.cardTitle}>Kitchen Helper</Text>
-            <View style={{flexDirection: 'row'}}>
-              <View style={styles.leftSide}>
-                <Card.Content style={styles.cardData}>
-                  <Text style={styles.cardAttribute}>
-                    <Text style={styles.attributeBold}>Posted Date:</Text>
-                    2024/03/10
-                  </Text>
-                  <Text style={styles.cardAttribute}>
-                    <Text style={styles.attributeBold}>Job Date:</Text>
-                    2024/03/15
-                  </Text>
-                  <Text style={styles.cardAttribute}>
-                    <Text style={styles.attributeBold}>Amount of Seekers:</Text>
-                    05
-                  </Text>
-                </Card.Content>
-              </View>
-              <View style={styles.rightSide}>
-                <Card.Content style={styles.cardData}>
-                  <Text style={styles.cardAttribute}>
-                    <Text style={styles.attributeBold}>Work Hours: </Text>8h
-                  </Text>
-                  <Text style={styles.cardAttribute}>
-                    <Text style={styles.attributeBold}>Hourly Rate: </Text>
-                    Rs.250
-                  </Text>
-                </Card.Content>
-              </View>
-            </View>
-            <Card.Actions>
-              <Pressable
-                style={[
-                  styles.cancelButton,
-                  isHoveredCancel && styles.hoveredButtonCancel,
-                ]}
-                onPress={() => Alert.alert('Pressed Cancel button')}
-                onPressIn={() => setIsHoveredCancel(true)}
-                onPressOut={() => setIsHoveredCancel(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.payButton,
-                  isHoveredPay && styles.hoveredButtonPay,
-                ]}
-                onPress={() => Alert.alert('Pressed Pay button')}
-                onPressIn={() => setIsHoveredPay(true)}
-                onPressOut={() => setIsHoveredPay(false)}>
-                <Text style={styles.buttonText}>Pay</Text>
-              </Pressable>
-            </Card.Actions>
-          </Card>
-
-          
           <Card style={styles.cardContainer}>
             <Text style={styles.cardTitle}>Kitchen Helper</Text>
             <View style={{flexDirection: 'row'}}>
@@ -182,7 +132,7 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Cancel button')}
                 onPressIn={() => setIsHoveredCancel(true)}
                 onPressOut={() => setIsHoveredCancel(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.buttonTextCancel}>Cancel</Text>
               </Pressable>
               <Pressable
                 style={[
@@ -192,13 +142,11 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Pay button')}
                 onPressIn={() => setIsHoveredPay(true)}
                 onPressOut={() => setIsHoveredPay(false)}>
-                <Text style={styles.buttonText}>Pay</Text>
+                <Text style={styles.buttonTextPay}>Pay</Text>
               </Pressable>
             </Card.Actions>
           </Card>
-          
 
-          
           <Card style={styles.cardContainer}>
             <Text style={styles.cardTitle}>Kitchen Helper</Text>
             <View style={{flexDirection: 'row'}}>
@@ -239,7 +187,7 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Cancel button')}
                 onPressIn={() => setIsHoveredCancel(true)}
                 onPressOut={() => setIsHoveredCancel(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.buttonTextCancel}>Cancel</Text>
               </Pressable>
               <Pressable
                 style={[
@@ -249,14 +197,11 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Pay button')}
                 onPressIn={() => setIsHoveredPay(true)}
                 onPressOut={() => setIsHoveredPay(false)}>
-                <Text style={styles.buttonText}>Pay</Text>
+                <Text style={styles.buttonTextPay}>Pay</Text>
               </Pressable>
             </Card.Actions>
           </Card>
-          
 
-
-          
           <Card style={styles.cardContainer}>
             <Text style={styles.cardTitle}>Kitchen Helper</Text>
             <View style={{flexDirection: 'row'}}>
@@ -297,7 +242,7 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Cancel button')}
                 onPressIn={() => setIsHoveredCancel(true)}
                 onPressOut={() => setIsHoveredCancel(false)}>
-                <Text style={styles.buttonText}>Cancel</Text>
+                <Text style={styles.buttonTextCancel}>Cancel</Text>
               </Pressable>
               <Pressable
                 style={[
@@ -307,12 +252,65 @@ const JobStatusApproved = (props: any) => {
                 onPress={() => Alert.alert('Pressed Pay button')}
                 onPressIn={() => setIsHoveredPay(true)}
                 onPressOut={() => setIsHoveredPay(false)}>
-                <Text style={styles.buttonText}>Pay</Text>
+                <Text style={styles.buttonTextPay}>Pay</Text>
               </Pressable>
             </Card.Actions>
           </Card>
-          
 
+          <Card style={styles.cardContainer}>
+            <Text style={styles.cardTitle}>Kitchen Helper</Text>
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.leftSide}>
+                <Card.Content style={styles.cardData}>
+                  <Text style={styles.cardAttribute}>
+                    <Text style={styles.attributeBold}>Posted Date:</Text>{' '}
+                    2024/03/10{' '}
+                  </Text>
+                  <Text style={styles.cardAttribute}>
+                    <Text style={styles.attributeBold}>Job Date:</Text>{' '}
+                    2024/03/15{' '}
+                  </Text>
+                  <Text style={styles.cardAttribute}>
+                    <Text style={styles.attributeBold}>Amount of Seekers:</Text>{' '}
+                    05
+                  </Text>
+                </Card.Content>
+              </View>
+              <View style={styles.rightSide}>
+                <Card.Content style={styles.cardData}>
+                  <Text style={styles.cardAttribute}>
+                    <Text style={styles.attributeBold}>Work Hours: </Text>8h
+                  </Text>
+                  <Text style={styles.cardAttribute}>
+                    <Text style={styles.attributeBold}>Hourly Rate: </Text>
+                    Rs.250
+                  </Text>
+                </Card.Content>
+              </View>
+            </View>
+            <Card.Actions>
+              <Pressable
+                style={[
+                  styles.cancelButton,
+                  isHoveredCancel && styles.hoveredButtonCancel,
+                ]}
+                onPress={() => Alert.alert('Pressed Cancel button')}
+                onPressIn={() => setIsHoveredCancel(true)}
+                onPressOut={() => setIsHoveredCancel(false)}>
+                <Text style={styles.buttonTextCancel}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[
+                  styles.payButton,
+                  isHoveredPay && styles.hoveredButtonPay,
+                ]}
+                onPress={() => Alert.alert('Pressed Pay button')}
+                onPressIn={() => setIsHoveredPay(true)}
+                onPressOut={() => setIsHoveredPay(false)}>
+                <Text style={styles.buttonTextPay}>Pay</Text>
+              </Pressable>
+            </Card.Actions>
+          </Card>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -321,10 +319,10 @@ const JobStatusApproved = (props: any) => {
 
 const styles = StyleSheet.create({
   arrow: {
-    marginLeft:24,
+    marginLeft: 24,
     // marginBottom: 4,
     //elevation:5,
-      },
+  },
   heading: {
     fontSize: 20,
     color: '#FFFFFF',
@@ -337,7 +335,7 @@ const styles = StyleSheet.create({
 
   button: {
     height: 32,
-    width: 92,
+    width: 98,
     backgroundColor: '#ffffff',
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.8)',
@@ -366,8 +364,8 @@ const styles = StyleSheet.create({
 
   buttonApproved: {
     height: 32,
-    width: 92,
-    backgroundColor: '#F2994A',
+    width: 98,
+    backgroundColor: '#FE8235',
     borderRadius: 20,
     shadowColor: 'rgba(0, 0, 0, 0.9)',
     shadowOpacity: 0.8,
@@ -394,6 +392,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: '40%',
     borderRadius: 25,
+    
   },
 
   // card: {
@@ -414,7 +413,7 @@ const styles = StyleSheet.create({
   },
 
   cardTitle: {
-    color: '#F2994A',
+    color: '#FE8235',
     fontSize: 17,
     fontWeight: 'bold',
     margin: 12,
@@ -445,9 +444,10 @@ const styles = StyleSheet.create({
   },
 
   cancelButton: {
-    height: 30,
-    width: 90,
-    backgroundColor: '#908883',
+    height: 34,
+    width: 100,
+    marginRight:75,
+    backgroundColor: '#C4C4C4',
     borderRadius: 10,
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOpacity: 0.8,
@@ -458,16 +458,27 @@ const styles = StyleSheet.create({
   },
 
   hoveredButtonCancel: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#908883',
-    borderWidth: 3,
-    height: 34,
+    backgroundColor: '#b0b0b0',
+    borderColor: '#b0b0b0',
+    shadowColor: 'rgba(0, 0, 0, 0.7)',
+    shadowOpacity: 0.5,
+    elevation: 20,
+  },
+
+  buttonTextCancel: {
+    textAlign: 'center',
+    marginHorizontal: 5,
+    marginVertical: 5,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    fontSize: 15,
+    letterSpacing: 0.75,
   },
 
   payButton: {
-    height: 30,
-    width: 90,
-    backgroundColor: '#F2994A',
+    height: 34,
+    width: 100,
+    backgroundColor: '#FE8235',
     borderRadius: 10,
     shadowColor: 'rgba(0, 0, 0, 0.5)',
     shadowOpacity: 0.8,
@@ -482,11 +493,22 @@ const styles = StyleSheet.create({
   },
 
   hoveredButtonPay: {
-    backgroundColor: '#FFFFFF',
-    borderColor: '#F2994A',
-    borderWidth: 3,
-    height: 34,
+    backgroundColor: '#ed782f',
+    borderColor: '#ed782f',
+    shadowColor: 'rgba(0, 0, 0, 0.8)',
+    shadowOpacity: 0.2,
+    elevation: 20,
   },
+
+  buttonTextPay: {
+    textAlign: 'center',
+    marginHorizontal: 5,
+    marginVertical: 5,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    fontSize: 15,
+    letterSpacing: 0.75,
+  }
 });
 
 export default JobStatusApproved;

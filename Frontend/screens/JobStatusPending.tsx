@@ -22,6 +22,13 @@ const JobStatusPending = (props: any) => {
   
   const [isHoveredEdit, setIsHoveredEdit] = useState(false);
   const [isHoveredCancel, setIsHoveredCancel] = useState(false);
+  const [status, setStatus] = useState<string>('pending');
+
+  function handleStatus(statusIs: string) {
+    setStatus(statusIs);
+    console.log(`Status changed to: ${status}`);
+  }
+
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -54,21 +61,21 @@ const JobStatusPending = (props: any) => {
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.buttonPending}
-                onPress={() => props.navigation.navigate('JobStatusPending')}>
+                onPress={() => handleStatus('pending')}>
                 <Text style={styles.buttonTextPending}>Pending</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusApproved')}>
+                onPress={() => handleStatus('approved')}>
                 <Text style={styles.buttonText}>Approved</Text>
               </Pressable>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonOpacity}>
               <Pressable
                 style={styles.button}
-                onPress={() => props.navigation.navigate('JobStatusDecline')}>
+                onPress={() => handleStatus('decline')}>
                 <Text style={styles.buttonText}>Decline</Text>
               </Pressable>
             </TouchableOpacity>
