@@ -1,13 +1,7 @@
 import { Text, View,Image,Button } from 'react-native'
 import { StyleSheet } from 'react-native';
 
-const FontPage = (p:any) => {
-  function GotoSecond(){
-    p.navigation.navigate('SecondPage');
-  }
-
-  
-
+const TwoPage = () => {
     return (
       <View style={Sty.container}>
         <Image
@@ -34,12 +28,18 @@ const FontPage = (p:any) => {
           }}>
           {'Find a Perfect Job Match'}
         </Text>
-        <Button  onPress={(GotoSecond)} title="Let us get start!" color="#F2994A"  />
+        <View style={{
+            flexDirection:'row',
+            marginHorizontal:150
+        }}>
+        <Button title="As Job Poster" color="#F2994A"/>
+        <Button title="As Job Poster" color="#C0C0C0"/>
+        </View>
       </View>
     );
 }
 
-export default FontPage
+export default TwoPage
 
 const Sty=StyleSheet.create({
     container:{

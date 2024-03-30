@@ -1,10 +1,8 @@
-import { Text, View,StyleSheet,Image } from 'react-native'
-import React, { Component } from 'react'
-import { Icon } from '@rneui/base/dist/Icon';
+import {Text, View, StyleSheet, Image, Button} from 'react-native';
+import React, {Component} from 'react';
+import {Icon} from '@rneui/base/dist/Icon';
 
-
-
-const RegistrationSuccessful = () => {
+const LoginSuccessful = () => {
   return (
     <View style={Sty.container}>
       <Image
@@ -16,45 +14,50 @@ const RegistrationSuccessful = () => {
         source={require('../../assets/img/background.png')}
         resizeMode="cover"
       />
-      <View 
-      style={{
-        backgroundColor: '#FCF8F8',
-        marginTop:200,
-        borderRadius:20,
-        marginHorizontal:20
-      }}>
-        <Icon name={'checkcircle'} size={100} color={'#F2994A'}/>
-        <Image
+      <View
         style={{
-            width:250,
-            height:250,
-            borderRadius:250/2,
-            marginTop:20,
-            marginEnd:20,
-            marginHorizontal:65,
-            alignItems:'center'
-        }}
-        source={require('../../assets/img/success.png')}>
-        </Image>
-        <Text
+          backgroundColor: '#FCF8F8',
+          marginTop: 200,
+          borderRadius: 20,
+          marginHorizontal: 20,
+          height: 500,
+        }}>
+        <View
           style={{
-            fontSize: 30,
-            color: '#000000',
-            fontWeight: '400',
-            marginLeft: 20,
-            textAlign: 'center',
+            marginTop: 150,
+            marginHorizontal: 20,
           }}>
-          {'Registration successfully completed!'}
-        </Text>
+          <Icon name={'check-circle'} size={100} color={'#F2994A'} />
+
+          <Text
+            style={{
+              fontSize: 30,
+              color: '#000000',
+              fontWeight: '400',
+              marginLeft: 20,
+              marginTop: 50,
+              textAlign: 'center',
+            }}>
+            {'Registration Successsfully Completed!'}
+          </Text>
+        </View>
+      </View>
+      <View
+      style={{
+        marginHorizontal:100,
+        borderRadius:50
+      }}
+      >
+      <Button title="Home" color="#F2994A"/>
       </View>
     </View>
   );
-}
+};
 
-export default RegistrationSuccessful
+export default LoginSuccessful;
 
-const Sty=StyleSheet.create({
-    container:{
-      flex:1,
-    },
-  })
+const Sty = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

@@ -1,13 +1,7 @@
 import { Text, View,Image,Button } from 'react-native'
 import { StyleSheet } from 'react-native';
 
-const FontPage = (p:any) => {
-  function GotoSecond(){
-    p.navigation.navigate('SecondPage');
-  }
-
-  
-
+const PostJobs = () => {
     return (
       <View style={Sty.container}>
         <Image
@@ -26,20 +20,25 @@ const FontPage = (p:any) => {
         />
         <Text
           style={{
-            fontSize: 50,
+            fontSize: 30,
             color: '#000000',
             fontWeight: '600',
             marginTop: 5,
             marginLeft: 30,
           }}>
-          {'Find a Perfect Job Match'}
+          {'Stremlined Hiring,Maximum impact, post part-time jobs and build your dream team!'}
         </Text>
-        <Button  onPress={(GotoSecond)} title="Let us get start!" color="#F2994A"  />
+        <View style={{
+            flexDirection:'row',
+            marginHorizontal:150
+        }}>
+        <Button title="Post the Jobs" color="#F2994A"/>
+        </View>
       </View>
     );
 }
 
-export default FontPage
+export default PostJobs
 
 const Sty=StyleSheet.create({
     container:{
