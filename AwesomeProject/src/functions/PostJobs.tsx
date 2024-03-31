@@ -1,5 +1,16 @@
 import { Text, View,Image,Button } from 'react-native'
 import { StyleSheet } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+function PostJobsStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Settings" component={PostJobs} />
+    </Stack.Navigator>
+  );
+}
 
 const PostJobs = () => {
     return (

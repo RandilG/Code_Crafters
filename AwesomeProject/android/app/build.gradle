@@ -6,7 +6,7 @@ apply plugin: "com.facebook.react"
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
-react {
+/*react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
     // root = file("../")
@@ -49,7 +49,7 @@ react {
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
-}
+/*}
 
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
@@ -102,7 +102,12 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    /*tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    doNotTrackState()
+    }*/
 }
+
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin

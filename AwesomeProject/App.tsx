@@ -17,22 +17,26 @@ import JobCategory from './src/functions/JobCategory';
 import PostJobScreen from './src/functions/PostJobScreen';
 import PostSuccessful from './src/functions/PostSuccessful';
 import LoginSuccessful from './src/functions/LoginSuccessful';
+import Rating from './src/functions/Rating';
+import RatingSuccessful from './src/functions/RatingSuccessful';
 
 function App(): JSX.Element {
   return (
     <View style={Sty.container}>
       {/*<AppRoute/>*/}
       {/*<RegisterScreen/>*/}
-      <RegistrationSuccessful/>
+      {/*<RegistrationSuccessful/>*/}
       {/*<LoginSuccessful/>*/}
       {/*<LoginScreen/>*/}
       {/*<FontPage/>*/}
       {/*<SecondPage/>*/}
       {/*<TwoPage/>*/}
-      {/*<PostJobs/>*/}
+      <PostJobs/>
       {/*<JobCategory/>*/}
       {/*<PostJobScreen/>*/}
       {/*<PostSuccessful/>*/}
+      {/*<Rating/>*/}
+      {/*<RatingSuccessful/>*/}
     </View>
   );
 }
