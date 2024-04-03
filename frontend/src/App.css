@@ -1,0 +1,53 @@
+.AppHeader{
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 20px 4px 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  background-color: #005758;
+}
+
+.menu-bar{
+  height: 95vh;
+  margin-top: 0rem;
+  display:flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1rem;
+  width: 100%;
+  color: white;
+  font-weight: 500;
+
+}
+
+.SideBaraANDPageContent{
+  display:flex;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: self-start;
+}
+
+.PageContent{
+  padding-left: 12px;
+}
+
+.Cards{
+  background-color: rgba(71, 71, 197, 0);
+}
+
+.bar-graph-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.graph-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}

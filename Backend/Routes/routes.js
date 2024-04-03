@@ -7,8 +7,13 @@ const deleteData = require('../Functions/Test/deleteData')
 const updateData = require('../Functions/Test/updateData')
 const login = require('../Admin/SuperAdmin/login')
 const adminRegister = require('./../Admin/SuperAdmin/register');
-const emailverify = require('../Functions/otp/emailverification')
+const emailverify = require('../Functions/otp/emailverification');
+const fetchFinancialData = require('../Functions/FinancialAdmin/FetchFinancialData');
 
+
+router.get('/getFinancialData', (req, res) => {
+  fetchFinancialData(req, res);
+})
 
 router.get('/getData', (req, res) => {
     getData(req, res)

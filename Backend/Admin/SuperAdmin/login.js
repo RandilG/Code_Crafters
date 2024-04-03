@@ -2,11 +2,11 @@ const connection = require('./../../Services/connection')
 
 
 module.exports = async function login(req, res){
-
-  const{username, password}= req.body;
+console.log(req.body)
+  const{Email, Password}= req.body;
   
-    const sql = 'SELECT * FROM admins WHERE username = ? AND password = ?';
-    connection.query(sql, [username, password], (err, results) => {
+    const sql = 'SELECT * FROM admins WHERE Email = ? AND Password = ?';
+    connection.query(sql, [Email, Password], (err, results) => {
       if (err) {
         console.error('Error during login:', err);
         res.status(500).send('Internal Server Error');
