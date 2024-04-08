@@ -1,33 +1,77 @@
-import React from "react";
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Test from './screens/test';
-import Test2 from "./screens/test2";
-import Test3 from "./screens/Test3";
-import JobStatusApproved from "./screens/JobStatusApproved";
-import JobStatusPending from "./screens/JobStatusPending";
-import JobStatusDecline from "./screens/JobStatusDecline";
-import JobStatus from "./screens/JobStatus";
-import payment from "./screens/payment";
+import Test2 from './screens/test2';
+import Test3 from './screens/Test3';
+import JobStatus from './screens/JobStatus';
+import Payment from './screens/Payment';
+import CompletePayment from './screens/CompletePayment';
+import errorPopUp from './components/errorPopUp';
+import FutureJobs from './screens/FutureJobs';
+import InProgressJobs from './screens/InProgressJobs';
+import CompletedJobs from './screens/CompletedJobs';
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = (props:any) => {
-  return(
+const Navigation = (props: any) => {
+  return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Test">
-        <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
-        <Stack.Screen name="Test2" component={Test2} options={{ headerShown: false}} />
-        <Stack.Screen name="Test3" component={Test3} options={{ headerShown:false}}/>
-        <Stack.Screen name="JobStatusApproved" component={JobStatusApproved} options={{ headerShown:false}}/>
-        <Stack.Screen name="JobStatusPending" component={JobStatusPending} options={{ headerShown:false}}/>
-        <Stack.Screen name="JobStatusDecline" component={JobStatusDecline} options={{ headerShown:false}}/>
-        <Stack.Screen name="JobStatus" component={JobStatus} options={{ headerShown:false}}/>
-        <Stack.Screen name="Payment" component={payment} options={{ headerShown:false}}/>
+        <Stack.Screen
+          name="Test"
+          component={Test}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Test2"
+          component={Test2}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Test3"
+          component={Test3}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="JobStatus"
+          component={JobStatus}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Payment"
+          component={Payment}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="errorPopUp"
+          component={errorPopUp}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="CompletePayment"
+          component={CompletePayment}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen 
+        name="FutureJobs"
+        component={FutureJobs}
+        options={{headerShown: false}}
+        />
+         <Stack.Screen 
+        name="InProgressJobs"
+        component={InProgressJobs}
+        options={{headerShown: false}}
+        />
+         <Stack.Screen 
+        name="CompletedJobs"
+        component={CompletedJobs}
+        options={{headerShown: false}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
 
 export default Navigation;

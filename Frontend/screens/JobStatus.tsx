@@ -11,14 +11,18 @@ import {
 import {Button, Card, Text} from 'react-native-paper';
 import VectorIcon from '../utils/Vectoricons';
 import {server} from '../service/constant';
-import axios from 'axios';
+import axios, {HttpStatusCode} from 'axios';
 import moment from 'moment';
+import {setErrorMsg, setErrorTitle} from '../global/variable';
+import ErrorPopup from '../components/errorPopUp';
+import AppLoader from '../components/appLoader';
 
 const JobStatus = (props: any) => {
   //const [isHoveredPay, setIsHoveredPay] = useState(false);
   //const [isHoveredCancel, setIsHoveredCancel] = useState(false);
   const [status, setStatus] = useState<string>('pending');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [pendingJobs, setPendingJobs] = useState<any[]>([]);
   const [approvedJobs, setApprovedJobs] = useState<any[]>([]);
   const [declinedJobs, setDeclinedJobs] = useState<any[]>([]);
@@ -28,14 +32,30 @@ const JobStatus = (props: any) => {
     console.log(`Status changed to: ${statusIs}`);
   }
 
-  const userName = 'david@gmail.com';
+  const userName = 'david@gmail.com'; //change email for specific user
 
   //fetch pending jobs
   async function getPendingJobs() {
     try {
       const response = await axios.get(server + `fetchPending/${userName}`);
-      setPendingJobs(response.data);
+      if (response.status === HttpStatusCode.Ok) {
+        setPendingJobs(response.data);
+        setIsLoading(false);
+      } else if (response.status === HttpStatusCode.InternalServerError) {
+        setErrorTitle('Oops...!');
+        setErrorMsg('response.data[0]');
+        setIsLoading(false);
+        setIsError(true);
+      } else {
+        setErrorTitle('Oops...!');
+        setErrorMsg('Something wrong has happened..');
+        setIsLoading(false);
+        setIsError(true);
+      }
     } catch (error) {
+      setErrorTitle('Oops...!');
+      setErrorMsg('Something wrong has happened..');
+      setIsError(true);
       setIsLoading(false);
       console.log(error); //Handle error here
     }
@@ -45,25 +65,59 @@ const JobStatus = (props: any) => {
   async function getApprovedJobs() {
     try {
       const response = await axios.get(server + `fetchApproved/${userName}`);
-      setApprovedJobs(response.data);
+      if (response.status === HttpStatusCode.Ok) {
+        setApprovedJobs(response.data);
+        setIsLoading(false);
+      } else if (response.status === HttpStatusCode.InternalServerError) {
+        setErrorTitle('Oops...!');
+        setErrorMsg('Something wrong has happened..');
+        setIsLoading(false);
+        setIsError(true);
+      } else {
+        setErrorTitle('Oops...!');
+        setErrorMsg('Something wrong has happened..');
+        setIsLoading(false);
+        setIsError(true);
+      }
     } catch (error) {
+      setErrorTitle('Oops...!');
+      setErrorMsg('Something wrong has happened..');
+      setIsError(true);
       setIsLoading(false);
       console.log(error); //Handle error here
     }
   }
+
   //fetch declined jobs
   async function getDeclinedJobs() {
     try {
       const response = await axios.get(server + `fetchDeclined/${userName}`);
-      setDeclinedJobs(response.data);
-      setIsLoading(false);
+
+      if (response.status === HttpStatusCode.Ok) {
+        setDeclinedJobs(response.data);
+        setIsLoading(false);
+      } else if (response.status === HttpStatusCode.InternalServerError) {
+        setErrorTitle('Oops...!');
+        setErrorMsg('response.data[0]');
+        setIsLoading(false);
+        setIsError(true);
+      } else {
+        setErrorTitle('Oops...!');
+        setErrorMsg('Something wrong has happened..');
+        setIsError(true);
+        setIsLoading(false);
+      }
     } catch (error) {
+      setErrorTitle('Oops...!');
+      setErrorMsg('Something wrong has happened..');
+      setIsError(true);
       setIsLoading(false);
       console.log(error); //Handle error here
     }
   }
 
   useEffect(() => {
+    setIsError(false);
     setIsLoading(true);
     getPendingJobs();
     getApprovedJobs();
@@ -157,7 +211,7 @@ const JobStatus = (props: any) => {
 
         <View style={{backgroundColor: '#FFFFFF', flex: 4, zIndex: 2}}></View>
         <View style={styles.contentBox}>
-          {/* {isLoading ? <AppLoader /> : null} */}
+          {isLoading ? <AppLoader /> : null}
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {status == 'pending' ? (
@@ -182,6 +236,7 @@ const JobStatus = (props: any) => {
                   <ApprovedCards
                     key={index}
                     props={props}
+                    jobId={item.tempory_job_id}
                     title={item.title}
                     postedDate={moment(item.posted_date).format('YYYY-MM-DD')}
                     jobDate={moment(item.job_date).format('YYYY-MM-DD')}
@@ -216,6 +271,7 @@ const JobStatus = (props: any) => {
           </ScrollView>
         </View>
       </View>
+      {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
     </SafeAreaView>
   );
 };
@@ -279,6 +335,7 @@ const PendingCards: React.FC<any> = ({
 
 const ApprovedCards: React.FC<any> = ({
   props,
+  jobId,
   title,
   postedDate,
   jobDate,
@@ -289,6 +346,7 @@ const ApprovedCards: React.FC<any> = ({
 }) => {
   const handlePayButton = () => {
     props.navigation.navigate('Payment', {
+      jobId: jobId,
       title: title,
       seekers: seekers,
       wHours: wHours,
@@ -414,7 +472,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0, 0, 0, 0.8)',
     shadowOpacity: 0.8,
     elevation: 20,
-    marginTop:10,
+    marginTop: 10,
     shadowOffset: {width: 1, height: 13},
   },
 
@@ -447,6 +505,14 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 15,
     letterSpacing: 0.75,
+  },
+
+  lottieLoading: {
+    // backgroundColor:'red',
+    width: 150,
+    height: 150,
+    position: 'absolute',
+    alignSelf: 'center',
   },
 
   contentBox: {
@@ -661,6 +727,3 @@ const styles = StyleSheet.create({
 });
 
 export default JobStatus;
-function withNavigation(ApprovedCards: React.FC<any>) {
-  throw new Error('Function not implemented.');
-}

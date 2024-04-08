@@ -1,5 +1,5 @@
 const { HttpStatusCode } = require('axios');
-const connection = require('./../../Services/connection');
+const connection = require('./../../../Services/connection');
 
 module.exports = async function fetchApproved(req, res){
   try{

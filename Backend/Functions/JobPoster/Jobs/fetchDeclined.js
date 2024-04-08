@@ -1,13 +1,12 @@
 const { HttpStatusCode } = require('axios');
-const connection = require('./../../Services/connection');
+const connection = require('./../../../Services/connection');
 
 module.exports = async function fetchDeclined(req, res) {
   try {
-    const query = "SELECT * FROM parttime_srilanka.declined_job INNER JOIN parttime_srilanka.temporary_job WHERE declined_job.declineJob_id = temporary_job.tempory_job_id AND temporary_job.job_poster=?;";
+    const query = "SELECT * FROM parttime_srilanka.declined_job INNER JOIN parttime_srilanka.temporary_job WHERE declined_job.job_id = temporary_job.tempory_job_id AND temporary_job.job_poster=?;";
     const value = [req.params.jobPoster];
 
     const declinedJobs = await queryAsync(query, value);
-
     return res.status(HttpStatusCode.Ok).json(declinedJobs);
   } catch (error) {
     console.log(error);
