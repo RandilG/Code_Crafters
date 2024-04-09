@@ -32,11 +32,12 @@ const JobStatus = (props: any) => {
     console.log(`Status changed to: ${statusIs}`);
   }
 
-  const userName = 'david@gmail.com'; //change email for specific user
+  const userName = 'abc@example.com'; //change email for specific user
 
   //fetch pending jobs
   async function getPendingJobs() {
     try {
+
       const response = await axios.get(server + `fetchPending/${userName}`);
       if (response.status === HttpStatusCode.Ok) {
         setPendingJobs(response.data);

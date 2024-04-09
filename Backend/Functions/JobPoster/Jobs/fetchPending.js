@@ -2,6 +2,7 @@ const { HttpStatusCode } = require('axios');
 const connection = require('./../../../Services/connection');
 
 module.exports = async function fetchPending(req, res){
+  console.log('called');
   try{
     const query = "SELECT * FROM parttime_srilanka.temporary_job WHERE status = 'pending' && job_poster=?;"
     const value = [req.params.jobPoster];
