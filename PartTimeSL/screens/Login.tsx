@@ -6,8 +6,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 const Login = (props: any) => {
     const [isPWVisible, setIsPWVisible] = useState<boolean>(false);
-    const [userName, setUserName] = useState<any>();
-    const [password, setPassword] = useState<any>();
+    const [userName, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const handleLogin = () => {
         console.log(userName);
@@ -22,7 +22,7 @@ const Login = (props: any) => {
                     <Image source={require('./../assets/images/worker.png')} style={styles.workerImage} />
                 </View>
                 <View style={styles.imageCover}>
-                    <Image source={require('./../assets/images/logo_white-01.png')} style={styles.logo} />
+                    <Image source={require('./../assets/images/logo_white_3-01.png')} style={styles.logo} />
                 </View>
                 <View style={styles.bottomContainer}>
                     <View style={styles.headerContainer}>
@@ -30,7 +30,7 @@ const Login = (props: any) => {
                             Login
                         </Text>
                         <Text style={styles.greetingTxt}>
-                            Hello, Welcome to the PartTimeSL
+                            Hello, Welcome to the Jobs
                         </Text>
                     </View>
                     <View style={styles.elementContainer}>
@@ -67,7 +67,7 @@ const Login = (props: any) => {
                         </TouchableOpacity>
                     </View>
                     <View style={styles.signupConatiner}>
-                        <Text style={styles.signUpTxt}>Don't have an account?<Text style={{fontWeight: '600', color: '#F2994A'}} onPress={() => props.navigation.navigate("Signup")}> Sign Up</Text></Text>
+                        <Text style={styles.signUpTxt}>Don't have an account?<Text style={{fontWeight: '600', color: '#F2994A'}} onPress={() => props.navigation.navigate("Tnc")}> Sign Up</Text></Text>
                     </View>
                 </View>
             </View>
@@ -175,10 +175,10 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        width: '60%',
-        height: '60%',
+        width: '40%',
+        height: '40%',
         resizeMode: 'center',
-        marginTop: 50
+        marginTop: 60
     },
 
     imageCover: {

@@ -25,7 +25,7 @@ const Splash = (props: any) => {
         <SafeAreaView style={extStyles.body}>
             <AnimatedView style={styles.mainContainer} delay={5000} animation='fadeOutLeft'>
                 <View style={styles.imageContainer}>
-                    <AnimatedImage source={require('./../assets/images/logo_white-01.png')} animation='zoomIn' duration={5000} style={styles.image} />
+                    <AnimatedImage source={require('./../assets/images/logo_white_3-01.png')} animation='zoomIn' duration={5000} style={styles.image} />
                 </View>
             </AnimatedView>
         </SafeAreaView>
@@ -34,8 +34,8 @@ const Splash = (props: any) => {
 
 const styles = StyleSheet.create({
     image: {
-        width: '70%',
-        height: '100%',
+        width: '50%',
+        height: '50%',
         resizeMode: 'center'
     },
 
