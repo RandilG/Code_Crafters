@@ -6,6 +6,16 @@ const approvedJobs = require('../Functions/JobPoster/Jobs/fetchApproved');
 const declinedJobs = require('../Functions/JobPoster/Jobs/fetchDeclined');
 const payments = require('../Functions/JobPoster/Financial/payments');
 const createPaymentIntent = require('../Functions/JobPoster/Financial/paymentIntent');
+const checkSeekerAvailability = require('../Functions/JobSeeker/SignUp/checkEmailAvailability');
+const checkMobNoAvailability = require('../Functions/JobSeeker/SignUp/checkMobNoAvilability');
+
+router.get('/seekerMobNoAvilability/:mobNo', (req, res) => {
+    checkMobNoAvailability(req, res);
+})
+
+router.get('/seekerAvailability/:email', (req, res) => {
+    checkSeekerAvailability(req, res);
+})
 
 router.post('/createPaymentIntent', (req, res) => {
     createPaymentIntent(req, res);

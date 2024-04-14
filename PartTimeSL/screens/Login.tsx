@@ -77,7 +77,7 @@ const Login = (props: any) => {
 
 const styles = StyleSheet.create({
     signUpTxt: {
-        color: '#000',
+        color: '#373737',
         fontWeight: '300',
         fontSize: 15
     },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
 
     fogPWTxt: {
         fontSize: 12,
-        color: '#000',
+        color: '#373737',
         fontWeight: '400'
     },
 
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
 
     labelTxt: {
         fontSize: 14,
-        color: '#000',
+        color: '#373737',
         fontWeight: '300'
     },
 
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
 
     greetingTxt: {
         fontSize: 18,
-        color: '#000',
+        color: '#373737',
         fontWeight: '300'
     },
 

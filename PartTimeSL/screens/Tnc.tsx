@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 const Tnc = (props: any) => {
+
+    const [animation] = useState(new Animated.Value(0));
+
+    const openBtnContainer = () => {
+        Animated.timing(animation, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const colseBtnContainer = () => {
+        Animated.timing(animation, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    };
     return (
         <SafeAreaView style={extStyles.body}>
             <View style={styles.mainContainer}>
@@ -23,7 +41,7 @@ const Tnc = (props: any) => {
                 </View>
                 <View style={styles.bottomConatiner} />
                 <View style={styles.scrollContainer}>
-                    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+                    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} onMomentumScrollEnd={openBtnContainer}>
                         <Text style={styles.highlightTxt}>Introduction</Text>
                         <Text style={styles.paraTxt}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A scelerisque purus semper eget duis. Nec feugiat in fermentum posuere urna nec tincidunt praesent semper. Velit euismod in pellentesque massa placerat duis. Pellentesque habitant morbi tristique senectus et. Erat pellentesque adipiscing commodo elit at imperdiet. Turpis egestas integer eget aliquet nibh. Tincidunt praesent semper feugiat nibh sed pulvinar. Donec ultrices tincidunt arcu non sodales neque sodales. Non sodales neque sodales ut etiam sit amet nisl purus. Neque laoreet suspendisse interdum consectetur libero id faucibus. Eget mi proin sed libero enim. Sagittis orci a scelerisque purus semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Faucibus et molestie ac feugiat sed lectus vestibulum. Amet porttitor eget dolor morbi non.</Text>
 
@@ -31,32 +49,43 @@ const Tnc = (props: any) => {
                         <Text style={styles.paraTxt}>Sagittis nisl rhoncus mattis rhoncus urna neque viverra. Dui sapien eget mi proin sed libero enim. Amet mattis vulputate enim nulla. Nunc vel risus commodo viverra maecenas accumsan lacus vel. Mattis aliquam faucibus purus in massa tempor nec feugiat. Amet tellus cras adipiscing enim eu turpis egestas pretium aenean. Dolor purus non enim praesent elementum. Lobortis mattis aliquam faucibus purus in massa tempor. Egestas sed tempus urna et pharetra pharetra. Lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi. Eget est lorem ipsum dolor sit. Arcu vitae elementum curabitur vitae nunc sed velit. Aliquam sem fringilla ut morbi tincidunt augue interdum velit euismod. Urna neque viverra justo nec ultrices dui sapien. Accumsan sit amet nulla facilisi morbi tempus iaculis urna id. Consequat ac felis donec et odio pellentesque. Ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Feugiat nisl pretium fusce id velit ut tortor pretium. Eu volutpat odio facilisis mauris sit amet massa vitae.</Text>
 
                         <Text style={styles.highlightTxt}>Use of the Services</Text>
-                        <Text style={styles.paraTxt}>Scelerisque felis imperdiet proin fermentum leo vel orci porta non. Vitae elementum curabitur vitae nunc sed velit. Enim neque volutpat ac tincidunt vitae semper quis lectus. Eget sit amet tellus cras adipiscing enim. Volutpat sed cras ornare arcu dui vivamus arcu. Semper auctor neque vitae tempus quam pellentesque nec. Vestibulum mattis ullamcorper velit sed ullamcorper. Sit amet volutpat consequat mauris nunc. Quam nulla porttitor massa id neque aliquam. Lectus mauris ultrices eros in cursus turpis massa. Ut venenatis tellus in metus. A pellentesque sit amet porttitor eget. Tellus mauris a diam maecenas sed enim ut sem viverra. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus. Libero id faucibus nisl tincidunt eget. Velit aliquet sagittis id consectetur purus ut faucibus pulvinar elementum. Ultrices gravida dictum fusce ut placerat.</Text>
-
-                        <View style={styles.btnConatiner}>
-                            <View style={styles.btnDivider}>
-                                <TouchableOpacity style={styles.cancelBtn} onPress={() => props.navigation.goBack()}>
-                                    <Text style={styles.btnTxt}>
-                                        Cancel
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.btnDivider}>
-                                <TouchableOpacity style={styles.agreeBtn} onPress={() => props.navigation.navigate('Signup')}>
-                                    <Text style={styles.btnTxt}>
-                                        Agree
-                                    </Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        <Text style={{...styles.paraTxt, ...{marginBottom: 80}}}>Scelerisque felis imperdiet proin fermentum leo vel orci porta non. Vitae elementum curabitur vitae nunc sed velit. Enim neque volutpat ac tincidunt vitae semper quis lectus. Eget sit amet tellus cras adipiscing enim. Volutpat sed cras ornare arcu dui vivamus arcu. Semper auctor neque vitae tempus quam pellentesque nec. Vestibulum mattis ullamcorper velit sed ullamcorper. Sit amet volutpat consequat mauris nunc. Quam nulla porttitor massa id neque aliquam. Lectus mauris ultrices eros in cursus turpis massa. Ut venenatis tellus in metus. A pellentesque sit amet porttitor eget. Tellus mauris a diam maecenas sed enim ut sem viverra. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus. Libero id faucibus nisl tincidunt eget. Velit aliquet sagittis id consectetur purus ut faucibus pulvinar elementum. Ultrices gravida dictum fusce ut placerat.</Text>
                     </ScrollView>
                 </View>
             </View>
+            <Animated.View style={[styles.btnContainer, { transform: [{ translateY: animation.interpolate({ inputRange: [0, 1], outputRange: [1000, 0], }), },], },]}>
+                <View style={styles.btnDivider}>
+                    <TouchableOpacity style={styles.cancelBtn} onPress={() => props.navigation.goBack()}>
+                        <Text style={styles.btnTxt}>
+                            Cancel
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.btnDivider}>
+                    <TouchableOpacity style={styles.agreeBtn} onPress={() => props.navigation.navigate('Signup')}>
+                        <Text style={styles.btnTxt}>
+                            Agree
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </Animated.View>
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 80,
+        width: '100%',
+        elevation: 20,
+        backgroundColor: '#FFF',
+        flexDirection: 'row'
+    },
+
     btnTxt: {
         fontSize: 15,
         fontWeight: '600',
@@ -75,7 +104,7 @@ const styles = StyleSheet.create({
     cancelBtn: {
         width: 120,
         height: 40,
-        backgroundColor: '#000',
+        backgroundColor: '#373737',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20
@@ -88,22 +117,15 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    btnConatiner: {
-        width: '100%',
-        height: 80,
-        marginVertical: 10,
-        flexDirection: 'row'
-    },
-
     paraTxt: {
-        color: '#000',
+        color: '#373737',
         fontSize: 12,
         textAlign: 'justify',
         marginBottom: 15
     },
 
     highlightTxt: {
-        color: '#000',
+        color: '#373737',
         fontSize: 18,
         fontWeight: '700',
         marginBottom: 5
@@ -113,7 +135,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         paddingHorizontal: 10,
-        paddingTop: 10
+        paddingTop: 10,
     },
 
     scrollContainer: {
