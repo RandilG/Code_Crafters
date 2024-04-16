@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         width: '90%',
         marginHorizontal: '5%',
-        height: 610,
+        height: "80%",
         backgroundColor: '#FFF',
         position: 'absolute',
         bottom: 20,

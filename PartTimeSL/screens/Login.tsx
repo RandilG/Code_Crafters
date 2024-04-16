@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 
     signupConatiner: {
         width: '100%',
-        height: 90,
+        height: '25%',
         justifyContent: 'center',
         alignItems: 'center',
     },

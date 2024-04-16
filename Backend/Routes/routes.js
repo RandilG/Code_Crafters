@@ -8,6 +8,26 @@ const payments = require('../Functions/JobPoster/Financial/payments');
 const createPaymentIntent = require('../Functions/JobPoster/Financial/paymentIntent');
 const checkSeekerAvailability = require('../Functions/JobSeeker/SignUp/checkEmailAvailability');
 const checkMobNoAvailability = require('../Functions/JobSeeker/SignUp/checkMobNoAvilability');
+const checkNicAvailability = require('../Functions/JobSeeker/SignUp/checkNicAvailability');
+const sendMobOtp = require('../Functions/Common/otp/sendMobOtp');
+const verifyOtp = require('../Functions/Common/otp/verifyOtp');
+const sendMailOtp = require('../Functions/Common/otp/sendMailOtp');
+
+router.post('/sendMailOtp', (req, res) => {
+    sendMailOtp(req, res);
+})
+
+router.get('/verifyOtp/:user/:otp', (req, res) => {
+    verifyOtp(req, res);
+})
+
+router.post('/sendMobOtp', (req, res) => {
+    sendMobOtp(req, res);
+})
+
+router.get('/seekerNicAvailability/:nic', (req, res) => {
+    checkNicAvailability(req, res);
+})
 
 router.get('/seekerMobNoAvilability/:mobNo', (req, res) => {
     checkMobNoAvailability(req, res);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -11,8 +11,24 @@ import moment from "moment";
 import seekerData from "../interfaces/seekerData";
 import { passwordStrength } from "check-password-strength";
 import SeekerVali from "../validations/seekerVali";
+import seekerValidation from "../interfaces/seekerValidation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import LottieView from "lottie-react-native";
+import AppLoader from "../components/AppLoader";
+import ErrorPopup from "../components/errorPopUp";
+import axios, { HttpStatusCode } from "axios";
+import { server } from "../service/constant";
+import { setErrorMsg, setErrorTitle } from "../global/variable";
 
 const Signup = (props: any) => {
+    //Handle loading lottie on button
+    const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
+
+    //Handle error popup
+    const [isError, setIsError] = useState<boolean>(false);
+
+    //Handle loading component
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     //Handle date picker visibility
     const [dateOpen, setDateOpen] = useState<boolean>(false);
@@ -43,13 +59,17 @@ const Signup = (props: any) => {
     const [isConPwVisible, setIsConPwVisible] = useState<boolean>(false);
 
     //Handle password strength
-    const [pwStrength, setPwStrength] = useState<number>();
+    const [pwStrength, setPwStrength] = useState<number>(0);
     const checkPasswordStrength = (password: any) => {
         setPwStrength(passwordStrength(password).id);
         // Too Week -> 0, Weak -> 1, Medium -> 2, Strong -> 3
     }
 
-    const [validation, setValidation] = useState({
+    //Store formatted mobile number
+    let formattedMobNo: string;
+
+    //Handle errors of each element
+    const [validation, setValidation] = useState<seekerValidation>({
         firstNameError: "",
         firstName: true,
 
@@ -58,7 +78,6 @@ const Signup = (props: any) => {
 
         mobNoError: "",
         mobNo: true,
-        formattedMobNo: "",
 
         addressError: "",
         addFLine: true,
@@ -70,7 +89,17 @@ const Signup = (props: any) => {
         dobError: "",
         dob: true,
 
-        canSubmit: true
+        nicError: "",
+        nic: true,
+
+        genderError: "",
+        gender: true,
+
+        passwordError: "",
+        password: true,
+
+        conPasswordError: "",
+        conPassword: true,
     });
 
     //Check entered email already registered one or not
@@ -79,44 +108,114 @@ const Signup = (props: any) => {
         let resp: SignupErr;
 
         resp = await seekerVali.emailAvailablity(email);
-        setValidation((prev) => ({ ...prev, emailError: resp.error, email: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, emailError: resp.error, email: resp.isValid }));
     }
 
     //Validation of required data
-    const checkValidation = async (): Promise<void> => {
+    const checkValidation = async (): Promise<boolean> => {
         const seekerVali = new SeekerVali();
         let resp: SignupErr;
+        let isValid: boolean = true;
 
         resp = await seekerVali.emailValidity(seekerData.email);
-        setValidation((prev) => ({ ...prev, emailError: resp.error, email: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, emailError: resp.error, email: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
 
         resp = await seekerVali.firstName(seekerData.firstName);
-        setValidation((prev) => ({ ...prev, firstNameError: resp.error, firstName: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, firstNameError: resp.error, firstName: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
 
         //Acceptable mobile number formats --> (0771234567, 94771234567, +94771234567)
         resp = await seekerVali.mobileNo(seekerData.mobNo);
-        setValidation((prev) => ({ ...prev, mobNoError: resp.error, mobNo: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, mobNoError: resp.error, mobNo: resp.isValid }));
+        formattedMobNo = resp.content;
+        if (isValid) isValid = resp.isValid;
 
         resp = await seekerVali.checkAddFLineValidity(seekerData.addFLine);
-        setValidation((prev) => ({ ...prev, addressError: resp.error, addFLine: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, addressError: resp.error, addFLine: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
 
         if (seekerData.addFLine != "") {
             resp = await seekerVali.checkAddSLineValidity(seekerData.addSLine);
-            setValidation((prev) => ({ ...prev, addressError: resp.error, addSLine: resp.isValid, canSubmit: resp.isValid }));
+            setValidation((prev) => ({ ...prev, addressError: resp.error, addSLine: resp.isValid }));
+            if (isValid) isValid = resp.isValid;
         }
 
         resp = await seekerVali.checkCityValidty(seekerData.city);
-        setValidation((prev) => ({ ...prev, cityError: resp.error, city: resp.isValid, canSubmit: resp.isValid }));
+        setValidation((prev) => ({ ...prev, cityError: resp.error, city: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
 
-        if(!isDobSelected){
-            setValidation((prev) => ({ ...prev, dobError: "Date of birth cannot be empty", dob: false, canSubmit: false }));
+        if (!isDobSelected) {
+            setValidation((prev) => ({ ...prev, dobError: "Date of birth cannot be empty", dob: false }));
+            if (isValid) isValid = resp.isValid;
         }
+
+        resp = await seekerVali.checkNicValidity(seekerData.nic);
+        setValidation((prev) => ({ ...prev, nicError: resp.error, nic: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
+
+        resp = await seekerVali.checkGenderValidity(seekerData.gender);
+        setValidation((prev) => ({ ...prev, genderError: resp.error, gender: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
+
+        resp = await seekerVali.checkPasswordValidity(seekerData.password, pwStrength);
+        setValidation((prev) => ({ ...prev, passwordError: resp.error, password: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
+
+        resp = await seekerVali.checkConPassword(seekerData.conPassword);
+        setValidation((prev) => ({ ...prev, conPasswordError: resp.error, conPassword: resp.isValid }));
+        if (isValid) isValid = resp.isValid;
+
+        if (seekerData.password != "" && seekerData.conPassword != "") {
+            resp = await seekerVali.isPasswordMatch(seekerData.password, seekerData.conPassword);
+            setValidation((prev) => ({ ...prev, passwordError: resp.error, password: resp.isValid, conPassword: resp.isValid }));
+            if (isValid) isValid = resp.isValid;
+        }
+
+        return isValid;
     }
 
     //Handle form inputs
-    const handleInput = (attr: string, value: any) => {
+    const handleInput = async (attr: string, value: any) => {
         setSeekerData((prev: any) => ({ ...prev, [attr]: value }));
         setValidation((prev) => ({ ...prev, [attr]: true }));
+    }
+
+    //Submit form data
+    const handleSubmit = async () => {
+        setIsBtnLoading(true);
+        let isValid = await checkValidation();
+        if (isValid) {
+            //Store data in local storage while mobile number and email verify
+            AsyncStorage.multiSet([['firstName', seekerData.firstName], ['lastName', seekerData.lastName], ['email', seekerData.email], ['mobNo', formattedMobNo], ['addFLine', seekerData.addFLine], ['addSLine', seekerData.addSLine], ['city', seekerData.city], ['dob', seekerData.dob.toString()], ['nic', seekerData.nic], ['gender', seekerData.gender], ['password', seekerData.password]]);
+            setIsLoading(true);
+            await sendOtp();
+        }
+        setIsBtnLoading(false);
+    }
+
+    //Send mobile OTP
+    async function sendOtp(): Promise<void> {
+        try {
+            const resp = await axios.post(server + 'sendMobOtp', { "fName": seekerData.firstName, "lName": seekerData.lastName, "mobNo": formattedMobNo });
+            if (resp.data !== HttpStatusCode.Ok) {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+            } else {
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'MobOtp' }]
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -174,7 +273,7 @@ const Signup = (props: any) => {
                             </Text>
                             <View style={{ ...styles.element, ...{ borderBottomColor: validation.email ? "#F2994A" : "#FF4122" } }}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput style={styles.input} keyboardType={"email-address"} onChangeText={(value) => { handleInput("email", value), emailAvailability(value) }} />
+                                    <TextInput style={styles.input} keyboardType={"email-address"} onChangeText={(value) => { handleInput("email", value.toLowerCase()), emailAvailability(value) }} />
                                 </View>
                             </View>
                         </View>
@@ -245,7 +344,7 @@ const Signup = (props: any) => {
                                             }
                                         </View>
                                         <View style={{ width: '10%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                            <EvilIcons name="calendar" size={28} style={{ alignSelf: 'flex-end' }} color={!validation.addFLine ? "#F2994A" : "#FF4122"} />
+                                            <EvilIcons name="calendar" size={28} style={{ alignSelf: 'flex-end' }} color={validation.dob ? "#F2994A" : "#FF4122"} />
                                         </View>
                                     </Pressable>
                                 </View>
@@ -255,11 +354,12 @@ const Signup = (props: any) => {
                         {/* NIC element */}
                         <View style={styles.elementContainer}>
                             <Text style={styles.labelTxt}>National ID No{' '}
-                                <Text style={styles.requiredMark}>*</Text>
+                                <Text style={styles.requiredMark}>*{' '}</Text>
+                                {!validation.nic ? <Text style={styles.errorMsgTxt}>{validation.nicError}</Text> : null}
                             </Text>
-                            <View style={styles.element}>
+                            <View style={{ ...styles.element, ...{ borderBottomColor: validation.nic ? "#F2994A" : "#FF4122" } }}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => handleInput("nic", value)} />
+                                    <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => handleInput("nic", value.toUpperCase())} />
                                 </View>
                             </View>
                         </View>
@@ -267,9 +367,10 @@ const Signup = (props: any) => {
                         {/* Gender element */}
                         <View style={styles.elementContainer}>
                             <Text style={styles.labelTxt}>Gender{' '}
-                                <Text style={styles.requiredMark}>*</Text>
+                                <Text style={styles.requiredMark}>*{' '}</Text>
+                                {!validation.gender ? <Text style={styles.errorMsgTxt}>{validation.genderError}</Text> : null}
                             </Text>
-                            <View style={styles.element}>
+                            <View style={{ ...styles.element, ...{ borderBottomColor: validation.gender ? "#F2994A" : "#FF4122" } }}>
                                 <View style={{ ...styles.inputContainer, ...{ flexDirection: 'row' } }}>
                                     <View style={styles.divider}>
                                         <Pressable style={{ flexDirection: 'row' }} onPress={() => handleInput("gender", "male")}>
@@ -290,30 +391,31 @@ const Signup = (props: any) => {
                         {/* Password element and strength meter */}
                         <View style={styles.elementContainer}>
                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ width: '30%' }}>
+                                <View style={{}}>
                                     <Text style={styles.labelTxt}>Password{' '}
-                                        <Text style={styles.requiredMark}>*</Text>
+                                        <Text style={styles.requiredMark}>*{' '}</Text>
+                                        {!validation.password ? <Text style={styles.errorMsgTxt}>{validation.passwordError}</Text> : null}
                                     </Text>
 
                                 </View>
-                                {seekerData.password !== "" ?
-                                    <View style={{ width: '70%', alignItems: 'flex-end' }}>
+                                {seekerData.password !== "" && validation.password ?
+                                    <View style={{ marginLeft: 20, alignItems: 'flex-end' }}>
                                         <View style={{ width: 160, height: 5 }}>
                                             {pwStrength == 0 ?
-                                                <View style={{ width: 40, height: 5, backgroundColor: '#FF4122' }} /> //Too weak
+                                                <View style={{ width: 30, height: 5, backgroundColor: '#FF4122' }} /> //Too weak
                                                 : pwStrength == 1 ?
-                                                    <View style={{ width: 80, height: 5, backgroundColor: '#E88504' }} /> //Weak
+                                                    <View style={{ width: 60, height: 5, backgroundColor: '#E88504' }} /> //Weak
                                                     : pwStrength == 2 ?
-                                                        < View style={{ width: 120, height: 5, backgroundColor: '#E5DE00' }} /> //Medium
+                                                        < View style={{ width: 90, height: 5, backgroundColor: '#E5DE00' }} /> //Medium
                                                         : pwStrength == 3 ?
-                                                            <View style={{ width: 160, height: 5, backgroundColor: '#00C04B' }} /> //Strong
+                                                            <View style={{ width: 120, height: 5, backgroundColor: '#00C04B' }} /> //Strong
                                                             : null
                                             }
                                         </View>
                                     </View>
                                     : null}
                             </View>
-                            <View style={{ ...styles.element, ...{ flexDirection: 'row', height: 50 } }}>
+                            <View style={{ ...styles.element, ...{ flexDirection: 'row', height: 50, borderBottomColor: validation.password ? "#F2994A" : "#FF4122" } }}>
                                 <View style={{ width: '90%', height: '100%', justifyContent: 'center' }}>
                                     <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => { handleInput("password", value), checkPasswordStrength(value) }} secureTextEntry={!isPwVisible} />
                                 </View>
@@ -326,9 +428,10 @@ const Signup = (props: any) => {
                         {/* Confirm password element */}
                         <View style={styles.elementContainer}>
                             <Text style={styles.labelTxt}>Confirm Password{' '}
-                                <Text style={styles.requiredMark}>*</Text>
+                                <Text style={styles.requiredMark}>*{' '}</Text>
+                                {!validation.conPassword ? <Text style={styles.errorMsgTxt}>{validation.conPasswordError}</Text> : null}
                             </Text>
-                            <View style={{ ...styles.element, ...{ flexDirection: 'row', height: 50 } }}>
+                            <View style={{ ...styles.element, ...{ flexDirection: 'row', height: 50, borderBottomColor: validation.conPassword ? "#F2994A" : "#FF4122" } }}>
                                 <View style={{ width: '90%', height: '100%', justifyContent: 'center' }}>
                                     <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => handleInput("conPassword", value)} secureTextEntry={!isConPwVisible} />
                                 </View>
@@ -339,8 +442,14 @@ const Signup = (props: any) => {
                         </View>
 
                         <View style={styles.btnContainer}>
-                            <TouchableOpacity style={styles.btn} onPress={checkValidation}>
-                                <Text style={styles.btnTxt}>Next</Text>
+                            <TouchableOpacity style={styles.btn} onPress={handleSubmit} disabled={isBtnLoading}>
+                                {isBtnLoading ?
+                                    <View style={styles.btnLoaderContainer}>
+                                        <LottieView source={require('../assets/jsons/btn_loader.json')} loop autoPlay style={styles.btnLoader} />
+                                    </View>
+                                    :
+                                    <Text style={styles.btnTxt}>Next</Text>
+                                }
                             </TouchableOpacity>
                         </View>
 
@@ -352,11 +461,26 @@ const Signup = (props: any) => {
                     </ScrollView>
                 </View>
             </View >
+            {isLoading ? <AppLoader /> : null}
+            {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
         </SafeAreaView >
     );
 }
 
 const styles = StyleSheet.create({
+    btnLoader: {
+        width: '80%',
+        height: '80%'
+    },
+
+    btnLoaderContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(255, 255, 255, .5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     errorMsgTxt: {
         fontSize: 10,
         color: "#FF4122",
@@ -477,7 +601,7 @@ const styles = StyleSheet.create({
     scrollContainer: {
         width: '94%',
         marginHorizontal: '3%',
-        height: 630,
+        height: "80%",
         backgroundColor: '#FFF',
         position: 'absolute',
         elevation: 10,

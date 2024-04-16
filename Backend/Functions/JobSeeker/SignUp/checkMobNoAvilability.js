@@ -2,7 +2,6 @@ const { HttpStatusCode } = require('axios');
 const connection = require('../../../Services/connection');
 
 module.exports = async function checkMobNoAvailability(req, res) {
-    console.log("call")
     try {
         const query = 'SELECT * FROM parttime_srilanka.job_seeker WHERE TpNumber = ?;';
         const resp = await queryAsync(query, [req.params.mobNo]);
