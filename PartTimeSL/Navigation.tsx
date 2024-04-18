@@ -8,6 +8,8 @@ import Signup from './screens/Signup';
 import Tnc from "./screens/Tnc";
 import MobOtp from "./screens/MobOtp";
 import EmailOtp from "./screens/EmailOtp";
+import NicUpload from "./screens/NicUpload";
+import SignupSuccess from "./screens/SignupSuccess";
 
 
 const Stack = createNativeStackNavigator();
@@ -16,6 +18,8 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="SignupSuccess" component={SignupSuccess} />
+                <Stack.Screen name="NicUpload" component={NicUpload} />
                 <Stack.Screen name="EmailOtp" component={EmailOtp} />
                 <Stack.Screen name="MobOtp" component={MobOtp} />
                 <Stack.Screen name="Tnc" component={Tnc} />

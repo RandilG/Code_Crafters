@@ -54,7 +54,7 @@ const Login = (props: any) => {
                                 <TextInput value={password} onChangeText={setPassword} style={styles.input} keyboardType={"default"} secureTextEntry={!isPWVisible} />
                             </View>
                             <View style={styles.iconContainer}>
-                                <Entypo name={isPWVisible ? "eye-with-line" : "eye"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsPWVisible(!isPWVisible)} />
+                                <Entypo name={isPWVisible ? "eye" : "eye-with-line"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsPWVisible(!isPWVisible)} />
                             </View>
                         </View>
                     </View>

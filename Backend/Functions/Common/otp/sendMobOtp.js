@@ -39,7 +39,7 @@ module.exports = async function sendMobOtp(req, res){
             });
         }, 5 * 60 * 1000);
 
-        const message = `Hi ${fName} ${lName}\n\nThank you for registering with us.\nYour OTP code: ${otp}\n\nThank You,\nTeam JOBS`;
+        const message = `Hi ${fName} ${lName}\n\nThank you for registering with us.\nYour OTP code: ${otp}\n\n**The OTP will be expired after 5 minutes\n\nThank You,\nTeam JOBS`;
 
         const key = process.env.SMS_API_KEY;
         const token = process.env.SMS_API_TOKEN;

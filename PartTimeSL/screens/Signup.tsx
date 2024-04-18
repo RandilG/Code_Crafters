@@ -44,7 +44,7 @@ const Signup = (props: any) => {
         mobNo: "",
         addFLine: "",
         addSLine: "",
-        addStreet: "",
+        street: "",
         city: "",
         dob: new Date(moment().subtract(16, 'years').format('YYYY-MM-DD')),
         nic: "",
@@ -187,7 +187,7 @@ const Signup = (props: any) => {
         let isValid = await checkValidation();
         if (isValid) {
             //Store data in local storage while mobile number and email verify
-            AsyncStorage.multiSet([['firstName', seekerData.firstName], ['lastName', seekerData.lastName], ['email', seekerData.email], ['mobNo', formattedMobNo], ['addFLine', seekerData.addFLine], ['addSLine', seekerData.addSLine], ['city', seekerData.city], ['dob', seekerData.dob.toString()], ['nic', seekerData.nic], ['gender', seekerData.gender], ['password', seekerData.password]]);
+            AsyncStorage.multiSet([['firstName', seekerData.firstName], ['lastName', seekerData.lastName], ['email', seekerData.email], ['mobNo', formattedMobNo], ['addFLine', seekerData.addFLine], ['addSLine', seekerData.addSLine], ['street', seekerData.street], ['city', seekerData.city], ['dob', seekerData.dob.toString()], ['nic', seekerData.nic], ['gender', seekerData.gender], ['password', seekerData.password]]);
             setIsLoading(true);
             await sendOtp();
         }
@@ -203,6 +203,7 @@ const Signup = (props: any) => {
                 setErrorMsg("Something went wrong");
                 setIsError(true);
                 setIsLoading(false);
+                setIsBtnLoading(false);
             } else {
                 props.navigation.reset({
                     index: 0,
@@ -215,6 +216,7 @@ const Signup = (props: any) => {
             setErrorMsg("Something went wrong");
             setIsError(true);
             setIsLoading(false);
+            setIsBtnLoading(false);
         }
     }
 
@@ -309,7 +311,7 @@ const Signup = (props: any) => {
                             </View>
                             <View style={styles.element}>
                                 <View style={styles.inputContainer}>
-                                    <TextInput style={styles.input} keyboardType={"default"} placeholder="Street" placeholderTextColor={"#E4E7EB"} onChangeText={(value) => handleInput("addStreet", value)} />
+                                    <TextInput style={styles.input} keyboardType={"default"} placeholder="Street" placeholderTextColor={"#E4E7EB"} onChangeText={(value) => handleInput("street", value)} />
                                 </View>
                             </View>
                         </View>
@@ -420,7 +422,7 @@ const Signup = (props: any) => {
                                     <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => { handleInput("password", value), checkPasswordStrength(value) }} secureTextEntry={!isPwVisible} />
                                 </View>
                                 <View style={{ width: '10%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Entypo name={isPwVisible ? "eye-with-line" : "eye"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsPwVisible(!isPwVisible)} />
+                                    <Entypo name={isPwVisible ? "eye" : "eye-with-line"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsPwVisible(!isPwVisible)} />
                                 </View>
                             </View>
                         </View>
@@ -436,7 +438,7 @@ const Signup = (props: any) => {
                                     <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value) => handleInput("conPassword", value)} secureTextEntry={!isConPwVisible} />
                                 </View>
                                 <View style={{ width: '10%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                    <Entypo name={isConPwVisible ? "eye-with-line" : "eye"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsConPwVisible(!isConPwVisible)} />
+                                    <Entypo name={isConPwVisible ? "eye" : "eye-with-line"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsConPwVisible(!isConPwVisible)} />
                                 </View>
                             </View>
                         </View>

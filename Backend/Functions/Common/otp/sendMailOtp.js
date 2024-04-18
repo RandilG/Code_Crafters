@@ -53,7 +53,7 @@ module.exports = async function sendMailOtp(req, res){
             from: "Team JOBS",
             to: email,
             subject: "JOBS User Verfication",
-            html: `<center><h3><font color="#373737">Hello<br/>${fName} ${lName},</h3><h5>Thank you for registering with us</h5><h4>Your OTP code,</h4></font><font color="#FE8235" size=20><h2>${otp}</h2></font><br/><font color="#373737"><h6>Team JOBS</h6></font></center>`
+            html: `<center><h3><font color="#373737">Hello<br/>${fName} ${lName},</h3><h5>Thank you for registering with us</h5><h4>Your OTP code,</h4></font><font color="#FE8235" size=20><h2>${otp}</h2></font><font size=1 color="#FF4122"><p>**The OTP will be expired after 5 minutes</p></font><br/><font color="#373737"><h6>Team JOBS</h6></font></center>`
         }
 
         transporter.sendMail(parameters, async (err) => {

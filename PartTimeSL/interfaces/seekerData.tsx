@@ -5,7 +5,7 @@ interface seekerData {
     mobNo: string;
     addFLine: string;
     addSLine: string;
-    addStreet: string;
+    street: string;
     city: string;
     dob: Date;
     nic: string;
