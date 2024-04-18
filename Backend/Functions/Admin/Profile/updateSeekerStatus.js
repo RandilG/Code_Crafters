@@ -6,7 +6,7 @@ const sendEmailNotify = require('../../Common/notifications/sendEmailNotify');
 module.exports = async function updateSeekerStatus(req, res) {
     try {
         const seeker = req.params.seekerUname;
-        const {firstName, lastName, mobNo, email, status} = req.body;
+        const {firstName, lastName, mobNo, status} = req.body;
 
         await queryAsync("START TRANSACTION");
 
@@ -34,7 +34,7 @@ module.exports = async function updateSeekerStatus(req, res) {
 
         await sendMobNotify(mobNo, mobMessage);
 
-        await sendEmailNotify(email, "Registration Status", emailMessage);
+        await sendEmailNotify(seeker, "Registration Status", emailMessage);
 
         await queryAsync("COMMIT");
 
