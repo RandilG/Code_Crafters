@@ -14,22 +14,9 @@ const MenuList = () => {
         <Menu.Item key="Dashboard" icon={<DashboardOutlined />} style={{hover:"#FFA500"}} >
           Dashboard
         </Menu.Item>
-        {/* <Menu.SubMenu key="Jobs" icon={<ContainerOutlined />} title="Jobs">
-          <Menu.Item key="New-Jobs">
-            New Jobs
-          </Menu.Item>
-          <Menu.Item key="Completed-Jobs">
-            Competed Jobs
-          </Menu.Item>
-          <Menu.Item key="JobReviews">
-            Job Reviews
-          </Menu.Item>
-        </Menu.SubMenu> */}
-        <Menu.Item key="Financial" icon={<UserOutlined />}>Financial</Menu.Item>
-        {/* <Menu.Item key="Profile" icon={<CreditCardOutlined />}>Profile</Menu.Item> */}
+        <Menu.Item key="Income" icon={<UserOutlined />}>Income</Menu.Item>
         <Menu.Item key="Payments" icon={<CreditCardOutlined />}>Payments</Menu.Item>
         <Menu.Item key="Notification" icon={<NotificationOutlined />}>Notification</Menu.Item>
-        {/* <Menu.Item key="Chat" icon={<WechatOutlined />}>Chat</Menu.Item> */}
         <Menu.Item key="Settings" icon={<SettingOutlined />}>Settings</Menu.Item>
         <Menu.Item key="logout" icon={<LogoutOutlined />}>Logout</Menu.Item>
       </Menu>

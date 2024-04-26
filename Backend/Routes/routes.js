@@ -9,10 +9,15 @@ const login = require('../Admin/SuperAdmin/login')
 const adminRegister = require('./../Admin/SuperAdmin/register');
 const emailverify = require('../Functions/otp/emailverification');
 const fetchFinancialData = require('../Functions/FinancialAdmin/FetchFinancialData');
+const FetchFinancialDataJobSeeker = require('../Functions/FinancialAdmin/FetchFinancialDataJobSeeker')
 
 
 router.get('/getFinancialData', (req, res) => {
   fetchFinancialData(req, res);
+})
+
+router.get('/getFinancialDataJobSeeker', (req, res) => {
+  FetchFinancialDataJobSeeker(req, res);
 })
 
 router.get('/getData', (req, res) => {

@@ -1,7 +1,7 @@
 import { DollarOutlined } from "@ant-design/icons";
 import { Card, Space, Statistic } from "antd";
-import IncomeTable from "../../components/Tables/IncomeTable";
 import BarGraph from "../../components/Graphs/TestGraph";
+import IncomeInfoTableJobPoster from "../../components/Tables/IncomeInfoTableJobPoster";
 
 function Dashboard() {
     return (
@@ -30,7 +30,7 @@ function Dashboard() {
                 </Card>
             </Space>
             <Space>
-                <IncomeTable />
+                <IncomeInfoTableJobPoster />
                 <BarGraph />
             </Space>
         </div>
