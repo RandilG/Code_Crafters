@@ -8,8 +8,9 @@ import FinancialAdmins from "../../Pages/Income/Income";
 function AppRoutes() {
     return (
         <Routes>
+            <Route path="/" element={<Dashboard />} />
             <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/Income" element={<FinancialAdmins />} />
+            <Route path="/Revenue" element={<FinancialAdmins />} />
             <Route path="/Notification" element={<Notification />} />
             <Route path="/Payments" element={<Payments />} />
             <Route path="/Settings" element={<Settings />} />

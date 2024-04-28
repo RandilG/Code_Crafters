@@ -9,7 +9,7 @@
 }
 
 .menu-bar{
-  height: 95vh;
+  height: 110vh;
   margin-top: 0rem;
   display:flex;
   flex-direction: column;
@@ -38,9 +38,8 @@
 
 .bar-graph-container {
   width: 100%;
-  max-width: 800px;
+  max-width: 650px;
   margin: 0 auto;
-  padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   background-color: #fff;
@@ -51,3 +50,13 @@
   font-size: 24px;
   margin-bottom: 20px;
 }
+
+.IncomeTableContainer {
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Adjust alignment as needed */
+}
+
+.IncomeTableColumn {
+  flex: 1; /* Adjust width of each column */
+}
+

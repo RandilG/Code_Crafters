@@ -10,6 +10,11 @@ const adminRegister = require('./../Admin/SuperAdmin/register');
 const emailverify = require('../Functions/otp/emailverification');
 const fetchFinancialData = require('../Functions/FinancialAdmin/FetchFinancialData');
 const FetchFinancialDataJobSeeker = require('../Functions/FinancialAdmin/FetchFinancialDataJobSeeker')
+const GetPaymetData = require('../Functions/FinancialAdmin/GetPaymetData')
+const getGroupedIncome = require('../Functions/FinancialAdmin/GetGroupedIncome')
+const getMonthlyIncome = require('../Functions/FinancialAdmin/GetMonthlyIncome')
+const GetMonthlyRevenue = require('../Functions/FinancialAdmin/GetMonthlyRevenue')
+const GetGroupedRevenue = require('../Functions/FinancialAdmin/GetGroupedRevenue')
 
 
 router.get('/getFinancialData', (req, res) => {
@@ -46,6 +51,26 @@ router.post('/register', (req, res)=> {
 
 router.post('/sendotp', (req, res) => {
   emailverify(req, res)
+})
+
+router.get('/paymentdata', (req, res)=>{
+  GetPaymetData(req, res)
+})
+
+router.get('/groupedincome', (req, res)=>{
+  getGroupedIncome(req,res)
+})
+
+router.get('/monthlyincome', (req, res)=>{
+  getMonthlyIncome(req, res)
+})
+
+router.get ('/monthlyrevenue', (req, res)=>{
+  GetMonthlyRevenue(req, res)
+})
+
+router.get('/groupedrevenue',(req, res)=>{
+  GetGroupedRevenue(req, res)
 })
 
 module.exports = router

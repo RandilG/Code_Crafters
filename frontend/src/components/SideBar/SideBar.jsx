@@ -14,7 +14,7 @@ const MenuList = () => {
         <Menu.Item key="Dashboard" icon={<DashboardOutlined />} style={{hover:"#FFA500"}} >
           Dashboard
         </Menu.Item>
-        <Menu.Item key="Income" icon={<UserOutlined />}>Income</Menu.Item>
+        <Menu.Item key="Revenue" icon={<UserOutlined />}>Revenue</Menu.Item>
         <Menu.Item key="Payments" icon={<CreditCardOutlined />}>Payments</Menu.Item>
         <Menu.Item key="Notification" icon={<NotificationOutlined />}>Notification</Menu.Item>
         <Menu.Item key="Settings" icon={<SettingOutlined />}>Settings</Menu.Item>

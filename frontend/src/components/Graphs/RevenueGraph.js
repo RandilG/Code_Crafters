@@ -12,23 +12,23 @@ const monthNames = [
 // Array of colors to cycle through for each bar
 const barColors = ['#6a99e1', '#e76f51', '#2a9d8f', '#f4a261', '#264653', '#ff6f61', '#e63946', '#8ecae6', '#ffbe0b', '#ff9f1c','#6a99e1', '#e76f51'];
 
-const BarGraph = () => {
+const RevenueGraph = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/monthlyincome'); // Fetch data from the endpoint
+        const response = await axios.get('http://localhost:8000/monthlyrevenue'); // Fetch data from the endpoint
         const transformedData = response.data.map(item => ({
           name: monthNames[item.month_number - 1], // Convert month number to month name
-          monthly_income: item.monthly_income,
+          monthly_revenue: item.monthly_revenue,
           fill: barColors[item.month_number - 1], // Assign color based on month number
         }));
         setData(transformedData); // Update the data state with the transformed data
       } catch (error) {
         console.error(error);
-        message.error('Failed to load monthly income data');
+        message.error('Failed to load monthly revenue data');
       } finally {
         setLoading(false);
       }
@@ -43,7 +43,7 @@ const BarGraph = () => {
 
   return (
     <div className="bar-graph-container">
-      <h2 className="graph-title">Monthly Income</h2>
+      <h2 className="graph-title">Monthly Revenue</h2>
       <BarChart
         width={650}
         height={400}
@@ -54,10 +54,10 @@ const BarGraph = () => {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="monthly_income" />
+        <Bar dataKey="monthly_revenue" />
       </BarChart>
     </div>
   );
 };
 
-export default BarGraph;
+export default RevenueGraph;

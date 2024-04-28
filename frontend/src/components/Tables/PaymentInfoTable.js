@@ -1,98 +1,76 @@
-import React from 'react';
-import { Table } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table, Spin, message } from 'antd'; // Include Spin and message for loading and error handling
+import axios from 'axios'; // Axios for fetching data
 
+// Define the columns for the table
 const columns = [
   {
-    title: 'JobPoster',
-    dataIndex: 'jobPoster',
-    key: 'jobPoster',
+    title: 'Job Poster',
+    dataIndex: 'job_poster', // Update dataIndex to match the new key
+    key: 'job_poster',
     render: (text, record) => (
-      <a href={`/jobPoster/${record.jobPoster}`}>{text}</a>
+      <a href={`/jobPoster/${record.job_poster}`}>{text}</a>
     ),
   },
   {
-    title: 'PosterName',
-    dataIndex: 'posterName',
+    title: 'Poster Name',
+    dataIndex: 'posterName', // Updated key
     key: 'posterName',
   },
   {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
+    title: 'Payment Date',
+    dataIndex: 'payment_date', // Updated key
+    key: 'payment_date',
+    render: (date) => new Date(date).toLocaleDateString(), // Format date for better readability
   },
   {
     title: 'Amount',
-    dataIndex: 'amount',
+    dataIndex: 'amount', // Updated key
     key: 'amount',
   },
   {
     title: 'Payment ID',
-    dataIndex: 'paymentid',
-    key: 'paymentid',
-    render: (text, record) => (
-        <a href={`http://localhost:3000/Payments`}>{text}</a> //${record.paymentid}
-      ),
+    dataIndex: 'payment_id', // Updated key
+    key: 'payment_id',
+    render: (text) => (
+      <a href={`http://localhost:3000/Payments/${text}`}>{text}</a>
+    ),
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    posterName: 'John Brown',
-    jobPoster: 'johnrown@gmail.com',
-    date: '2024-03-31',
-    amount: 1000,
-    paymentid: 10000,
-  },
-  {
-    key: '2',
-    posterName: 'Jim Green',
-    jobPoster: 'jim@gmail.com',
-    date: '2024-04-01',
-    amount: 1000,
-    paymentid: 20000,
+const IncomeTable = () => {
+  const [data, setData] = useState([]); // State to hold fetched data
+  const [loading, setLoading] = useState(true); // State to manage loading state
 
-  },
-  {
-    key: '3',
-    posterName: 'Joe Black',
-    jobPoster: 'Joe@gmail.com',
-    date: '2024-04-02',
-    amount: 1000,
-    paymentid: 30000,
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/paymentdata'); // Fetch data from API
+        setData(response.data); // Update the data state with the fetched data
+      } catch (error) {
+        message.error('Error fetching data'); // Display an error message if fetch fails
+      } finally {
+        setLoading(false); // Set loading to false once data is fetched
+      }
+    };
 
-  },
-  {
-    key: '4',
-    posterName: 'Joe Black',
-    jobPoster: 'jim@gmail.com',
-    date: '2024-04-02',
-    amount: 1000,
-    paymentid: 40000,
+    fetchData(); // Fetch data when the component mounts
+  }, []); // The empty dependency array ensures this runs only once when the component is mounted
 
-  },
-  {
-    key: '4',
-    posterName: 'Joe Black',
-    jobPoster: 'Joe@gmail.com',
-    date: '2024-04-02',
-    amount: 1000,
-    paymentid: 50000,
+  if (loading) {
+    return <Spin />; // Show a loading spinner while fetching data
+  }
 
-  },
-];
-
-const IncomeTable = () => (
-  <div style={{ textAlign: 'left' }}>
-    <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>Payment Informations</span>
-    <div style={{ padding: '10px' }}>
-      <Table
-        columns={columns}
-        dataSource={data}
-        pagination={false}
-      />
+  return (
+    <div style={{ textAlign: 'left' }}>
+      <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>
+        Payment Information
+      </span>
+      <div style={{ padding: '10px' }}>
+        <Table columns={columns} dataSource={data} pagination={false} rowKey="payment_id" /> {/* Use rowKey to avoid warnings */}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default IncomeTable;
