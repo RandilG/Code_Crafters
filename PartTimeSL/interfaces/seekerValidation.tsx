@@ -1,0 +1,25 @@
+interface seekerValidation {
+    firstNameError: string,
+    firstName: boolean,
+    emailError: string,
+    email: boolean,
+    mobNoError: string,
+    mobNo: boolean,
+    addressError: string,
+    addFLine: boolean,
+    addSLine: boolean,
+    cityError: string,
+    city: boolean,
+    dobError: string,
+    dob: boolean,
+    nicError: string,
+    nic: boolean,
+    genderError: string,
+    gender: boolean,
+    passwordError: string,
+    password: boolean,
+    conPasswordError: string,
+    conPassword: boolean,
+}
+
+export default seekerValidation;
