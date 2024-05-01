@@ -46,7 +46,6 @@ module.exports = async function sendMobOtp(req, res){
         const sender = process.env.SENDER_ID;
 
         resp = await axios.post(`http://cloud.websms.lk/smsAPI?sendsms&apikey=${key}&apitoken=${token}&type=sms&from=${sender}&to=${mobNo}&text=${encodeURIComponent(message)}`);
-        
         if(resp.data.status === "queued"){
             await queryAsync("COMMIT"); 
             return res.json(HttpStatusCode.Ok);

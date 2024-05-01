@@ -5,5 +5,6 @@
         "adipisicing",
         "Pressable",
         "Vectoricons"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

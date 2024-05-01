@@ -103,7 +103,6 @@ class SeekerVali {
             } else {
                 //Add + mark to begining of mobile number
                 const formattedMobNo = '+' + mobNo;
-
                 const resp: SignupErr = await this.mobNoAvailability(formattedMobNo);
                 signupErr.content = formattedMobNo;
                 signupErr.error = resp.error;
@@ -144,8 +143,9 @@ class SeekerVali {
                 return signupErr;
             } else {
                 const formattedMobNo = mobNo;
-
-                return await this.mobNoAvailability(formattedMobNo);
+                const resp: SignupErr = await this.mobNoAvailability(formattedMobNo);
+                resp.content = formattedMobNo;
+                return resp;
             }
         }
         signupErr.error = 'Invalid mobile number';

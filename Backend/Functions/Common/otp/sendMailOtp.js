@@ -31,14 +31,14 @@ module.exports = async function sendMailOtp(req, res){
         }
 
         //Delete otp after 5 mins
-        setTimeout(() => {
-            const deleteQuery = 'DELETE FROM `parttime_srilanka`.`otp` WHERE (`user` = ?);';
-            connection.query(deleteQuery, email, (err) => {
-                if (err) {
-                    console.error(err);
-                }
-            });
-        }, 5 * 60 * 1000);
+        // setTimeout(() => {
+        //     const deleteQuery = 'DELETE FROM `parttime_srilanka`.`otp` WHERE (`user` = ?);';
+        //     connection.query(deleteQuery, email, (err) => {
+        //         if (err) {
+        //             console.error(err);
+        //         }
+        //     });
+        // }, 5 * 60 * 1000);
 
         //Configure nodemailer transporter
         let transporter = nodemailer.createTransport({
