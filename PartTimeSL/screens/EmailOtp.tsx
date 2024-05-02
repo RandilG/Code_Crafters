@@ -12,6 +12,7 @@ import ErrorPopup from "../components/errorPopUp";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import Modal from 'react-native-modal';
+import SeekerVali from "../validations/seekerVali";
 
 const EmailOtp = (props: any) => {
 
@@ -30,8 +31,9 @@ const EmailOtp = (props: any) => {
         setIsBtnLoading(false);
 
         async function getData() {
-            
             setEmail(await AsyncStorage.getItem('email'));
+            setSeekerFName(await AsyncStorage.getItem('firstName'));
+            setSeekerLName(await AsyncStorage.getItem('lastName'));
             setIsLoading(false);
         }
 
@@ -46,13 +48,14 @@ const EmailOtp = (props: any) => {
             setIsBtnLoading(true);
             verifyOtp();
         }
-    }, [value])
+    }, [value]);
 
     async function verifyOtp() {
         try {
             Keyboard.dismiss();
             const resp = await axios.get(server + `verifyOtp/${email}/${value}`);
             if (resp.data === HttpStatusCode.Accepted) {
+                await AsyncStorage.setItem('email', email);
                 props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'NicUpload' }]
@@ -106,9 +109,62 @@ const EmailOtp = (props: any) => {
     const [isFirstAttemptFail, setIsFirstAttemptFail] = useState<boolean>(false);
     const [newEmail, setNewEmail] = useState<string>();
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [isNewMobErr, setIsNewMobErr] = useState<boolean>(false);
-    const [newMobErr, setNewMobErr] = useState<string>();
+    const [isNewEmailErr, setIsNewEmailErr] = useState<boolean>(true);
+    const [newEmailErr, setNewEmailErr] = useState<string>();
     const [isModalBtnLoading, setIsModalBtnLoading] = useState<boolean>(false);
+    const [isChangeEmail, setIsChangeEmail] = useState<boolean>(false);
+
+    //Check new Email address valid or not
+    async function checkValidattion():Promise<boolean>{
+        const seekerVali = new SeekerVali();
+        let resp: SignupErr;
+        if(!newEmail) return false;
+        let isValid: boolean = true;
+
+        resp = await seekerVali.emailValidity(newEmail);
+        setNewEmailErr(resp.error);
+        setIsNewEmailErr(resp.isValid);
+        isValid = resp.isValid;
+
+        if(isValid){
+            resp = await seekerVali.emailAvailablity(newEmail);
+            setNewEmailErr(resp.error);
+            setIsNewEmailErr(resp.isValid);
+            isValid = resp.isValid;
+        }
+        
+        return isValid;
+    }
+
+    //Send OTP to new Email
+    async function sendNewEmailOtp(){
+        try {
+            setIsModalBtnLoading(true);
+            Keyboard.dismiss();
+            const isValid = await checkValidattion();
+            if(isValid){
+                setIsChangeEmail(false);
+                const resp = await axios.post(server + 'sendMailOtp', { "fName": seekerFName, "lName": seekerLName, "email": newEmail });
+                if (resp.data === HttpStatusCode.Ok) {
+                    setEmail(newEmail);
+                    setIsModalBtnLoading(false);
+                    setIsModalOpen(false);
+                }else{
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("Something went wrong");
+                    setIsError(true);
+                    setIsLoading(false);
+                }
+            }
+            setIsModalBtnLoading(false);
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsModalBtnLoading(false);
+        }
+    }
 
     return (
         <SafeAreaView style={extStyles.body}>
@@ -154,7 +210,7 @@ const EmailOtp = (props: any) => {
                     </View>
                     <View style={styles.resendMsgContainer}>
                         <Text style={styles.resendMsgTxt}>OTP not received? <Text style={styles.resendTxt} onPress={() => sendMailOtp}>RESEND</Text></Text>
-                        {isFirstAttemptFail ? <Text style={styles.resendMsgTxt}>OR{'\n'}<Text style={styles.resendTxt} onPress={() => setIsModalOpen(true)}>CHANGE</Text> Mobile Number</Text> : null }
+                        {isFirstAttemptFail ? <Text style={styles.resendMsgTxt}>OR{'\n'}<Text style={styles.resendTxt} onPress={() => setIsModalOpen(true)}>CHANGE</Text> Email Address</Text> : null }
                     </View>
                     <View style={styles.btnContainer}>
                         <TouchableOpacity style={styles.btn} onPress={() => verifyOtp()} disabled={isBtnLoading}>
@@ -177,13 +233,13 @@ const EmailOtp = (props: any) => {
                         <Text style={styles.changeMobTitle}>Change Your Entered Email Address</Text>
                     </View>
                     <View style={styles.mobElementContainer}>
-                        <View style={{ ...styles.element, ...{ borderBottomColor: isNewMobErr ? "#F2994A" : "#FF4122" } }}>
-                            <TextInput value={newEmail ? newEmail : email} keyboardType={"email-address"} style={styles.mobTxtInput} maxLength={100} onChangeText={setNewEmail}/>
+                        <View style={{ ...styles.element, ...{ borderBottomColor: isNewEmailErr ? "#F2994A" : "#FF4122" } }}>
+                            <TextInput value={newEmail || isChangeEmail ? newEmail : email} keyboardType={"email-address"} style={styles.mobTxtInput} maxLength={100} onChangeText={(value) => {setNewEmail(value.toLowerCase()), setIsChangeEmail(true)}}/>
                         </View>
-                        {!isNewMobErr ? <Text style={styles.errorMsgTxt}>{newMobErr}</Text> : null}
+                        {!isNewEmailErr ? <Text style={styles.errorMsgTxt}>{newEmailErr}</Text> : null}
                     </View>
                     <View style={{ ...styles.btnContainer, ...{ height: '50%' } }}>
-                        <TouchableOpacity style={{ ...styles.btn, ...{ width: 200, height: 45 } }} onPress={() => Alert.alert("TODO")} disabled={isModalBtnLoading}>
+                        <TouchableOpacity style={{ ...styles.btn, ...{ width: 200, height: 45 } }} onPress={() => sendNewEmailOtp()} disabled={isModalBtnLoading}>
                             {isModalBtnLoading ?
                                 <View style={styles.btnLoaderContainer}>
                                     <LottieView source={require('../assets/jsons/btn_loader.json')} loop autoPlay style={styles.btnLoader} />
@@ -216,7 +272,6 @@ const styles = StyleSheet.create({
     element: {
         width: '90%',
         height: 50,
-        borderColor: '#F2994A',
         borderBottomWidth: 2,
         alignItems: 'center'
     },

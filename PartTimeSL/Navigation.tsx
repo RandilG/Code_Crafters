@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator();
 const Navigation = (props: any) => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="EmailOtp" screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="SignupSuccess" component={SignupSuccess} />
                 <Stack.Screen name="NicUpload" component={NicUpload} />
                 <Stack.Screen name="EmailOtp" component={EmailOtp} />

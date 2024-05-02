@@ -15,7 +15,6 @@ import Modal from 'react-native-modal';
 import SeekerVali from "../validations/seekerVali";
 
 const MobOtp = (props: any) => {
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
@@ -117,6 +116,7 @@ const MobOtp = (props: any) => {
     const [isNewMobErr, setIsNewMobErr] = useState<boolean>(false);
     const [newMobErr, setNewMobErr] = useState<string>();
     const [isModalBtnLoading, setIsModalBtnLoading] = useState<boolean>(false);
+    const [isMobNoChange, setIsMobNoChange] = useState<boolean>(false);
 
     let formattedMobNo: string = "";
 
@@ -140,6 +140,7 @@ const MobOtp = (props: any) => {
             Keyboard.dismiss();
             const isValid = await checkValidation();
             if(isValid){
+                setIsMobNoChange(false);
                 const resp = await axios.post(server + 'sendMobOtp', { "fName": seekerFName, "lName": seekerLName, "mobNo": formattedMobNo });
                 if (resp.data === HttpStatusCode.Ok) {
                     setMobNumber(formattedMobNo);
@@ -256,7 +257,7 @@ const MobOtp = (props: any) => {
                     </View>
                     <View style={styles.mobElementContainer}>
                         <View style={{ ...styles.element, ...{ borderBottomColor: isNewMobErr ? "#F2994A" : "#FF4122" } }}>
-                            <TextInput value={newMobNumber ? newMobNumber : email} keyboardType={"phone-pad"} style={styles.mobTxtInput} maxLength={12} onChangeText={setNewMobNumber}/>
+                            <TextInput value={newMobNumber || isMobNoChange ? newMobNumber : mobNumber} keyboardType={"phone-pad"} style={styles.mobTxtInput} maxLength={12} onChangeText={(value) => {setNewMobNumber(value), setIsMobNoChange(true)}}/>
                         </View>
                         {!isNewMobErr ? <Text style={styles.errorMsgTxt}>{newMobErr}</Text> : null}
                     </View>
@@ -287,13 +288,13 @@ const styles = StyleSheet.create({
     mobTxtInput: {
         fontSize: 20,
         color: '#373737',
-        width: '75%'
+        width: '75%',
+        textAlign: 'center'
     },
 
     element: {
         width: '70%',
         height: 50,
-        borderColor: '#F2994A',
         borderBottomWidth: 2,
         alignItems: 'center'
     },
