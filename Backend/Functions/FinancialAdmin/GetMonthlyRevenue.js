@@ -5,7 +5,7 @@ module.exports = async function GetMonthlyRevenue(req, res) {
     const sql = `
     SELECT
     MONTH(payment_date) AS month_number,  
-        SUM(seeker_charge) AS monthly_revenue  
+        SUM((seeker_charge)*10/100+(service_charge)) AS monthly_revenue  
     FROM
         parttime_srilanka.payment
     WHERE

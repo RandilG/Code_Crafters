@@ -19,9 +19,9 @@ const columns = [
         key: 'seeker_charge',
     },
     {
-        title: 'Job Seeker',
-        dataIndex: 'seekername',
-        key: 'seekername',
+        title: 'Job Id',
+        dataIndex: 'job_id',
+        key: 'job_id',
     },
 ];
 
@@ -40,7 +40,7 @@ const IncomeInfoTableJobSeeker = () => {
 
     return (
         <div style={{ textAlign: 'left' }}>
-            <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>Income Informations From Job Seekers</span>
+            <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>Payment Informations For Job Seekers</span>
             <div style={{ padding: '10px' }}>
                 <Table
                     columns={columns}

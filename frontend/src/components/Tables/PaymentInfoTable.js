@@ -64,7 +64,7 @@ const IncomeTable = () => {
   return (
     <div style={{ textAlign: 'left' }}>
       <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>
-        Payment Information
+        Payment Information From Job Posters
       </span>
       <div style={{ padding: '10px' }}>
         <Table columns={columns} dataSource={data} pagination={false} rowKey="payment_id" /> {/* Use rowKey to avoid warnings */}

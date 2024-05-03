@@ -4,16 +4,18 @@ const connection = require('../../Services/connection');
 module.exports = async function GetGroupedRevenue(req, res) {
     const sql = `
     SELECT 
-    (SELECT IFNULL(SUM(seeker_charge+service_charge), 0) 
-     FROM payment 
-     WHERE DATE(payment_date) = CURRENT_DATE()) AS total_today,
-    (SELECT IFNULL(SUM(seeker_charge+service_charge), 0) 
-     FROM payment 
-     WHERE YEAR(payment_date) = YEAR(CURRENT_DATE()) 
-       AND MONTH(payment_date) = MONTH(CURRENT_DATE())) AS total_month,
-    (SELECT IFNULL(SUM(seeker_charge+service_charge), 0) 
-     FROM payment 
-     WHERE YEAR(payment_date) = YEAR(CURRENT_DATE())) AS total_year;
+        (SELECT IFNULL(SUM((seeker_charge*10/100)+service_charge), 0) 
+        FROM payment 
+        WHERE DATE(payment_date) = CURRENT_DATE()) AS total_today,
+
+        (SELECT IFNULL(SUM((seeker_charge*10/100)+service_charge), 0) 
+        FROM payment 
+        WHERE YEAR(payment_date) = YEAR(CURRENT_DATE()) 
+        AND MONTH(payment_date) = MONTH(CURRENT_DATE())) AS total_month,
+        
+        (SELECT IFNULL(SUM((seeker_charge*10/100)+service_charge), 0) 
+        FROM payment 
+        WHERE YEAR(payment_date) = YEAR(CURRENT_DATE())) AS total_year;
     `;
 
     connection.query(sql, (err, result) => {

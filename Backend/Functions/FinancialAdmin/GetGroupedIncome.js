@@ -7,10 +7,12 @@ module.exports = async function getGroupedIncome(req, res) {
             (SELECT IFNULL(SUM(amount), 0) 
              FROM payment 
              WHERE DATE(payment_date) = CURRENT_DATE()) AS total_today,
+
             (SELECT IFNULL(SUM(amount), 0) 
              FROM payment 
              WHERE YEAR(payment_date) = YEAR(CURRENT_DATE()) 
                AND MONTH(payment_date) = MONTH(CURRENT_DATE())) AS total_month,
+               
             (SELECT IFNULL(SUM(amount), 0) 
              FROM payment 
              WHERE YEAR(payment_date) = YEAR(CURRENT_DATE())) AS total_year;

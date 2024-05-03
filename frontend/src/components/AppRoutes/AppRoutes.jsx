@@ -14,6 +14,8 @@ function AppRoutes() {
             <Route path="/Notification" element={<Notification />} />
             <Route path="/Payments" element={<Payments />} />
             <Route path="/Settings" element={<Settings />} />
+            
+
 
 
         </Routes>

@@ -1,5 +1,5 @@
 .AppHeader{
-  height: 60px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,7 +9,7 @@
 }
 
 .menu-bar{
-  height: 110vh;
+  height: 200vh;
   margin-top: 0rem;
   display:flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   width: 100%;
   color: white;
   font-weight: 500;
-
+  bottom: 0;
 }
 
 .SideBaraANDPageContent{

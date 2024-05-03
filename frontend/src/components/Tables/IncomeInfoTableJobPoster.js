@@ -40,7 +40,7 @@ const PaymentInfoTableJobPoster = () => {
 
     return (
         <div style={{ textAlign: 'left' }}>
-            <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>Income Informations From Job Posters</span>
+            <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>Revenue Informations From Job Posters</span>
             <div style={{ padding: '10px' }}>
                 <Table
                     columns={columns}

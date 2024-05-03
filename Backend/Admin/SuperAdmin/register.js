@@ -3,13 +3,13 @@ const bcrypt = require('bcrypt');
 const connection = require('./../../Services/connection');
 
 module.exports = async function adminRegister(req, res) {
-  const { Password, Email } = req.body;
-
+  
   // Check if all required fields are present
   // if (!username || !password || !email) {
   //   return res.status(400).json({ error: 'All fields are required.' });
   // }
-
+  
+const Email = req.body.Email
   const duplicateCheckSql =
     'SELECT * FROM admins WHERE Email = ?';
 
@@ -28,9 +28,16 @@ module.exports = async function adminRegister(req, res) {
       }
 
       try {
-        const hashedPassword = await bcrypt.hash(Password, 10);
+        const hashedPassword = await bcrypt.hash(req.body.Password, 10);
+
+        const values=[req.body.FirstName,req.body.LastName,hashedPassword,req.body.Email,req.body.AdminRole]
+
         const sql = 'INSERT INTO `parttime_srilanka`.`admins` (`FirstName`, `LastName`, `Password`, `Email`, `AdminRole`) VALUES (?, ?, ?, ?, ?)';
-        await connection.query(sql, [hashedPassword, Email]);
+        connection.query(sql, values, (err, result)=>{
+          if(err){
+            console.log(err)
+          }
+        })
         res.status(201).json({ message: 'Registration successful.' });
       } catch (error) {
         console.error('Error during registration:', error);
