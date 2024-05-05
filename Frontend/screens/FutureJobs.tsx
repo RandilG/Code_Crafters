@@ -1,13 +1,75 @@
-import {View, Text, ScrollView, StyleSheet, Pressable, TouchableOpacity, Alert} from 'react-native';
-import React from 'react';
+// Import necessary components and libraries from React Native and other dependencies
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import VectorIcon from '../utils/Vectoricons';
-import { Card } from 'react-native-paper';
+import {Card} from 'react-native-paper';
+import {server} from '../service/constant';
+import axios, {HttpStatusCode} from 'axios';
+import moment from 'moment';
+import {setErrorMsg, setErrorTitle} from '../global/variable';
+import ErrorPopup from '../components/errorPopUp';
+import AppLoader from '../components/appLoader';
 
+// Define the main functional component 'FutureJobs'
 const FutureJobs = (props: any) => {
+  // Define state variables using the 'useState'
+  const [futureJobs, setFutureJobs] = useState<any[]>([]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+    //change email for specific job poster
+  const userName = 'zab@example.com';
+
+  // Function to fetch future jobs from the job table
+  async function getFutureJobs() {
+    try {
+      const response = await axios.get(server + `fetchFutureJobs/${userName}`);
+
+      if (response.status === HttpStatusCode.Ok) {
+         // If request is successful, update state with fetched data
+        setFutureJobs(response.data);
+        setIsLoading(false);
+      } else if (response.status === HttpStatusCode.InternalServerError) {
+        // If internal server error, set error state
+        setErrorTitle('Oops...!');
+        setErrorMsg('response.data[0]');
+        setIsLoading(false);
+        setIsError(true);
+      } else {
+        //set generic error message
+        setErrorTitle('Oops...!');
+        setErrorMsg('Something wrong has happened..');
+        setIsError(true);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      // Catch any other errors
+      setErrorTitle('Oops...!');
+      setErrorMsg('Something wrong has happened..');
+      setIsError(true);
+      setIsLoading(false);
+      console.log(error); 
+    }
+  }
+
+  useEffect(() => {
+    setIsError(false);
+    setIsLoading(true);
+    getFutureJobs();
+  }, []);// Empty dependency array means this effect runs only once after initial render
+
   return (
-      <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
-        <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
+      <View style={{flex: 1}}>
         <View
           style={{
             backgroundColor: '#F2994A',
@@ -25,8 +87,7 @@ const FutureJobs = (props: any) => {
               padding: 230,
             }}>
             <View style={{flexDirection: 'row'}}>
-              <Pressable
-                onPress={() => props.navigation.navigate('Test')}>
+              <Pressable onPress={() => props.navigation.navigate('Test')}>
                 <VectorIcon
                   type="MaterialIcons"
                   name="keyboard-arrow-left"
@@ -37,48 +98,60 @@ const FutureJobs = (props: any) => {
               </Pressable>
               <Text style={styles.heading}>Future Jobs</Text>
             </View>
-
-          </View>
-          </View>
-          <View style={{backgroundColor: '#FFFFFF', flex: 4, zIndex: 2}}></View>
-          <View style={styles.contentBox}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-            <JobsCard
-                    key={1}
-                    props={props}
-                    jobId={1}
-                    title={"Waiter"}
-                    postedDate={"2024/04/02"}
-                    jobDate={"2024/04/02"}
-                    seekers={5}
-                    wHours={6}
-                    hRate={200.00}
-                    userName={"usernames"}
-                  />
-            </ScrollView>
           </View>
         </View>
-      </SafeAreaView>
+        <View style={{backgroundColor: '#FFFFFF', flex: 4, zIndex: 2}}></View>
+        <View style={styles.contentBox}>
+          {isLoading ? <AppLoader /> : null}
+
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {futureJobs.length !== 0 ? (
+              futureJobs.map((item, index) => (
+                <JobsCard
+                  key={index}
+                  props={props}
+                  jobId={item.job_id}
+                  title={item.title}
+                  postedDate={moment(item.posted_date).format('YYYY-MM-DD')}
+                  jobDate={moment(item.job_date).format('YYYY-MM-DD')}
+                  seekers={item.amount_of_seekers}
+                  wHours={item.work_hours}
+                  hRate={Number(item.hourly_rate).toFixed(2)}
+                  appliedCount={item.count}
+                  userName={userName}
+                />
+              ))
+            ) : (
+              <Text style={styles.noContentText}>No Content...</Text>
+            )}
+          </ScrollView>
+        </View>
+      </View>
+      {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
+    </SafeAreaView>
   );
 };
 
+// Define JobsCard component for displaying individual job details
 const JobsCard: React.FC<any> = ({
-  props,
-  jobId,
   title,
   postedDate,
   jobDate,
   seekers,
   wHours,
   hRate,
-  userName,
+  appliedCount,
 }) => {
+  
+  const isToday: boolean = jobDate == moment(new Date()).format('YYYY-MM-DD');
 
   return (
-    // style={[
-    //             status == 'declined' ? styles.selectButton : styles.button,
-    //           ]}
-    <Card style={styles.cardContainer}>
+    <Card
+      style={
+        appliedCount == seekers
+          ? styles.cardContainerSame
+          : styles.cardContainerDifferent
+      }>
       <Text style={styles.cardTitle}>{title} </Text>
       <View style={{flexDirection: 'row'}}>
         <View>
@@ -108,18 +181,22 @@ const JobsCard: React.FC<any> = ({
             </Text>
             <Text style={styles.cardAttribute}>
               <Text style={styles.attributeBold}>Applied Seekers: </Text>{' '}
-              {seekers}
+              {appliedCount}
             </Text>
           </Card.Content>
         </View>
       </View>
       <Card.Actions>
-        <TouchableOpacity
-          style={styles.leftButton}
-          onPress={() => Alert.alert('Pressed Cancel button')}>
+        <TouchableOpacity style={styles.leftButton} onPress={() => Alert.alert("pressed cancel button")}>
           <Text style={styles.buttonTextLeft}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.rightButton} onPress={() => Alert.alert('Pressed Start button')}>
+        <TouchableOpacity
+          disabled={!isToday}
+          style={{
+            ...styles.rightButton,
+            ...{backgroundColor: isToday ? '#FE8235' : '#908883'},
+          }}
+          onPress={() => Alert.alert('Pressed Start button')}>
           <Text style={styles.buttonTextRight}>Start</Text>
         </TouchableOpacity>
       </Card.Actions>
@@ -141,13 +218,7 @@ const styles = StyleSheet.create({
   rightButton: {
     height: 34,
     width: 100,
-    backgroundColor: '#FE8235',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.5)',
-    shadowOpacity: 0.8,
-    elevation: 20,
-    shadowOffset: {width: 1, height: 13},
-    margin: 8,
     marginRight: 20,
     marginTop: 15,
     marginLeft: 20,
@@ -169,12 +240,8 @@ const styles = StyleSheet.create({
     height: 34,
     width: 100,
     marginRight: 75,
-    backgroundColor: '#908883',
+    backgroundColor: '#373737',
     borderRadius: 10,
-    shadowColor: 'rgba(0, 0, 0, 0.5)',
-    shadowOpacity: 0.8,
-    elevation: 20,
-    shadowOffset: {width: 1, height: 13},
     margin: 8,
     marginTop: 15,
   },
@@ -200,8 +267,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  cardContainer: {
-    backgroundColor: 'purple',
+  cardContainerSame: {
+    backgroundColor: '#d1d0cf',
+    margin: 12,
+  },
+
+  cardContainerDifferent: {
+    backgroundColor: 'white',
     margin: 12,
   },
 
@@ -226,75 +298,13 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 0.25,
   },
-  // scrollviewContainer: {
-  //   width: '50%'
-  // },
 
-  // topContainer: {
-  //   flex:1.8,
-  //   width: '100%',
-  //   backgroundColor: '#F2994A',
-  //   borderBottomLeftRadius: 30,
-  //   borderBottomEndRadius: 30,
-
-  // },
-
-  // headerSection: {
-  //   marginTop: 20,
-  // },
-
-  // backBtn: {
-  //   marginTop: 12,
-  //   marginLeft: 10,
-  // },
-
-  // heading: {
-  //   color: '#FFFFFF',
-  //   fontSize: 25,
-  //   fontWeight: 'bold',
-  //   marginLeft: 20,
-  //   marginTop: 10,
-  // },
-
-  // bottomContainer: {
-  //   flex: 4.2,
-  //   padding: 20,
-  //   zIndex: 2,
-  //   backgroundColor: 'red',
-  //   marginTop: -150,
-  //   marginHorizontal: 10,
-  //   borderTopEndRadius: 30,
-  //   borderTopStartRadius: 30,
-  // }
+  noContentText: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#000000',
+  },
 });
 
 export default FutureJobs;
-
-
-{/* <View style={{flex:1}}>
-
-<View style={styles.topContainer}>
-  <View style={styles.headerSection}>
-    <Pressable
-      style={{flexDirection: 'row'}}
-      onPress={() => props.navigation.navigate('Test')}>
-      <VectorIcon
-        type="MaterialIcons"
-        name="keyboard-arrow-left"
-        color="#FFFFFF"
-        size={30}
-        zIndex="-1"
-        style={styles.backBtn}
-      />
-      <Text style={styles.heading}>Future Jobs</Text>
-    </Pressable>
-  </View>
-</View>
-
-<View style={styles.bottomContainer}>
-  <ScrollView style={styles.scrollviewContainer}>
-    
-  </ScrollView>
-</View>
-
-</View> */}

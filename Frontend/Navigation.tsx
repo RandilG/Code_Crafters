@@ -64,11 +64,6 @@ const Navigation = (props: any) => {
         component={InProgressJobs}
         options={{headerShown: false}}
         />
-         <Stack.Screen 
-        name="CompletedJobs"
-        component={CompletedJobs}
-        options={{headerShown: false}}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );

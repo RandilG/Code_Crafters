@@ -40,8 +40,7 @@ const CompletePayment = (props: any) => {
         </View>
         <View>
           <Text style={styles.instructionTxt}>
-            You Will be redirect to the Home Page shortly or click here to
-            return to home page
+            Lorem ipsum dolor sit abet consectetur adipisicing edit. t non culpa total defects exercitation site, bandits vitae ibague necessitates!
           </Text>
         </View>
         <View>

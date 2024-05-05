@@ -1,3 +1,4 @@
+// Import necessary components and libraries from React Native and other dependencies
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {
@@ -41,9 +42,7 @@ const Payment = (props: any) => {
   // create payment intent
   async function createPaymentIntent() {
     try {
-      const res = await axios.post(server + 'createPaymentIntent', {
-        amount: total,
-      });
+      const res = await axios.post(server + 'createPaymentIntent', {amount: total,});
       if (res.status === HttpStatusCode.Ok) {
         setClientSecret(res.data);
         setIsLoading(false);
@@ -104,7 +103,7 @@ const Payment = (props: any) => {
         setErrorMsg(res.data);
         console.log(res.data);
         setIsLoading(false);
-        setIsError(true);
+        setIsError(true)
         setIsPaymentProcess(false);
       } else {
         setErrorTitle('Oops...');
@@ -381,9 +380,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#ffffff',
     padding: 8,
-    // paddingHorizontal:100,
-    // borderRadius: 10,
-    // elevation: 2,
   },
 
   amountTitleTxt: {
@@ -400,16 +396,13 @@ const styles = StyleSheet.create({
     height: 140,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor:'#f0f'
   },
 
   cardFieldContainer: {
     borderWidth: 1,
-    // marginTop: 80,
     marginHorizontal: 10,
     borderRadius: 10,
     borderColor: '#000',
-    // backgroundColor: '#4f474b'
   },
 
   enterDetailText: {
@@ -538,12 +531,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 10,
-    // backgroundColor:'orange',
   },
 
   paymentDataContainer: {
     width: '100%',
-    // backgroundColor:'#00f',
     height: '85%',
     borderRadius: 20,
     borderWidth: 3,
@@ -595,67 +586,3 @@ const styles = StyleSheet.create({
 
 export default Payment;
 
-// rest of the code...
-
-// const handlePayment = () => {
-// PayHere.startPayment(
-//     paymentObject,
-//     (paymentId: any) => {
-//         navigate();
-//         console.log("Payment Completed", paymentId);
-//         //Database implementation
-//     },
-//     (error: any) => {
-//         setErrTitle("Oops...!!");
-//         setErrContent(error);
-//         setIsLoading(false);
-//         setIsError(true);
-//         console.log(error);
-//     },
-//     () => {
-//         console.log("Payment Dismissed");
-//     }
-// );
-// };
-
-// const paymentObject = {
-//     "sandbox": true,
-//     "merchant_id": MerchantId,
-
-// const handlePayment = () => {
-// PayHere.startPayment(
-//     paymentObject,
-//     (paymentId: any) => {
-//         navigate();
-//         console.log("Payment Completed", paymentId);
-//         //Database implementation
-//     },
-//     (error: any) => {
-//         setErrTitle("Oops...!!");
-//         setErrContent(error);
-//         setIsLoading(false);
-//         setIsError(true);
-//         console.log(error);
-//     },
-//     () => {
-//         console.log("Payment Dismissed");
-//     }
-// );
-// };
-
-// const paymentObject = {
-//     "sandbox": true,
-//     "merchant_id": MerchantId,
-//     "notify_url": "",
-//     "order_id": userName+title,
-//     "items": title,
-//     "amount": total,
-//     "currency": "LKR",
-//     "first_name": jobPoster.FirsName,
-//     "last_name": jobPoster.LastName,
-//     "email": userName,
-//     "phone": jobPoster.TpNumber,
-//     "address": jobPoster.Address,
-//     "city": jobPoster.city,
-//     "country": "Sri Lanka",
-// };

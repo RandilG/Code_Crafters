@@ -15,6 +15,7 @@ module.exports = async function payments(req, res) {
   const { amount, payment_id, seeker_charge, service_charge } = req.body;
   try {
 
+    //select tempory jobs
     const query1 = "SELECT * FROM parttime_srilanka.temporary_job WHERE tempory_job_id=?;";
 
     // insert paid jobs

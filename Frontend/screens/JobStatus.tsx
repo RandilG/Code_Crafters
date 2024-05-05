@@ -1,3 +1,4 @@
+// Import necessary components and libraries from React Native and other dependencies
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -18,11 +19,9 @@ import ErrorPopup from '../components/errorPopUp';
 import AppLoader from '../components/appLoader';
 
 const JobStatus = (props: any) => {
-  //const [isHoveredPay, setIsHoveredPay] = useState(false);
-  //const [isHoveredCancel, setIsHoveredCancel] = useState(false);
   const [status, setStatus] = useState<string>('pending');
   const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [pendingJobs, setPendingJobs] = useState<any[]>([]);
   const [approvedJobs, setApprovedJobs] = useState<any[]>([]);
   const [declinedJobs, setDeclinedJobs] = useState<any[]>([]);
@@ -32,13 +31,16 @@ const JobStatus = (props: any) => {
     console.log(`Status changed to: ${statusIs}`);
   }
 
-  const userName = 'david@gmail.com'; //change email for specific user
+  //change email for specific user
+  const userName = 'zab@example.com'; 
 
   //fetch pending jobs
   async function getPendingJobs() {
     try {
+      //get pending jobs according to given user name
       const response = await axios.get(server + `fetchPending/${userName}`);
       if (response.status === HttpStatusCode.Ok) {
+        // pending jobs that come from backend put to the pendingJobs array
         setPendingJobs(response.data);
         setIsLoading(false);
       } else if (response.status === HttpStatusCode.InternalServerError) {
@@ -92,7 +94,6 @@ const JobStatus = (props: any) => {
   async function getDeclinedJobs() {
     try {
       const response = await axios.get(server + `fetchDeclined/${userName}`);
-
       if (response.status === HttpStatusCode.Ok) {
         setDeclinedJobs(response.data);
         setIsLoading(false);
@@ -116,6 +117,7 @@ const JobStatus = (props: any) => {
     }
   }
 
+  //trigger this function when app is loading
   useEffect(() => {
     setIsError(false);
     setIsLoading(true);
@@ -211,12 +213,13 @@ const JobStatus = (props: any) => {
 
         <View style={{backgroundColor: '#FFFFFF', flex: 4, zIndex: 2}}></View>
         <View style={styles.contentBox}>
+         
           {isLoading ? <AppLoader /> : null}
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {status == 'pending' ? (
               pendingJobs.length != 0 ? (
-                pendingJobs.map((item, index) => (
+                pendingJobs.map((item, index) => (  //if there are any pending jobs, run the loop in the pending jobs array to get data(MAP)
                   <PendingCards
                     key={index}
                     title={item.title}
@@ -228,7 +231,7 @@ const JobStatus = (props: any) => {
                   />
                 ))
               ) : (
-                <Text style={styles.noContentText}>No Content...</Text>
+                <Text style={styles.noContentText}>No Content...</Text> //if there is no pending jobs(length == 0)
               )
             ) : status == 'approved' ? (
               approvedJobs.length != 0 ? (
@@ -325,7 +328,7 @@ const PendingCards: React.FC<any> = ({
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.rightButton}
-          onPress={() => Alert.alert('Pressed Edit button')}>
+          onPress={() => Alert.alert("Pressed Cancel button")}>
           <Text style={styles.buttonTextRight}>Edit</Text>
         </TouchableOpacity>
       </Card.Actions>
@@ -452,8 +455,6 @@ const DeclinedCards: React.FC<any> = ({
 const styles = StyleSheet.create({
   arrow: {
     marginLeft: 24,
-    // marginBottom: 4,
-    //elevation:5,
   },
   heading: {
     fontSize: 20,
@@ -536,11 +537,6 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 
-  // card: {
-  //   margin: 20,
-  //   marginVertical: 10,
-  // },
-
   cardContainer: {
     backgroundColor: '#ffffff',
     margin: 12,
@@ -581,14 +577,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 
-  // hoveredButtonCancel: {
-  //   backgroundColor: '#b0b0b0',
-  //   borderColor: '#b0b0b0',
-  //   shadowColor: 'rgba(0, 0, 0, 0.7)',
-  //   shadowOpacity: 0.5,
-  //   elevation: 20,
-  // },
-
   buttonTextLeft: {
     textAlign: 'center',
     marginHorizontal: 5,
@@ -615,15 +603,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-  // hoveredButtonPay: {
-  //   backgroundColor: '#ed782f',
-  //   borderColor: '#ed782f',
-  //   shadowColor: 'rgba(0, 0, 0, 0.8)',
-  //   shadowOpacity: 0.2,
-  //   elevation: 20,
-  // },
-
   buttonTextRight: {
     textAlign: 'center',
     marginHorizontal: 5,
