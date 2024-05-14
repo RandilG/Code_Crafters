@@ -50,6 +50,31 @@ const checkSeekerAvailability = require('../Functions/JobSeeker/SignUp/checkEmai
 const checkMobNoAvailability = require('../Functions/JobSeeker/SignUp/checkMobNoAvilability');
 const checkNicAvailability = require('../Functions/JobSeeker/SignUp/checkNicAvailability');
 const createSeeker = require('../Functions/JobSeeker/SignUp/createSeeker');
+const signin = require('../Functions/JobSeeker/SignIn/signin');
+const seekerAuth = require('../Functions/JobSeeker/SignIn/auth');
+const dashboard = require('../Functions/JobSeeker/GetData/dashboard');
+const jobList = require('../Functions/JobSeeker/Jobs/jobList');
+const applyJob = require('../Functions/JobSeeker/Jobs/applyJob');
+
+router.post('/applyJob', (req, res) => {
+    applyJob(req, res);
+})
+
+router.get('/jobList', (req, res) => {
+    jobList(req, res);
+})
+
+router.get('/dashboard/:userName', (req, res) => {
+    dashboard(req, res);
+})
+
+router.get('/seekerAuth/:token/:userName', (req, res) => {
+    seekerAuth(req, res);
+})
+
+router.get('/signin/:userName/:password', (req, res) => {
+    signin(req, res);
+})
 
 router.post('/createSeeker', (req, res) => {
     createSeeker(req, res);

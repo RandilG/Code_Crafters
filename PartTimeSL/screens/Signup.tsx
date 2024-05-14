@@ -15,7 +15,7 @@ import seekerValidation from "../interfaces/seekerValidation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LottieView from "lottie-react-native";
 import AppLoader from "../components/AppLoader";
-import ErrorPopup from "../components/errorPopUp";
+import ErrorPopup from "../components/ErrorPopUp";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
@@ -559,7 +559,6 @@ const styles = StyleSheet.create({
         height: '100%',
     },
 
-
     element: {
         width: '100%',
         borderBottomWidth: 1,
@@ -577,6 +576,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         width: '100%'
     },
+
     formSubTitle: {
         fontWeight: '600',
         fontSize: 10,

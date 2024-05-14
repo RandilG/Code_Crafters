@@ -1,7 +1,7 @@
 const connection = require('../../../Services/connection');
 const otpGenerator = require('otp-generator');
 const dotenv = require('dotenv');
-const cryptoJs = require('crypto-js');
+const bcrypt = require('bcrypt');
 const { HttpStatusCode, default: axios } = require('axios');
 const nodemailer = require('nodemailer');
 
@@ -17,7 +17,8 @@ module.exports = async function sendMailOtp(req, res){
 
         const otp = otpGenerator.generate(4, {upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false});
 
-        const encryptedOtp = cryptoJs.AES.encrypt(otp, process.env.SECRET_KEY).toString();
+        const saltRound = 10;
+        const encryptedOtp = await bcrypt.hash(otp, saltRound);
 
         await queryAsync("START TRANSACTION");
 
@@ -31,14 +32,14 @@ module.exports = async function sendMailOtp(req, res){
         }
 
         //Delete otp after 5 mins
-        // setTimeout(() => {
-        //     const deleteQuery = 'DELETE FROM `parttime_srilanka`.`otp` WHERE (`user` = ?);';
-        //     connection.query(deleteQuery, email, (err) => {
-        //         if (err) {
-        //             console.error(err);
-        //         }
-        //     });
-        // }, 5 * 60 * 1000);
+        setTimeout(() => {
+            const deleteQuery = 'DELETE FROM `parttime_srilanka`.`otp` WHERE (`user` = ?);';
+            connection.query(deleteQuery, email, (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        }, 5 * 60 * 1000);
 
         //Configure nodemailer transporter
         let transporter = nodemailer.createTransport({

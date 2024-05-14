@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CodeField, Cursor, useClearByFocusCell } from "react-native-confirmation-code-field";
 import AppLoader from "../components/AppLoader";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
-import ErrorPopup from "../components/errorPopUp";
+import ErrorPopup from "../components/ErrorPopUp";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import Modal from 'react-native-modal';

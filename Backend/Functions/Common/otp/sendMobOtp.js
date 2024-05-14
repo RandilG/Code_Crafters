@@ -1,7 +1,7 @@
 const connection = require('../../../Services/connection');
 const otpGenerator = require('otp-generator');
 const dotenv = require('dotenv');
-const cryptoJs = require('crypto-js');
+const bcrypt = require('bcrypt');
 const { HttpStatusCode, default: axios } = require('axios');
 
 dotenv.config();
@@ -16,7 +16,8 @@ module.exports = async function sendMobOtp(req, res){
 
         const otp = otpGenerator.generate(4, {upperCaseAlphabets: false, lowerCaseAlphabets: false, specialChars: false});
 
-        const encryptedOtp = cryptoJs.AES.encrypt(otp, process.env.SECRET_KEY).toString();
+        const saltRound = 10;
+        const encryptedOtp = await bcrypt.hash(otp, saltRound);
         
         await queryAsync("START TRANSACTION");
 

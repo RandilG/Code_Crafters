@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CodeField, Cursor, useClearByFocusCell } from "react-native-confirmation-code-field";
 import AppLoader from "../components/AppLoader";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
-import ErrorPopup from "../components/errorPopUp";
+import ErrorPopup from "../components/ErrorPopUp";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import Modal from 'react-native-modal';
@@ -97,6 +97,7 @@ const EmailOtp = (props: any) => {
                 setIsError(true);
                 setIsLoading(false);
             } 
+            setIsLoading(false);
         } catch (error) {
             console.log(error);
             setErrorTitle("Oops...!!");
@@ -209,7 +210,7 @@ const EmailOtp = (props: any) => {
                         />
                     </View>
                     <View style={styles.resendMsgContainer}>
-                        <Text style={styles.resendMsgTxt}>OTP not received? <Text style={styles.resendTxt} onPress={() => sendMailOtp}>RESEND</Text></Text>
+                        <Text style={styles.resendMsgTxt}>OTP not received? <Text style={styles.resendTxt} onPress={() => sendMailOtp()}>RESEND</Text></Text>
                         {isFirstAttemptFail ? <Text style={styles.resendMsgTxt}>OR{'\n'}<Text style={styles.resendTxt} onPress={() => setIsModalOpen(true)}>CHANGE</Text> Email Address</Text> : null }
                     </View>
                     <View style={styles.btnContainer}>

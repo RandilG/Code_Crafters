@@ -1,6 +1,7 @@
 const { HttpStatusCode } = require('axios');
 const connection = require('../../../Services/connection');
-const cryptoJs = require('crypto-js');
+const bcrypt = require('bcrypt');
+
 
 module.exports = async function verifyOtp(req, res){
     try {
@@ -11,10 +12,10 @@ module.exports = async function verifyOtp(req, res){
 
         if(resp.length != 0){
             const encryptedOtp = resp[0].otp;
-            const byteText = cryptoJs.AES.decrypt(encryptedOtp, process.env.SECRET_KEY);
-            const decryptedOtp = byteText.toString(cryptoJs.enc.Utf8);
 
-            if(decryptedOtp === otp){
+            const isMatched = await bcrypt.compare(otp, encryptedOtp);
+
+            if(isMatched){
                 return res.json(HttpStatusCode.Accepted);
             }
 

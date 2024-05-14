@@ -1,18 +1,113 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
-import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
+import ErrorPopup from "../components/ErrorPopUp";
+import { setErrorMsg, setErrorTitle } from "../global/variable";
+import LottieView from "lottie-react-native";
+import axios, { HttpStatusCode } from "axios";
+import { server } from "../service/constant";
+import EncryptedStorage from "react-native-encrypted-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = (props: any) => {
+    const [isError, setIsError] = useState<boolean>(false);
+    const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(true);
+    const [error, setError] = useState<string>();
+
     const [isPWVisible, setIsPWVisible] = useState<boolean>(false);
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const handleLogin = () => {
-        console.log(userName);
-        console.log(password);
-        Alert.alert("To be implement");
+    //Check username and password validation (check only empty or not)
+    function validation(): boolean {
+        setIsValid(true);
+        if (userName === "" || password === "") {
+            setError("Please enter Username and Password");
+            setIsValid(false);
+            return false;
+        }
+        return true;
+    }
+
+    //Handle login process
+    async function handleLogin() {
+        try {
+            Keyboard.dismiss();
+            setIsBtnLoading(true);
+            if (validation()) {
+                const resp = await axios.get(server + `signin/${userName}/${encodeURIComponent(password)}`);
+                if (resp.data === HttpStatusCode.Unauthorized) {
+                    //Account on PENDING
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("This user account is not yet activated");
+                    setIsBtnLoading(false);
+                    setIsError(true);
+                } else if (resp.data === HttpStatusCode.Forbidden) {
+                    //Account on DECLINED
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("Your account has been declined");
+                    setIsBtnLoading(false);
+                    setIsError(true);
+                } else if (resp.data === HttpStatusCode.NotFound) {
+                    //Seeker not registered
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("This user name is not registered");
+                    setIsBtnLoading(false);
+                    setIsError(true);
+                } else if (resp.data === HttpStatusCode.NotAcceptable) {
+                    //Password mismatched
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("Incorrect user name or password");
+                    setIsBtnLoading(false);
+                    setIsError(true);
+                } else if (resp.data.token) {
+                    //User name password matched and store retrieved token in the encrypted local storage
+                    const token = resp.data.token;
+                    await EncryptedStorage.setItem("session", JSON.stringify({ userName: userName, token: token }));
+                    getSeekerData(userName);
+                } else {
+                    setErrorTitle("Oops...!!");
+                    setErrorMsg("Something went wrong1");
+                    setIsBtnLoading(false);
+                    setIsError(true);
+                }
+            }
+            setIsBtnLoading(false);
+        } catch (error) {
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsBtnLoading(false);
+            setIsError(true);
+        }
+    }
+    
+    //Get seeker name and earning coins
+    async function getSeekerData(userName: string) {
+        try {
+            const resp = await axios.get(server + `dashboard/${userName}`);
+            if (resp.data !== HttpStatusCode.InternalServerError && resp.data !== HttpStatusCode.NotFound) {
+                await AsyncStorage.multiSet([['name', resp.data.firstName], ['coins', String(resp.data.coins)], ['badge', String(resp.data.badge)]]);
+                await EncryptedStorage.setItem('gender', resp.data.gender);
+                //Navigate to the dashboard
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: "Dashboard" }]
+                })
+            } else {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsBtnLoading(false);
+                setIsError(true);
+            }
+        } catch (error) {
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsBtnLoading(false);
+            setIsError(true);
+        }
     }
 
     return (
@@ -62,20 +157,61 @@ const Login = (props: any) => {
                         <Text style={styles.fogPWTxt} onPress={() => Alert.alert("To be implement")}>Forgot password?</Text>
                     </View>
                     <View style={styles.btnContainer}>
-                        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                            <Text style={styles.btnTxt}>Login</Text> 
+                        {!isValid ?
+                            <View style={styles.errContainer}>
+                                <Text style={styles.errTxt}>{error}</Text>
+                            </View>
+                            :
+                            null
+                        }
+                        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={isBtnLoading}>
+                            {isBtnLoading ?
+                                <View style={styles.btnLoaderContainer}>
+                                    <LottieView source={require('../assets/jsons/btn_loader.json')} loop autoPlay style={styles.btnLoader} />
+                                </View>
+                                :
+                                <Text style={styles.btnTxt}>Login</Text>
+                            }
+
                         </TouchableOpacity>
                     </View>
                     <View style={styles.signupConatiner}>
-                        <Text style={styles.signUpTxt}>Don't have an account?<Text style={{fontWeight: '600', color: '#F2994A'}} onPress={() => props.navigation.navigate("Tnc")}> Sign Up</Text></Text>
+                        <Text style={styles.signUpTxt}>Don't have an account?<Text style={{ fontWeight: '600', color: '#F2994A' }} onPress={() => props.navigation.navigate("Tnc")}> Sign Up</Text></Text>
                     </View>
                 </View>
             </View>
+            {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : false}
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
+    errTxt: {
+        fontSize: 12,
+        color: "#FF4122",
+        fontWeight: '600',
+        textAlign: 'center'
+    },
+
+    errContainer: {
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    btnLoader: {
+        width: '80%',
+        height: '80%'
+    },
+
+    btnLoaderContainer: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(255, 255, 255, .5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     signUpTxt: {
         color: '#373737',
         fontWeight: '300',
@@ -101,7 +237,8 @@ const styles = StyleSheet.create({
         height: 55,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 15
+        borderRadius: 15,
+        marginTop: 5
     },
 
     btnContainer: {

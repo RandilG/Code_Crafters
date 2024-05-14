@@ -6,12 +6,12 @@ import extStyles from "../global/styles/extStyles";
 import LottieView from "lottie-react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import ImagePopUp from "../components/imagePopUp";
+import ImagePopUp from "../components/ImagePopUp";
 import Feather from 'react-native-vector-icons/Feather';
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { firebaseApp } from "../service/firebase";
-import ErrorPopup from "../components/errorPopUp";
+import ErrorPopup from "../components/ErrorPopUp";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
 import createSeeker from "../interfaces/createSeeker";
 import AppLoader from "../components/AppLoader";
@@ -181,7 +181,6 @@ const NicUpload = (props: any) => {
                     const imageBlob: any = image[1];
                     await uploadBytesResumable(storageRef, imageBlob).then((snapshot) => {
                         progress += (snapshot.bytesTransferred / snapshot.totalBytes) * .5;
-                        console.log(progress);
                         setProgress(progress);
                     });
                     const url = await getDownloadURL(storageRef);
@@ -212,6 +211,7 @@ const NicUpload = (props: any) => {
         try {
             const resp = await axios.post(server + 'createSeeker', seeker);
             if (resp.data === HttpStatusCode.Ok) {
+                await AsyncStorage.clear();
                 props.navigation.reset({
                     index: 0,
                     routes: [{ name: 'SignupSuccess' }]

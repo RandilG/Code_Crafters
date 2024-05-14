@@ -10,7 +10,9 @@ import MobOtp from "./screens/MobOtp";
 import EmailOtp from "./screens/EmailOtp";
 import NicUpload from "./screens/NicUpload";
 import SignupSuccess from "./screens/SignupSuccess";
-
+import Dashboard from "./screens/Dashboard";
+import Jobs from "./screens/Jobs";
+import ApplyJob from "./screens/ApplyJob";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +20,9 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="ApplyJob" component={ApplyJob} />
+                <Stack.Screen name="Jobs" component={Jobs} />
+                <Stack.Screen name="Dashboard" component={Dashboard} />
                 <Stack.Screen name="SignupSuccess" component={SignupSuccess} />
                 <Stack.Screen name="NicUpload" component={NicUpload} />
                 <Stack.Screen name="EmailOtp" component={EmailOtp} />
