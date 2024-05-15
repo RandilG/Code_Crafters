@@ -14,10 +14,10 @@ module.exports = async function applyJob(req, res) {
 
         if (newJobData.length == 0) return res.json(HttpStatusCode.NotFound);
 
+        //Check applied job overlap with new job
         const newJobDate = moment(newJobData[0].job_date);
         const newJobStartTime = moment(newJobData[0].start_time, 'HH:mm:ss');
         const newJobEndTime = moment(newJobData[0].start_time, 'HH:mm:ss').add(newJobData[0].work_hours, 'hours');
-
         if (appliedJobsData.length != 0) {
             for (const job of appliedJobsData) {
                 const appliedJobDate = moment(job.job_date);

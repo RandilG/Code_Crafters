@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -15,6 +15,8 @@ import { server } from "../service/constant";
 import EncryptedStorage from "react-native-encrypted-storage";
 import JobDescription from "../components/JobDescription";
 import JobConfirmPopUp from "../components/JobConfirmPopUp";
+import { Dropdown } from "react-native-element-dropdown";
+import moment from "moment";
 
 const Jobs = (props: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -23,16 +25,7 @@ const Jobs = (props: any) => {
 
     const [jobs, setJobs] = useState<any[]>();
 
-    useEffect(() => {
-        if(jobs){
-        const filteredData = jobs.filter((j) => String(j.title).toLowerCase().includes('er'));
-        for(const job of filteredData){
-            console.log(job.title);
-        }
-
-    }
-    },[jobs])
-
+    //Get all the available jobs for the seeker
     async function getJobs() {
         try {
             const gender = await EncryptedStorage.getItem('gender');
@@ -65,31 +58,151 @@ const Jobs = (props: any) => {
         getJobs();
     }, [])
 
+    //Handle search jobs
+    const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
+    function filterJobs(value: string) {
+        if (value) {
+            if (jobs) {
+                const filteredData = jobs.filter((j) => String(j.title).toLowerCase().includes(value.toLowerCase()));
+                if (filteredData.length != 0) {
+                    setFilteredJobs(filteredData);
+                } else {
+                    setFilteredJobs(['none']);
+                }
+            }
+        } else {
+            setFilteredJobs([]);
+        }
+    }
+
+    const [selectedSortMethod, setSelectedSortMethod] = useState<string>('1');
+
+    //Handle sort of job cards
+    function sortJobs(method: string) {
+        let sortedJobs: any[];
+        if(!jobs){
+            return
+        }
+        switch (method) {
+            case '1':
+                sortedJobs = [...jobs].sort((a, b) => moment(a.job_date, 'YYYY-MM-DD').valueOf() - moment(b.job_date, 'YYYY-MM-DD').valueOf());
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => moment(a.job_date, 'YYYY-MM-DD').valueOf() - moment(b.job_date, 'YYYY-MM-DD').valueOf());
+                setFilteredJobs(sortedJobs);
+                break;
+            case '2':
+                sortedJobs = [...jobs].sort((a, b) => moment(b.job_date, 'YYYY-MM-DD').valueOf() - moment(a.job_date, 'YYYY-MM-DD').valueOf());
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => moment(b.job_date, 'YYYY-MM-DD').valueOf() - moment(a.job_date, 'YYYY-MM-DD').valueOf());
+                setFilteredJobs(sortedJobs);
+                break;
+            case '3':
+                sortedJobs = [...jobs].sort((a, b) => Number(b.income) - Number(a.income));
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => Number(b.income) - Number(a.income));
+                setFilteredJobs(sortedJobs);
+                break;
+            case '4':
+                sortedJobs = [...jobs].sort((a, b) => Number(a.income) - Number(b.income));
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => Number(a.income) - Number(b.income));
+                setFilteredJobs(sortedJobs);
+                break;
+            case '5':
+                sortedJobs = [...jobs].sort((a, b) => Number(a.work_hours) - Number(b.work_hours));
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => Number(a.work_hours) - Number(b.work_hours));
+                setFilteredJobs(sortedJobs);
+                break;
+            case '6':
+                sortedJobs = [...jobs].sort((a, b) => Number(b.work_hours) - Number(a.work_hours));
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => Number(b.work_hours) - Number(a.work_hours));
+                setFilteredJobs(sortedJobs);
+                break;
+            case '7':
+                sortedJobs = [...jobs].sort((a, b) => Number(b.rates) - Number(a.rates));
+                setJobs(sortedJobs);
+                sortedJobs = [...filteredJobs].sort((a, b) => Number(b.rates) - Number(a.rates));
+                setFilteredJobs(sortedJobs);
+                break;
+            default:
+                break;
+        }
+
+        setSelectedSortMethod(method);
+    }
+
+    const dropDownData = [
+        { label: 'Job Date Nearest to Farthest', value: '1' },
+        { label: 'Job Date Farthest to Nearest', value: '2' },
+        { label: 'Income High to Low', value: '3' },
+        { label: 'Income Low to High', value: '4' },
+        { label: 'Work Hours Low to High', value: '5' },
+        { label: 'Work Hours High to Low', value: '6' },
+        { label: 'Top Rated Posters', value: '7' },
+    ];
+
     return (
         <SafeAreaView style={extStyles.body}>
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
-                    <View style={styles.backBtnContainer}>
-                        <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.goBack()} />
+                    <View style={styles.titleContainer}>
+                        <View style={styles.backBtnContainer}>
+                            <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.goBack()} />
+                        </View>
+                        <View style={styles.sortConatiner}>
+                            <Text style={styles.rateTxt}>Sort By:{' '}</Text>
+                            <Dropdown
+                                data={dropDownData}
+                                labelField={"label"}
+                                valueField={"value"}
+                                value={selectedSortMethod}
+                                search={false}
+                                onChange={(item) => sortJobs(item.value)}
+                                style={styles.sortDropDown}
+                                placeholderStyle={{ fontSize: 10 }}
+                                selectedTextStyle={{ fontSize: 10 }}
+                                itemTextStyle={styles.itemTextStyles}
+                                maxHeight={200}
+                                autoScroll={false}
+                            />
+                        </View>
                     </View>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.titleTxt}>
-                            Jobs
-                        </Text>
-                        <Text style={styles.subHeadingTxt}>
-                            Your path starts here
-                        </Text>
+                        <View style={{ width: '40%' }}>
+                            <Text style={styles.titleTxt}>
+                                Jobs
+                            </Text>
+                            <Text style={styles.subHeadingTxt}>
+                                Your path starts here
+                            </Text>
+                        </View>
+                        <View style={{ width: '60%', alignItems: 'flex-end' }}>
+                            <View style={styles.serachContainer}>
+                                <View style={styles.elementContainer}>
+                                    <TextInput placeholder="Search jobs by title" style={styles.searchElement} onChangeText={(value) => filterJobs(value)} />
+                                </View>
+                                <View style={styles.searchIconContainer}>
+                                    <AntDesign name="search1" size={20} color={"#9AA5B1"} />
+                                </View>
+                            </View>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.bottomConatiner} />
                 <View style={styles.scrollContainer}>
-                    <ScrollView style={{}} showsVerticalScrollIndicator={false}>
-                        {jobs ?
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        {jobs && filteredJobs.length == 0 ?
                             jobs.map((item, index) => (
-                                <JobCard key={index} userName={userName} job_id={item.job_id} title={item.title} hRate={item.hourly_rate} wHours={item.work_hours} income={item.income} longitude={item.longitude} latitude={item.latitude} date={item.job_date} time={item.start_time} description={item.description} rates={item.rates} setIsError={setIsError} setIsLoading={setIsLoading} props={props}/>
+                                <JobCard key={index} userName={userName} job_id={item.job_id} title={item.title} hRate={item.hourly_rate} wHours={item.work_hours} income={item.income} longitude={item.longitude} latitude={item.latitude} date={item.job_date} time={item.start_time} description={item.description} rates={item.rates} setIsError={setIsError} setIsLoading={setIsLoading} props={props} />
                             ))
-                            :
-                            <Text style={styles.noContentTxt}>No Content</Text>
+                            : filteredJobs.length != 0 && filteredJobs[0] != 'none' ?
+                                filteredJobs.map((item, index) => (
+                                    <JobCard key={index} userName={userName} job_id={item.job_id} title={item.title} hRate={item.hourly_rate} wHours={item.work_hours} income={item.income} longitude={item.longitude} latitude={item.latitude} date={item.job_date} time={item.start_time} description={item.description} rates={item.rates} setIsError={setIsError} setIsLoading={setIsLoading} props={props} />
+                                ))
+                                :
+                                <Text style={styles.noContentTxt}>No Content</Text>
                         }
                     </ScrollView>
                 </View>
@@ -103,15 +216,7 @@ const Jobs = (props: any) => {
 const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income, longitude, latitude, date, time, description, rates, setIsError, setIsLoading, props }) => {
     const [isMapView, setIsMapView] = useState<boolean>(false);
     const [isDescView, setIsDescView] = useState<boolean>(false);
-    const [isDescriptionNull, setIsDescriptionNull] = useState<boolean>(false);
     const [isApply, setIsApply] = useState<boolean>(false);
-    const [starsColor, setStartsColor] = useState<any>({
-        s1: "#FCE404",
-        s2: "#C3C3C3",
-        s3: "#C3C3C3",
-        s4: "#C3C3C3",
-        s5: "#C3C3C3"
-    })
 
     //Select map region through job's coordinate
     const region = {
@@ -120,31 +225,6 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
         latitudeDelta: 0.0422,
         longitudeDelta: 0.0221
     }
-
-    //Handle job description and poster's ratings when component rendering
-    useEffect(() => {
-        if (!description) {
-            setIsDescriptionNull(true);
-        }
-        if (rates != 0) {
-            switch (rates) {
-                case 5:
-                    setStartsColor((prev: any) => ({ ...prev, s2: "#FCE404", s3: "#FCE404", s4: "#FCE404", s5: "#FCE404" }));
-                    break;
-                case 4:
-                    setStartsColor((prev: any) => ({ ...prev, s2: "#FCE404", s3: "#FCE404", s4: "#FCE404" }));
-                    break;
-                case 3:
-                    setStartsColor((prev: any) => ({ ...prev, s2: "#FCE404", s3: "#FCE404" }));
-                    break;
-                case 2:
-                    setStartsColor((prev: any) => ({ ...prev, s2: "#FCE404" }));
-                    break;
-                default:
-                    break;
-            }
-        }
-    }, []);
 
     //Handle apply process of the job
     async function proceedJob() {
@@ -155,7 +235,7 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
             if (resp.data === HttpStatusCode.Ok) {
                 props.navigation.reset({
                     index: 0,
-                    routes: [{ name: 'ApplyJob', params: {jobId: job_id, title:title, date:date, time:time, wHours:wHours, latitude: latitude, longitude: longitude} }]
+                    routes: [{ name: 'ApplyJob', params: { jobId: job_id, title: title, date: date, time: time, wHours: wHours, latitude: latitude, longitude: longitude } }]
                 });
             } else if (resp.data === HttpStatusCode.Conflict) {
                 setErrorTitle("Oops...!!");
@@ -187,11 +267,11 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
                         <View>
                             <Text style={styles.rateTxt}>Poster Ratings</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <MaterialIcons name={"star"} size={18} color={starsColor.s1} />
-                                <MaterialIcons name={"star"} size={18} color={starsColor.s2} />
-                                <MaterialIcons name={"star"} size={18} color={starsColor.s3} />
-                                <MaterialIcons name={"star"} size={18} color={starsColor.s4} />
-                                <MaterialIcons name={"star"} size={18} color={starsColor.s5} />
+                                <MaterialIcons name={"star"} size={18} color={'#FCE404'} />
+                                <MaterialIcons name={"star"} size={18} color={rates>=2 ? '#FCE404' : '#C3C3C3'} />
+                                <MaterialIcons name={"star"} size={18} color={rates>=3 ? '#FCE404' : '#C3C3C3'} />
+                                <MaterialIcons name={"star"} size={18} color={rates>=4 ? '#FCE404' : '#C3C3C3'} />
+                                <MaterialIcons name={"star"} size={18} color={rates==5 ? '#FCE404' : '#C3C3C3'} />
                             </View>
                         </View>
                         :
@@ -216,7 +296,7 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
                 </View>
             </View>
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={{ ...styles.descBtn, ...{ opacity: isDescriptionNull ? 0.6 : 1 } }} onPress={() => setIsDescView(true)} disabled={isDescriptionNull}>
+                <TouchableOpacity style={{ ...styles.descBtn, ...{ opacity: !description ? 0.6 : 1 } }} onPress={() => setIsDescView(true)} disabled={!description}>
                     <Text style={styles.btnTxt}>Description</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.applyBtn} onPress={() => setIsApply(true)}>
@@ -247,6 +327,60 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
 }
 
 const styles = StyleSheet.create({
+
+    itemTextStyles: {
+        fontSize: 10,
+        color: '#373737',
+    },
+
+    sortDropDown: {
+        width: 150,
+        height: 30,
+        backgroundColor: 'rgba(255, 255, 255, .5)',
+        borderRadius: 5,
+        paddingLeft: 5
+    },
+
+    sortConatiner: {
+        width: '80%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        flexDirection: 'row'
+    },
+
+    topContainer: {
+        width: Dimensions.get('window').width,
+        height: 50,
+        flexDirection: 'row',
+    },
+
+    searchElement: {
+        width: '100%',
+        fontSize: 14,
+        color: '#373737'
+    },
+
+    searchIconContainer: {
+        width: '15%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    elementContainer: {
+        width: '85%',
+        height: '100%',
+        justifyContent: 'center'
+    },
+
+    serachContainer: {
+        width: 200,
+        height: 40,
+        backgroundColor: '#FFF',
+        borderRadius: 5,
+        flexDirection: 'row'
+    },
+
     noContentTxt: {
         textAlign: 'center',
         fontStyle: 'italic',
@@ -356,7 +490,6 @@ const styles = StyleSheet.create({
     },
 
     card: {
-
         height: 160,
         backgroundColor: '#FFF',
         borderRadius: 10,
@@ -374,7 +507,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         elevation: 10,
         borderRadius: 20,
-        bottom: 10,
+        marginTop: 160,
         paddingVertical: 10
     },
 
@@ -391,20 +524,20 @@ const styles = StyleSheet.create({
     },
 
     titleContainer: {
-        paddingLeft: 10,
-        width: '100%',
+        paddingHorizontal: 20,
+        width: Dimensions.get('window').width,
         height: 50,
         left: 50,
         justifyContent: 'center',
-        marginTop: 15
+        marginTop: 15,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
 
     backBtnContainer: {
-        paddingLeft: 10,
-        width: 40,
+        width: '20%',
         height: 50,
-        left: 50,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 
     bottomConatiner: {
