@@ -11,6 +11,7 @@ import { setErrorMsg, setErrorTitle } from "../global/variable";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import EncryptedStorage from "react-native-encrypted-storage";
+import CoinPopUp from "../components/CoinPopUp";
 
 const RatePoster = (props: any) => {
     const [rate, setRate] = useState<number>(0);
@@ -20,6 +21,8 @@ const RatePoster = (props: any) => {
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
+    const [isRated, setIsRated] = useState<boolean>(false); 
+    const [earnedCoin, setEarnedCoin] = useState<number>(0);
 
     function handleReview(value: string) {
         setReview(value);
@@ -46,11 +49,11 @@ const RatePoster = (props: any) => {
                 rate: rate,
                 review: review
             });
-            if (resp.data === HttpStatusCode.Ok) {
-                props.navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Dashboard' }]
-                });
+            if (resp.data !== HttpStatusCode.InternalServerError) {
+                setEarnedCoin(resp.data);
+                setIsLoading(false);
+                setIsBtnLoading(false);
+                setIsRated(true); 
             } else {
                 setErrorTitle("Oops...!!");
                 setErrorMsg("Something went wrong");
@@ -113,6 +116,7 @@ const RatePoster = (props: any) => {
             </View>
             {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
             {isLoading ? <AppLoader /> : null}
+            {isRated ? <CoinPopUp coins={earnedCoin} props={props}/> : null}
         </SafeAreaView>
     )
 }

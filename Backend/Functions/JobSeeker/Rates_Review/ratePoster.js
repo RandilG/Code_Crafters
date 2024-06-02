@@ -64,7 +64,9 @@ module.exports = async function ratePoster(req, res) {
 
         await queryAsync("COMMIT"); 
 
-        return res.json(HttpStatusCode.Ok);
+        const jobCoin = Math.floor(earnings/1000);
+
+        return res.json(jobCoin);
     } catch (error) {
         console.log(error);
         await queryAsync("ROLLBACK");
