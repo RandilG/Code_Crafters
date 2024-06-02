@@ -154,7 +154,6 @@ const NicUpload = (props: any) => {
         try {
             if (isValid()) {
                 firebaseApp;//Initialze firbase configuration 
-
                 const storage = getStorage();
 
                 //Files naming format

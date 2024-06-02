@@ -70,13 +70,14 @@ const Login = (props: any) => {
                     getSeekerData(userName);
                 } else {
                     setErrorTitle("Oops...!!");
-                    setErrorMsg("Something went wrong1");
+                    setErrorMsg("Something went wrong");
                     setIsBtnLoading(false);
                     setIsError(true);
                 }
             }
             setIsBtnLoading(false);
         } catch (error) {
+            console.log(error);
             setErrorTitle("Oops...!!");
             setErrorMsg("Something went wrong");
             setIsBtnLoading(false);
@@ -103,6 +104,7 @@ const Login = (props: any) => {
                 setIsError(true);
             }
         } catch (error) {
+            console.log(error);
             setErrorTitle("Oops...!!");
             setErrorMsg("Something went wrong");
             setIsBtnLoading(false);

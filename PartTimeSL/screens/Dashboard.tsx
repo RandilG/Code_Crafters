@@ -7,6 +7,9 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import EncryptedStorage from "react-native-encrypted-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Entypo from "react-native-vector-icons/Entypo";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 
 const Dashboard = (props: any) => {
     const [carouselWidth, setCarouselWidth] = useState<number>(0);
@@ -120,7 +123,7 @@ const Dashboard = (props: any) => {
                         </View>
                     </View>
                 </View>
-                <ScrollView style={{width: '100%', height: '100%'}}>
+                <ScrollView style={{ width: '100%', height: '100%' }}>
                     <View style={styles.carouselOutBox}>
                         <View style={styles.carouselConatiner} onLayout={(event) => { const { width } = event.nativeEvent.layout; setCarouselWidth(width) }}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={carouselRef} pagingEnabled onScroll={handleScroll} scrollEventThrottle={200}>
@@ -138,12 +141,24 @@ const Dashboard = (props: any) => {
                     </View>
                     <View style={styles.btnContainer}>
                         <View style={styles.btnRow}>
-                            <BtnOrange icon={"archive"} title={"JOBS"} props={props} navi={"Jobs"}/>
-                            <BtnWhite props={props}/>
-                            <BtnOrange />
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("Jobs")}>
+                                <FontAwesome name={"briefcase"} size={30} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>JOBS</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate("ApppliedJobs")}>
+                                <MaterialCommunityIcons name={"timer-sand"} size={35} color={"#FE8235"} />
+                                <Text style={styles.btnWhiteTxt}>APPLIED JOBS</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("CompletedJobs")}>
+                                <Ionicons name={"checkmark-done-circle-sharp"} size={35} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>COMPLETED JOBS</Text>
+                            </TouchableOpacity>
                         </View>
                         <View style={styles.btnRow}>
-                            <BtnWhite />
+                            <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate("MyWallet")}>
+                                <FontAwesome6 name={"hand-holding-dollar"} size={35} color={"#FE8235"} />
+                                <Text style={styles.btnWhiteTxt}>MY{'\n'}WALLET</Text>
+                            </TouchableOpacity>
                             <BtnOrange />
                             <BtnWhite />
                         </View>
@@ -159,29 +174,39 @@ const Dashboard = (props: any) => {
     )
 }
 
-const BtnOrange:React.FC<any> = ({icon, title, props, navi}) => {
+const BtnOrange: React.FC<any> = ({ icon, title, props, navi }) => {
     return (
         <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate(navi)}>
-            <Entypo name={icon} size={30} color={"#FFF"} />
+            <FontAwesome name={icon} size={30} color={"#FFF"} />
             <Text style={styles.btnOrangeTxt}>{title}</Text>
         </TouchableOpacity>
     )
 }
 
-const BtnWhite:React.FC<any> = ({icon, ttitle, props}) => {
+const BtnWhite: React.FC<any> = ({ icon, title, props, navi }) => {
     return (
-        <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate("ApplyJob")}>
-
+        <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate(navi)}>
+            <FontAwesome name={icon} size={30} color={"#FE8235"} />
+            <Text style={styles.btnWhiteTxt}>{title}</Text>
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
+    btnWhiteTxt: {
+        fontSize: 15,
+        color: "#FE8235",
+        fontWeight: '600',
+        marginTop: 5,
+        textAlign: 'center'
+    },
+
     btnOrangeTxt: {
         fontSize: 15,
         color: "#FFF",
         fontWeight: '600',
-        marginTop: 5
+        marginTop: 5,
+        textAlign: 'center'
     },
 
     btnWhite: {

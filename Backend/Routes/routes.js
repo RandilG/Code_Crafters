@@ -55,6 +55,21 @@ const seekerAuth = require('../Functions/JobSeeker/SignIn/auth');
 const dashboard = require('../Functions/JobSeeker/GetData/dashboard');
 const jobList = require('../Functions/JobSeeker/Jobs/jobList');
 const applyJob = require('../Functions/JobSeeker/Jobs/applyJob');
+const appliedJobs = require('../Functions/JobSeeker/Jobs/aplliedJobs');
+const completedJobs = require('../Functions/JobSeeker/Jobs/completedJobs');
+const ratePoster = require('../Functions/JobSeeker/Rates_Review/ratePoster');
+
+router.post('/ratePoster/:userName/:job_id', (req, res) => {
+    ratePoster(req, res);
+})
+
+router.get('/completedJobs/:userName', (req, res) => {
+    completedJobs(req, res);
+})
+
+router.get('/appliedJobs/:userName', (req, res) => {
+    appliedJobs(req, res);
+})
 
 router.post('/applyJob', (req, res) => {
     applyJob(req, res);

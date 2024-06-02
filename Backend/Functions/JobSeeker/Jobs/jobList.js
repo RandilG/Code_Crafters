@@ -6,7 +6,7 @@ module.exports = async function jobList(req, res) {
     try {
         const { gender, userName } = req.query;
         const date = new Date();
-        const query1 = "SELECT job_id, title, job_date, start_time, work_hours, hourly_rate, longitude, latitude, description, job_poster, amount_of_seekers FROM parttime_srilanka.job WHERE job_date >= ? AND (gender = ? OR gender = 'common') ORDER BY job_date ASC";
+        const query1 = "SELECT job_id, title, job_date, start_time, work_hours, hourly_rate, longitude, latitude, description, job_poster, amount_of_seekers FROM parttime_srilanka.job WHERE job_date >= ? AND (gender = ? OR gender = 'common') AND status = 'new' ORDER BY job_date ASC";
         const query2 = "SELECT poster, rate FROM parttime_srilanka.poster_ratings;";
         const query3 = "SELECT * FROM parttime_srilanka.assigned_jobs;";
         const query4 = "SELECT * FROM parttime_srilanka.assigned_jobs WHERE assigned_job_seeker=?";

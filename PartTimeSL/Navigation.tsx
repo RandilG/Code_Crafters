@@ -13,6 +13,10 @@ import SignupSuccess from "./screens/SignupSuccess";
 import Dashboard from "./screens/Dashboard";
 import Jobs from "./screens/Jobs";
 import ApplyJob from "./screens/ApplyJob";
+import AppliedJobs from "./screens/AppliedJobs";
+import CompletedJobs from "./screens/CompletedJobs";
+import MyWallet from "./screens/MyWallet";
+import RatePoster from "./screens/RatePoster";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +24,10 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="RatePoster" component={RatePoster} />
+                <Stack.Screen name="MyWallet" component={MyWallet} />
+                <Stack.Screen name="CompletedJobs" component={CompletedJobs} />
+                <Stack.Screen name="ApppliedJobs" component={AppliedJobs} />
                 <Stack.Screen name="ApplyJob" component={ApplyJob} />
                 <Stack.Screen name="Jobs" component={Jobs} />
                 <Stack.Screen name="Dashboard" component={Dashboard} />
