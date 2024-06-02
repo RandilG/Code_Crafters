@@ -49,6 +49,19 @@ module.exports = async function ratePoster(req, res) {
         const query5 = "UPDATE `parttime_srilanka`.`coin` SET `earning` = ? WHERE (`seeker` = ?);";
         await queryAsync(query5, [coins, userName]);
 
+        //Check upgrade of account level
+        const query6 = "SELECT s.account_level, a.coins_limit FROM parttime_srilanka.seeker_account_levels a JOIN parttime_srilanka.job_seeker s ON a.level_id = s.account_level WHERE s.UserName = ?";
+        resp = await queryAsync(query6, userName);
+        let level = resp[0].account_level;
+        const limit = resp[0].coins_limit;
+        if(level!=4){
+            if(coins>=limit){
+                level++;
+                const query7 = "UPDATE `parttime_srilanka`.`job_seeker` SET `account_level` = ? WHERE (`UserName` = ?);"
+                await queryAsync(query7, [level, userName]);
+            }
+        }
+
         await queryAsync("COMMIT"); 
 
         return res.json(HttpStatusCode.Ok);

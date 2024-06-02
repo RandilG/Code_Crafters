@@ -7,7 +7,6 @@ import Entypo from "react-native-vector-icons/Entypo";
 import Modal from "react-native-modal";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import JobDescription from "../components/JobDescription";
-import JobCancelPopUp from "../components/JobCancelPopUp";
 import ErrorPopup from "../components/ErrorPopUp";
 import AppLoader from "../components/AppLoader";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
