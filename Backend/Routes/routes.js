@@ -18,6 +18,9 @@ const rateSeeker = require('../Functions/User/JobPoster/rateSeeker')
 const displayallPaymentInfo = require('../Functions/User/JobPoster/displayallPaymentInfo')
 const displayPaymentInfo = require('../Functions/User/JobPoster/displayPaymentInfo')
 const changePassword = require('../Functions/User/JobPoster/changePassword')
+const viewallCompletedJobInfo = require('../Functions/User/JobPoster/viewallCompletedJobInfo')
+const viewCompletedJobInfo = require('../Functions/User/JobPoster/viewCompletedJobInfo')
+/*const cancelJob = require('../Functions/User/JobPoster/cancelJob')*/
 
 
 router.get('/getData', (req, res) => {
@@ -36,53 +39,65 @@ router.put('/putData', (req, res) => {
     updateData(req, res)
 })
 
-router.post('/login', (req, res) => { //working
+router.post('/login', (req, res) => { 
   login(req, res)
   });
 
-router.post('/register', (req, res)=> {  //working
+router.post('/register', (req, res)=> {  
   register(req, res);
   })
 
-router.post('/sendotp', (req, res) => {  //working
+router.post('/sendotp', (req, res) => {  
   emailverify(req, res)
 })
 
-router.post('/postJob', (req, res) => {  //working
+router.post('/postJob', (req, res) => {  
   postJob(req, res)
 })
 
-router.get('/displayJob/:id', (req, res) => {  //working
+router.get('/displayJob/:id', (req, res) => {  
   displayJob(req, res)
 })
 
-router.get('/displayallJob', (req, res) => {  //working
+router.get('/displayallJob', (req, res) => {  
   displayallJob(req, res)
 })
 
-router.put('/updateJob/:id', (req, res) => {  //working
+router.put('/updateJob/:id', (req, res) => {  
   updateJob(req, res)
 })
 
-router.delete('/deleteJob/:id', (req, res) => {
+router.delete('/deleteJob/:id', (req, res) => {  /**** */
   console.log("delete job called")
   deleteJob(req, res)
 })
 
-router.post('/rateSeeker', (req, res) => {  //working
+router.post('/rateSeeker', (req, res) => {  
   rateSeeker(req, res)
 })
 
-router.get('/displayallPaymentInfo', (req, res) => {  //working
+router.get('/displayallPaymentInfo', (req, res) => {  
   displayallPaymentInfo(req, res)
 })
 
-router.get('/displayPaymentInfo/:id', (req, res) => {    //working
+router.get('/displayPaymentInfo/:id', (req, res) => {    
   displayPaymentInfo(req, res)
 })
 
 router.post('/changePassword', (req, res) => {  
   changePassword(req, res)
 })
+
+router.get('/viewallCompletedJobInfo', (req, res) => { 
+  viewallCompletedJobInfo(req, res)
+})
+
+router.get('/viewCompletedJobInfo/:id', (req, res) => {    
+  viewCompletedJobInfo(req, res)
+})
+
+/*router.put('/cancelJob/:id', (req, res) => {  
+  cancelJob(req, res)
+})*/
 
 module.exports = router
