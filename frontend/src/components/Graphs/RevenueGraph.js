@@ -10,7 +10,7 @@ const monthNames = [
 ];
 
 // Array of colors to cycle through for each bar
-const barColors = ['#6a99e1', '#e76f51', '#2a9d8f', '#f4a261', '#264653', '#ff6f61', '#e63946', '#8ecae6', '#ffbe0b', '#ff9f1c','#6a99e1', '#e76f51'];
+const barColors = ['#6a99e1', '#2a9d8f', '#6a99e1', '#2a9d8f', '#6a99e1', '#2a9d8f', '#6a99e1', '#2a9d8f', '#6a99e1', '#2a9d8f','#2a9d8f', '#6a99e1'];
 
 const RevenueGraph = () => {
   const [data, setData] = useState([]);

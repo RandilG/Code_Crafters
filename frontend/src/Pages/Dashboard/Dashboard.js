@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { DollarOutlined } from '@ant-design/icons';
 import { Card, Space, Statistic, Spin, message } from 'antd';
+import AppHeader from '../../components/AppHeader/AppHeader';
+import SideBar from '../../components/SideBar/SideBar';
 import BarGraph from '../../components/Graphs/TestGraph';
 import axios from 'axios';
 import RevenueGraph from '../../components/Graphs/RevenueGraph';
+
 
 function Dashboard() {
   // Initialize state to hold income data
@@ -43,111 +46,120 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="Cards">
-        <Space direction="horizontal" style={{ margin: '5%' }}>
-          <Card>
-            <p>Today Income</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'green',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(0,255,0,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Daily" value={incomeData.total_today} />
-            </Space>
-          </Card>
+    <div className="App">
+        <AppHeader />
+        <Space className="SideBaraANDPageContent">
+          <SideBar />
+        <div className="PageContent">
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="Cards">
+              <Space direction="horizontal" style={{ margin: '5%' }}>
+                <Card>
+                  <p>Today Income</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'green',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(0,255,0,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Daily" value={incomeData.total_today} />
+                  </Space>
+                </Card>
 
-          <Card>
-            <p>This Month Income</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'blue',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(0,0,255,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Monthly" value={incomeData.total_month} />
-            </Space>
-          </Card>
+                <Card>
+                  <p>This Month Income</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'blue',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(0,0,255,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Monthly" value={incomeData.total_month} />
+                  </Space>
+                </Card>
 
-          <Card style={{ marginRight: '25px' }}>
-            <p>This Year Income</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'red',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(255,0,0,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Yearly" value={incomeData.total_year} />
-            </Space>
-          </Card>
+                <Card>
+                  <p>This Year Income</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'red',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(255,0,0,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Yearly" value={incomeData.total_year} />
+                  </Space>
+                </Card>
 
-          <Card style={{ marginLeft: '50px' }}>
-            <p>Today Revenue</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'green',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(0,255,0,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Daily" value={revenueData.total_today} />
-            </Space>
-          </Card>
+                <Card style={{ marginLeft: '50px' }}>
+                  <p>Today Revenue</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'green',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(0,255,0,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Daily" value={revenueData.total_today} />
+                  </Space>
+                </Card>
 
-          <Card>
-            <p>This Month Revenue</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'blue',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(0,0,255,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Monthly" value={revenueData.total_month} />
-            </Space>
-          </Card>
+                <Card>
+                  <p>This Month Revenue</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'blue',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(0,0,255,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Monthly" value={revenueData.total_month} />
+                  </Space>
+                </Card>
 
-          <Card>
-            <p>This Year Revenue</p>
-            <Space>
-              <DollarOutlined
-                style={{
-                  color: 'red',
-                  fontSize: '50px',
-                  backgroundColor: 'rgba(255,0,0,0.25)',
-                  borderRadius: 30,
-                  padding: 8,
-                }}
-              />
-              <Statistic title="Yearly" value={revenueData.total_year} />
-            </Space>
-          </Card>
-        </Space>
-        <br />
-        <Space>
-          <BarGraph />
-          <RevenueGraph />
-        </Space>
-      </div>
+                <Card>
+                  <p>This Year Revenue</p>
+                  <Space>
+                    <DollarOutlined
+                      style={{
+                        color: 'red',
+                        fontSize: '50px',
+                        backgroundColor: 'rgba(255,0,0,0.25)',
+                        borderRadius: 30,
+                        padding: 8,
+                      }}
+                    />
+                    <Statistic title="Yearly" value={revenueData.total_year} />
+                  </Space>
+                </Card>
+              </Space>
+              <br />
+              <Space>
+                <BarGraph />
+                <RevenueGraph />
+              </Space>
+
+            </div>
+          </div>
+        </div>
+      </Space>
     </div>
   );
 }

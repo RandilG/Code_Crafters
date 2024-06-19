@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, message } from 'antd'; // Include Spin and message for loading and error handling
+import { Table, Spin, message, Button } from 'antd'; // Include Button for pagination
 import axios from 'axios'; // Axios for fetching data
 
 // Define the columns for the table
@@ -41,6 +41,8 @@ const columns = [
 const IncomeTable = () => {
   const [data, setData] = useState([]); // State to hold fetched data
   const [loading, setLoading] = useState(true); // State to manage loading state
+  const [currentPage, setCurrentPage] = useState(1); // State to manage current page
+  const pageSize = 7; // Set the number of rows per page
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,17 +59,39 @@ const IncomeTable = () => {
     fetchData(); // Fetch data when the component mounts
   }, []); // The empty dependency array ensures this runs only once when the component is mounted
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page); // Update the current page
+  };
+
+  const currentData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize); // Get data for the current page
+
   if (loading) {
     return <Spin />; // Show a loading spinner while fetching data
   }
 
   return (
-    <div style={{ textAlign: 'left' }}>
-      <span style={{ fontWeight: 'bold', fontSize: 20, paddingTop: '20px', display: 'block' }}>
+    <div style={{ textAlign: 'left', padding: '20px', border: '1px solid #ffa500', borderRadius: '10px' }}>
+      <span style={{ fontWeight: 'bold', fontSize: 24, paddingTop: '20px', display: 'block', color: '#ffa500' }}>
         Payment Information From Job Posters
       </span>
       <div style={{ padding: '10px' }}>
-        <Table columns={columns} dataSource={data} pagination={false} rowKey="payment_id" /> {/* Use rowKey to avoid warnings */}
+        <Table columns={columns} dataSource={currentData} pagination={false} rowKey="payment_id" bordered style={{ borderColor: '#ffa500' }} />
+        <div style={{ marginTop: '20px', textAlign: 'center' }}>
+          <Button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+            style={{ backgroundColor: '#ffa500', borderColor: '#ffa500', color: 'white' }}
+          >
+            Previous
+          </Button>
+          <Button
+            style={{ marginLeft: '10px', backgroundColor: '#ffa500', borderColor: '#ffa500', color: 'white' }}
+            disabled={currentPage * pageSize >= data.length}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );
