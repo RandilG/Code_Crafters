@@ -8,7 +8,7 @@ const updateData = require('../Functions/Test/updateData')
 const login = require('../Functions/User/JobPoster/login')
 const register = require('../Functions/User/JobPoster/register')
 //const jobposterRegister = require('./../Functions/User/JobPoster/register')
-const emailverify = require('../Functions/Otp/checkEmail')
+const emailVerify = require('../Functions/Otp/emailVerify')
 const postJob = require('../Functions/User/JobPoster/postJob')
 const displayJob = require('../Functions/User/JobPoster/displayJob')
 const displayallJob = require('../Functions/User/JobPoster/displayallJob')
@@ -47,8 +47,8 @@ router.post('/register', (req, res)=> {
   register(req, res);
   })
 
-router.post('/sendotp', (req, res) => {  
-  emailverify(req, res)
+router.post('/emailVerify', (req, res) => {  
+  emailVerify(req, res)
 })
 
 router.post('/postJob', (req, res) => {  
