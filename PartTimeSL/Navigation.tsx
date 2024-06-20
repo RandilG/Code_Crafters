@@ -17,6 +17,8 @@ import AppliedJobs from "./screens/AppliedJobs";
 import CompletedJobs from "./screens/CompletedJobs";
 import MyWallet from "./screens/MyWallet";
 import RatePoster from "./screens/RatePoster";
+import Chat from "./screens/Chat";
+import AddBankAc from "./screens/AddBankAc";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +26,8 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="AddBankAc" component={AddBankAc} />
+                <Stack.Screen name="Chat" component={Chat} />
                 <Stack.Screen name="RatePoster" component={RatePoster} />
                 <Stack.Screen name="MyWallet" component={MyWallet} />
                 <Stack.Screen name="CompletedJobs" component={CompletedJobs} />

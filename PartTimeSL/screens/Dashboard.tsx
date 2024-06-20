@@ -145,9 +145,9 @@ const Dashboard = (props: any) => {
                                 <FontAwesome name={"briefcase"} size={30} color={"#FFF"} />
                                 <Text style={styles.btnOrangeTxt}>JOBS</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate("ApppliedJobs")}>
-                                <MaterialCommunityIcons name={"timer-sand"} size={35} color={"#FE8235"} />
-                                <Text style={styles.btnWhiteTxt}>APPLIED JOBS</Text>
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("ApppliedJobs")}>
+                                <MaterialCommunityIcons name={"timer-sand"} size={35} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>APPLIED JOBS</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("CompletedJobs")}>
                                 <Ionicons name={"checkmark-done-circle-sharp"} size={35} color={"#FFF"} />
@@ -155,17 +155,18 @@ const Dashboard = (props: any) => {
                             </TouchableOpacity>
                         </View>
                         <View style={styles.btnRow}>
-                            <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate("MyWallet")}>
-                                <FontAwesome6 name={"hand-holding-dollar"} size={35} color={"#FE8235"} />
-                                <Text style={styles.btnWhiteTxt}>MY{'\n'}WALLET</Text>
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("MyWallet")}>
+                                <FontAwesome6 name={"hand-holding-dollar"} size={35} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>MY{'\n'}WALLET</Text>
                             </TouchableOpacity>
-                            <BtnOrange />
-                            <BtnWhite />
-                        </View>
-                        <View style={styles.btnRow}>
-                            <BtnOrange />
-                            <BtnWhite />
-                            <BtnOrange />
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("Chat")}>
+                                <Entypo name={"chat"} size={35} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>CHAT{'\n'}WITH US</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("MyWallet")}>
+                                <FontAwesome name={"user-circle-o"} size={35} color={"#FFF"} />
+                                <Text style={styles.btnOrangeTxt}>MY{'\n'}PROFILE</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
@@ -174,49 +175,14 @@ const Dashboard = (props: any) => {
     )
 }
 
-const BtnOrange: React.FC<any> = ({ icon, title, props, navi }) => {
-    return (
-        <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate(navi)}>
-            <FontAwesome name={icon} size={30} color={"#FFF"} />
-            <Text style={styles.btnOrangeTxt}>{title}</Text>
-        </TouchableOpacity>
-    )
-}
-
-const BtnWhite: React.FC<any> = ({ icon, title, props, navi }) => {
-    return (
-        <TouchableOpacity style={styles.btnWhite} onPress={() => props.navigation.navigate(navi)}>
-            <FontAwesome name={icon} size={30} color={"#FE8235"} />
-            <Text style={styles.btnWhiteTxt}>{title}</Text>
-        </TouchableOpacity>
-    )
-}
 
 const styles = StyleSheet.create({
-    btnWhiteTxt: {
-        fontSize: 15,
-        color: "#FE8235",
-        fontWeight: '600',
-        marginTop: 5,
-        textAlign: 'center'
-    },
-
     btnOrangeTxt: {
         fontSize: 15,
         color: "#FFF",
         fontWeight: '600',
         marginTop: 5,
         textAlign: 'center'
-    },
-
-    btnWhite: {
-        width: 100,
-        height: 100,
-        backgroundColor: '#FFF',
-        borderRadius: 15,
-        elevation: 5,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
 
     btnOrange: {

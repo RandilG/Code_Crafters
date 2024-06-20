@@ -16,13 +16,18 @@ module.exports = async function createSeeker(req, res) {
         
         const query1 = "INSERT INTO `parttime_srilanka`.`job_seeker` (`UserName`, `FirstName`, `LastName`, `TpNumber`, `BirthDay`, `Nic`, `addFline`, `addSLine`, `street`, `city`, `gender`, `password`, `proofDoc_front`, `proofDoc_back`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         const query2 = "INSERT INTO `parttime_srilanka`.`coin` (`seeker`) VALUES (?)";
+        const query3 = "INSERT INTO `parttime_srilanka`.`seeker_wallet` (`seeker`) VALUES (?)";
 
 
         await queryAsync("START TRANSACTION");
 
         await queryAsync(query1, values);
 
-        await queryAsync(query2, [email]);
+        //create coins account
+        await queryAsync(query2, email);
+
+        //create wallet
+        await queryAsync(query3, email);
 
         let message = `Hi ${firstName} ${lastName},\n\nYour registration details have been submitted successfully. The account will be activated after the authorization of our team.\n\nWe will notify you once the account is activated.\n\nThank you,\nTeam JOBS`;
 

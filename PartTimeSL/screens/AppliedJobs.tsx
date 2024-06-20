@@ -3,7 +3,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
 import Modal from 'react-native-modal';
 import Entypo from "react-native-vector-icons/Entypo";
@@ -15,6 +14,8 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import JobCancelPopUp from "../components/JobCancelPopUp";
+import socket from "../service/socket";
+import moment from "moment";
 
 const AppliedJobs = (props: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,6 +54,7 @@ const AppliedJobs = (props: any) => {
         setIsLoading(true);
         getJobs();
     }, [])
+
     return (
         <SafeAreaView style={extStyles.body}>
             <View style={styles.mainContainer}>
@@ -101,15 +103,39 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
         longitudeDelta: 0.0221
     }
 
+    const [timer, setTimer] = useState(0);
+    const [isCancelDisable, setIsCancelDisable] = useState<boolean>(false);
+
+    useEffect(() => {
+        const currentDate = moment().format('YYYY/MM/DD');
+        if (currentDate === date) {
+            setIsCancelDisable(true);
+            socket.emit('joinJobRoom', job_id);
+
+            socket.on('timerStarted', (data) => {
+                setTimer(data.timer);
+            });
+
+            return () => {
+                socket.off('timerStarted');
+            };
+        }
+    }, [])
+
     return (
         <View style={styles.card}>
             <View style={{ ...styles.dataContainer, ...{ marginBottom: 5 } }}>
                 <View style={styles.divider}>
                     <Text style={styles.cardTitle}>{title}</Text>
                 </View>
-                <View style={{ ...styles.divider, ...{ alignItems: 'flex-end' } }}>
-                    <Text style={styles.timerTxt}>00:00:00</Text>
-                </View>
+                {timer != 0 ?
+                    <View style={{ ...styles.divider, ...{ alignItems: 'flex-end', height: 30 } }}>
+                        <Text style={styles.progressTxt}>Job in progress</Text>
+                        <Text style={styles.timerTxt}>{timer}</Text>
+                    </View>
+                    :
+                    null
+                }
             </View>
             <View style={styles.dataContainer}>
                 <View style={styles.divider}>
@@ -128,7 +154,7 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
                 </View>
             </View>
             <View style={styles.btnContainer}>
-                <TouchableOpacity style={styles.cancelBtn} onPress={() => setIsCancel(true)}>
+                <TouchableOpacity style={{...styles.cancelBtn, ...{opacity: isCancelDisable ? 0.6 : 1}}} onPress={() => setIsCancel(true)} disabled={isCancelDisable}>
                     <Text style={styles.btnTxt}>Cancel</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ ...styles.descBtn, ...{ opacity: !description ? 0.6 : 1 } }} onPress={() => setIsDescView(true)} disabled={!description}>
@@ -159,9 +185,17 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
 }
 
 const styles = StyleSheet.create({
+    progressTxt: {
+        fontSize: 10,
+        margin: 0,
+        lineHeight: 10,
+        fontWeight: '400',
+        color: '#4C9A2A',
+    },
+
     timerTxt: {
         color: '#373737',
-        fontSize: 25,
+        fontSize: 23,
         fontWeight: '700'
     },
 
@@ -260,7 +294,7 @@ const styles = StyleSheet.create({
     },
 
     divider: {
-        width: '50%'
+        width: '50%',
     },
 
     dataContainer: {

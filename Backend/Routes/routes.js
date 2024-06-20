@@ -24,6 +24,11 @@ const declinedJobs = require('../Functions/JobPoster/Jobs/fetchDeclined');
 const payments = require('../Functions/JobPoster/Financial/payments');
 const createPaymentIntent = require('../Functions/JobPoster/Financial/paymentIntent');
 const pendingJobs = require('../Functions/JobPoster/Jobs/fetchPending');
+const jobTimer = require('../Functions/JobPoster/Jobs/jobTimer');
+
+router.post('/jobTimer', (req, res) => {
+    jobTimer(req, res);
+})
 
 router.get('/fetchPending/:jobPoster' , (req, res) => {
     pendingJobs(req, res);
@@ -58,6 +63,26 @@ const applyJob = require('../Functions/JobSeeker/Jobs/applyJob');
 const appliedJobs = require('../Functions/JobSeeker/Jobs/aplliedJobs');
 const completedJobs = require('../Functions/JobSeeker/Jobs/completedJobs');
 const ratePoster = require('../Functions/JobSeeker/Rates_Review/ratePoster');
+const getWalletData = require('../Functions/JobSeeker/Wallet/getWalletData');
+const checkBankAccount = require('../Functions/JobSeeker/Wallet/checkBankAccount');
+const createBankAc = require('../Functions/JobSeeker/Wallet/createBankAc');
+const withdraw = require('../Functions/JobSeeker/Wallet/withdraw');
+
+router.post('/withdraw', (req, res) => {
+    withdraw(req, res);
+});
+
+router.post('/createBankAc', (req, res) => {
+    createBankAc(req, res);
+});
+
+router.get('/checkBankAccount/:userName', (req, res) => {
+    checkBankAccount(req, res);
+});
+
+router.get('/walletData/:userName', (req, res) => {
+    getWalletData(req, res);
+})
 
 router.post('/ratePoster/:userName/:job_id', (req, res) => {
     ratePoster(req, res);
@@ -117,6 +142,13 @@ router.put('/updateSeekerStatus/:seekerUname', (req, res) => {
 
 router.get('/getPendingSeekers', (req, res) => {
     getPendingSeekers(req, res);
+})
+
+
+//Test purpose
+const test = require('../Functions/Test/test');
+router.post('/test', (req, res) => {
+    test(req, res);
 })
 
 module.exports = router

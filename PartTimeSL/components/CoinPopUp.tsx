@@ -1,7 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import LottieView from "lottie-react-native";
 
 const CoinPopUp = (props:any) => {
     const navigate = () => {

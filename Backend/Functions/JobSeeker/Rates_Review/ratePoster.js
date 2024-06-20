@@ -41,9 +41,9 @@ module.exports = async function ratePoster(req, res) {
         }
 
         //Record transaction
-        const query4 = "INSERT INTO `parttime_srilanka`.`seeker_wallet_debit` (`transaction_Date`, `amount`, `wallet_Id`) VALUES (?, ?, ?);";
+        const query4 = "INSERT INTO `parttime_srilanka`.`seeker_wallet_debit` (`transaction_Date`, `amount`, `coins`, `wallet_Id`) VALUES (?, ?, ?, ?);";
 
-        await queryAsync(query4, [new Date(), earnings, wallet_id]);
+        await queryAsync(query4, [new Date(), earnings, coins, wallet_id]);
 
         //Update coins
         const query5 = "UPDATE `parttime_srilanka`.`coin` SET `earning` = ? WHERE (`seeker` = ?);";
@@ -54,7 +54,7 @@ module.exports = async function ratePoster(req, res) {
         resp = await queryAsync(query6, userName);
         let level = resp[0].account_level;
         const limit = resp[0].coins_limit;
-        if(level!=4){
+        if(level!=4){ //If seeker is top account holder(4) there is nothing to upgrade
             if(coins>=limit){
                 level++;
                 const query7 = "UPDATE `parttime_srilanka`.`job_seeker` SET `account_level` = ? WHERE (`UserName` = ?);"
