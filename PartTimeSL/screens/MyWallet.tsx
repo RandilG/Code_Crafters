@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
-import { Animated, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Animated, Dimensions, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import moment from "moment";
 import { Image } from "react-native-animatable";
@@ -47,6 +47,7 @@ const MyWallet = (props: any) => {
     const [balance, setBalance] = useState<number>(0);
     const [isProbation, setProbation] = useState<boolean>(false);
     const [transactions, setTransations] = useState<any[]>([]);
+    const [serviceChargePct, setServiceChargePct] = useState<number>(0);
 
     const [amount, setAmount] = useState<number>(0);
     const [isCoinsAdded, setIsCoinsAdded] = useState<boolean>(false);
@@ -55,6 +56,7 @@ const MyWallet = (props: any) => {
 
     //Add coins to the amount
     const addCoins = () => {
+        setIsAmountEmpty(false);
         setAmount(amount + coins);
         setIsCoinsAdded(true);
     }
@@ -68,6 +70,7 @@ const MyWallet = (props: any) => {
     //Handel amount input process
     const handleAmount = (value: number) => {
         setIsAmountError(false);
+        setIsAmountEmpty(false);
         setAmount(value);
         if (value > balance) {
             setAmountError("Cannot exceed the balance");
@@ -88,6 +91,7 @@ const MyWallet = (props: any) => {
                 setCoins(resp.data.coins);
                 setProbation(resp.data.probation);
                 setTransations(resp.data.transactions);
+                setServiceChargePct(resp.data.serviceChargePct);
                 setIsLoading(false);
             } else {
                 setErrorTitle("Oops...!!");
@@ -144,12 +148,66 @@ const MyWallet = (props: any) => {
         props.navigation.navigate('AddBankAc');
     };
 
+    //Handle withdrawing process
+    const [isAmountEmpty, setIsAmountEmpty] = useState<boolean>(false);
+    const handleWithdraw = async () => {
+        try {
+            Keyboard.dismiss();
+            if (amount == 0) {
+                setIsAmountEmpty(true);
+                return;
+            }
+            setIsLoading(true);
+            let withdrawAmount = amount;
+            let coinsAmount = 0;
+            if (isCoinsAdded && coins != 0) {
+                withdrawAmount = amount - coins;
+                coinsAmount = coins;
+            }
+
+            const resp = await axios.post(server + 'withdraw', {
+                "userName": userName,
+                "amount": withdrawAmount,
+                "coins": coinsAmount,
+                "probation": isProbation
+            });
+
+            if (resp.data == HttpStatusCode.Ok) {
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'WithdrawSuccess' }]
+                });
+            } else {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+        }
+    };
+
     return (
         <SafeAreaView style={extStyles.body}>
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
-                    <View style={styles.backBtnContainer}>
-                        <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.goBack()} />
+                    <View style={styles.topContainer}>
+                        <View style={styles.backBtnContainer}>
+                            <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.reset({index: 0, routes: [{ name: 'Dashboard' }]})} />
+                        </View>
+                        <View style={styles.messageContainer}>
+                            {isProbation ?
+                                <View style={styles.messageBox}>
+                                    <Text style={styles.message}>**Please Note you are in a probation period. Therefore, A 5% amount will be deducted from the withdrawing amount as a service charge.</Text>
+                                </View>
+                                :
+                            null}
+                        </View>
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.titleTxt}>
@@ -211,27 +269,31 @@ const MyWallet = (props: any) => {
                         <View style={styles.inputFrame}>
                             <TextInput value={amount > 0 ? String(amount) : ""} onChangeText={(value) => handleAmount(parseInt(value))} style={styles.input} keyboardType={'number-pad'} placeholder="00.00" placeholderTextColor={"#B7BFC8"} />
                         </View>
+                        <Text style={styles.withdrawNote}>Note: A {isProbation ? '15' : serviceChargePct}% amount will be deducted from the withdrawing amount as a service charge</Text>
                         {isAmountError ?
                             <Text style={styles.errTxt}>{amountError}</Text>
                             :
                             null
                         }
-                        {isCoinsAdded ?
-                            <View style={{ alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity style={styles.removeCoinBtn} onPress={() => removeCoins()}>
+                        {coins != 0 ?
+                            isCoinsAdded ?
+                                <View style={{ alignSelf: 'center', justifyContent: 'center', alignItems: 'center' }}>
+                                    <TouchableOpacity style={styles.removeCoinBtn} onPress={() => removeCoins()}>
+                                        <Image source={require('../assets/images/coin.png')} style={styles.coinBtnImage} />
+                                        <Text style={styles.removeCoinBtnTxt}>Remove{'\n'}Coins</Text>
+                                    </TouchableOpacity>
+                                    <Text style={{ ...styles.errTxt, ...{ color: '#4C9A2A', } }}>{coins} coins will be added to the withdrawal amount</Text>
+                                </View>
+                                :
+                                <TouchableOpacity style={styles.coinBtn} onPress={() => addCoins()}>
                                     <Image source={require('../assets/images/coin.png')} style={styles.coinBtnImage} />
-                                    <Text style={styles.removeCoinBtnTxt}>Remove{'\n'}Coins</Text>
+                                    <Text style={styles.coinBtnTxt}>Add Coins</Text>
                                 </TouchableOpacity>
-                                <Text style={{ ...styles.errTxt, ...{ color: '#4C9A2A', } }}>{coins} coins will be added to the withdrawal amount</Text>
-                            </View>
-                            :
-                            <TouchableOpacity style={styles.coinBtn} onPress={() => addCoins()}>
-                                <Image source={require('../assets/images/coin.png')} style={styles.coinBtnImage} />
-                                <Text style={styles.coinBtnTxt}>Add Coins</Text>
-                            </TouchableOpacity>
-                        }
+
+                            : null}
                         <View style={{ ...styles.btnContainer, ...{ marginTop: 40 } }}>
-                            <TouchableOpacity style={styles.btn} onPress={() => openWithdrawElement()}>
+                            {isAmountEmpty ? <Text style={{ ...styles.errTxt, ...{ marginBottom: 5 } }}>Please add the amount to withdraw</Text> : null}
+                            <TouchableOpacity style={styles.btn} onPress={() => handleWithdraw()}>
                                 <Text style={styles.btnTxt}>Withdraw</Text>
                             </TouchableOpacity>
                         </View>
@@ -241,7 +303,7 @@ const MyWallet = (props: any) => {
             {isElementOpen ? <View style={styles.screenCover} /> : null}
             {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
             {isLoading ? <AppLoader /> : null}
-            {isBanAccAvailable ? <BankAccountPopUp createAccount={() => navigate()} closeBankPopUp={() => setIsBanAccAvailable(false)}/> : null}
+            {isBanAccAvailable ? <BankAccountPopUp createAccount={() => navigate()} closeBankPopUp={() => setIsBanAccAvailable(false)} /> : null}
         </SafeAreaView>
     )
 }
@@ -261,7 +323,6 @@ const DebitCard: React.FC<any> = ({ id, date, amount, coins, total }) => {
             <View style={{ width: '40%', alignItems: 'flex-end' }}>
                 <Text style={styles.debitTxt}>+{total}</Text>
             </View>
-
         </View>
     )
 }
@@ -288,6 +349,41 @@ const CreditCard: React.FC<any> = ({ id, date, amount, coins, service_charge, to
 }
 
 const styles = StyleSheet.create({
+    message: {
+        textAlign: 'right',
+        fontSize: 10,
+        fontWeight: '400',
+        color: '#FFF'
+    },
+
+    messageBox: {
+        backgroundColor: '#FF7A66',
+        padding: 5,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#FF4122'
+    },
+
+    messageContainer: {
+        width: '90%',
+        alignItems: 'flex-end',
+        paddingRight: 30
+    },
+
+    topContainer: {
+        width: Dimensions.get('window').width,
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    withdrawNote: {
+        fontSize: 12,
+        textAlign: 'center',
+        fontWeight: '500',
+        color: '#FE8235'
+    },
+
     btnLoader: {
         width: '100%',
         height: '100%'
@@ -567,10 +663,8 @@ const styles = StyleSheet.create({
     },
 
     backBtnContainer: {
-        paddingLeft: 10,
-        width: 40,
+        width: '10%',
         height: 50,
-        left: 50,
         justifyContent: 'center'
     },
 

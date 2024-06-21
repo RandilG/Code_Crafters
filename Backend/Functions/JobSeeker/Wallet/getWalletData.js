@@ -10,6 +10,7 @@ module.exports = async function getWalletData(req, res) {
         let coins = 0;
         let transactions = [];
         let probation = false;
+        let serviceChargePct = 0;
 
         //Get wallet balance
         const query1 = "SELECT earnings - withdrawal as balance FROM parttime_srilanka.seeker_wallet WHERE seeker = ?;";
@@ -73,12 +74,17 @@ module.exports = async function getWalletData(req, res) {
             }
         }
 
+        const query6 = "SELECT a.charge_percentge FROM parttime_srilanka.seeker_account_levels a JOIN parttime_srilanka.job_seeker s ON a.level_id = s.account_level WHERE s.UserName = ?;";
+        resp = await queryAsync(query6, userName);
+        serviceChargePct = resp[0].charge_percentge;
+
         //Response generate
         const response = {};
         response.balance = balance;
         response.coins = coins;
         response.probation = probation;
         response.transactions = transactions;
+        response.serviceChargePct = serviceChargePct;
 
         return res.json(response);
     } catch (error) {

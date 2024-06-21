@@ -2,6 +2,7 @@ const { HttpStatusCode } = require('axios');
 const dotenv = require('dotenv');
 const dwolla = require('dwolla-v2');
 const connection = require('../../../Services/connection');
+const sendMobNotify = require('../../Common/notifications/sendMobNotify');
 
 
 dotenv.config();
@@ -20,6 +21,7 @@ module.exports = async function withdraw(req, res) {
         const query3 = "UPDATE `parttime_srilanka`.`seeker_wallet` SET `withdrawal` = `withdrawal`+? WHERE (`wallet_id` = ?);";
         const query4 = "UPDATE `parttime_srilanka`.`coin` SET `withdrawal` = `withdrawal`+ ? WHERE (seeker = ?);";
         const query5 = "INSERT INTO `parttime_srilanka`.`seeker_wallet_credit` (`transaction_date`, `amount`, `service_charge`, `coins`, `wallet_id`) VALUES (?, ?, ?, ?, ?);";
+        const query6 = "SELECT TpNumber FROM parttime_srilanka.job_seeker WHERE UserName = ?;";
 
         //Get bank details of the seeker
         let resp = await queryAsync(query1, userName);
@@ -39,7 +41,7 @@ module.exports = async function withdraw(req, res) {
             serviceCharge = Number(amount * serviceChrgePct / 100).toFixed(2);
         }
 
-        const withdrawalAmount = amount - serviceCharge + coins;
+        const withdrawalAmount = Number(amount - serviceCharge + coins).toFixed(2);
 
         //Convert withdrawal amount to USD for Dwolla transcation process
         const amountUSD = Number(withdrawalAmount / 300).toFixed(2);
@@ -78,7 +80,14 @@ module.exports = async function withdraw(req, res) {
 
         await queryAsync("COMMIT"); 
 
-        return res.json("Hello from withdraw");
+        resp = await queryAsync(query6, userName);
+
+        const mobNo = resp[0].TpNumber;
+        const accountNo = 'xxxxxxx'+bankAcc.slice(-4);
+        const message = `Your amount of Rs.${withdrawalAmount} will be credited to account ${accountNo} within 24 hours. Rs.${serviceCharge} deducted as a service charge.\nThank You.`;
+        await sendMobNotify(mobNo, message);
+
+        return res.json(HttpStatusCode.Ok);
     } catch (error) {
         await queryAsync("ROLLBACK");
         console.log(error);
