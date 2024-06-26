@@ -7,7 +7,7 @@ const connection = require('../../Services/connection');
 
 dotenv.config();
 
-module.exports = async function sendMailOtp(req, res) {
+module.exports = async function requestOtp(req, res) {
     try {
         const query1 = 'SELECT * FROM parttime_srilanka.otp WHERE user=?;';
         const query2 = 'UPDATE `parttime_srilanka`.`otp` SET `otp` = ? WHERE (`user` = ?);';

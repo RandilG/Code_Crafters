@@ -4,7 +4,7 @@ const connection = require('../../Services/connection');
 
 const router = express.Router();
 
-router.post('/verifyOtp', async (req, res) => {
+router.post('/verifyEmail', async (req, res) => {
   try {
     const { email, otp } = req.body;
 

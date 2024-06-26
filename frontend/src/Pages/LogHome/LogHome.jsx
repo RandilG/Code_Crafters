@@ -21,7 +21,7 @@ const LogHome = () => {
             <h1 className="mb-4 text-4xl font-semibold">Part Time Sri Lanka</h1>
             <div className="flex space-x-4 justify-center text-center  ">
               <button className="px-4 py-2 text-orange-500 transition bg-white border border-orange-500 rounded-full hover:bg-orange-500 hover:text-white">
-              <Link to = '/loging' >
+              <Link to = '/financialadminloging' >
                 Login
                 </Link>
               </button>

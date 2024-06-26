@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 // OTP routes
-const verifyOtp = require('../Functions/otp/verifyotp');
-const sendMailOtp = require('../Functions/otp/emailverification');
-const saveUserRouter = require('../Functions/otp/saveUser');
+const verifyOtp = require('../Functions/Common/otp/verifyOtp');
+const sendMailOtp = require('../Functions/Common/otp/sendMailOtp');
 
 router.post('/verifyOtp', (req, res) => {
     verifyOtp(req, res);
@@ -14,13 +13,28 @@ router.post('/sendMailOtp', (req, res) => {
     sendMailOtp(req, res);
 });
 
-router.post('/resendOtp', (req, res) => {
-    sendMailOtp(req, res);
+
+//Signup Process
+const requestOtp = require('../Functions/SignupOtp/emailverification');
+const verifyEmail = require('../Functions/SignupOtp/verifyEmail');
+const saveUserRouter = require('../Functions/SuperAdmin/saveUser');
+
+router.post('/requestOtp', (req, res) => {
+    requestOtp(req, res);
+});
+
+router.post('/verifyEmail', (req, res) => {
+    verifyEmail(req, res);
 });
 
 router.post('/saveUser', (req, res) => {
     saveUserRouter(req, res);
 });
+
+router.post('/resendOtp', (req, res) => {
+    requestOtp(req, res);
+});
+
 
 // Test routes
 const getData = require('../Functions/Test/getData');
@@ -45,22 +59,46 @@ router.put('/putData', (req, res) => {
 });
 
 // Admin routes
-const login = require('../Admin/login');
-const adminRegister = require('../Admin/register');
-const emailverify = require('../Functions/otp/emailverification');
+// const login = require('../Admin/login');
+const adminRegister = require('../Functions/SuperAdmin/register');
+const FinancialAdminLogin = require('../Admin/FinancialAdminLogin/FinancialAdminLogin');
+const ChangePassword = require('../Admin/ChangePassword/ChangePassword');
+const resetPassword = require('../Admin/ResetPassword/ResetPassword');
+const getFinancialAdmin = require('../Admin/GetFinancilAdmin/GetFinancilAdmin');
+const updateFinancialAdmin = require('../Admin/UpdateFinancialAdmin/UpdateFinancialAdmin');
+const updateAdminPassword = require('../Admin/UpdateAdminPassword/UpdateAdminPassword');
 
-router.post('/login', (req, res) => {
-    login(req, res);
-});
+// router.post('/login', (req, res) => {
+//     login(req, res);
+// });
 
 router.post('/register', (req, res) => {
     adminRegister(req, res);
 });
 
-router.post('/sendotp', (req, res) => {
-    emailverify(req, res);
+router.post('/financial-admin-login', (req, res) => {
+    FinancialAdminLogin(req, res);
 });
 
+router.post('/financial-admin-change-password', (req, res) => {
+    ChangePassword(req, res);
+});
+
+router.post('/reset-password', (req, res) => {
+    resetPassword(req, res);
+});
+
+router.get('/get-admin-data', (req, res) => {
+    getFinancialAdmin(req, res);
+});
+
+router.put('/update-admin', (req, res) => {
+    updateFinancialAdmin(req, res);
+});
+
+router.put('/update-admin-password', (req, res) => {
+    updateAdminPassword(req, res);
+});
 
 // Financial routes
 const fetchFinancialData = require('../Functions/FinancialAdmin/FetchFinancialData');

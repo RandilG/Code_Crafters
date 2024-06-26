@@ -31,7 +31,7 @@ const Verification = () => {
     const formData = JSON.parse(localStorage.getItem('formData'));
 
     try {
-      const response = await axios.post('http://localhost:8000/verifyOtp', {
+      const response = await axios.post('http://localhost:8000/verifyEmail', {
         email: formData.email,
         otp: otp.join(''),
       });

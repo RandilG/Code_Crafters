@@ -40,7 +40,7 @@ const Signup = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         // Make a POST request to the backend to send OTP
-        const response = await fetch('http://localhost:8000/sendMailOtp', {
+        const response = await fetch('http://localhost:8000/requestOtp', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
