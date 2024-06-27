@@ -7,7 +7,6 @@ import {
   ProfileOutlined,
   EyeOutlined,
   SettingOutlined,
-  LogoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -21,7 +20,7 @@ const ProfileAdminSideBar = () => {
   };
 
   return (
-    <div className="siderbar-container">
+    <div className="siderbar-container" >
       <Layout style={{ width: "15%", backgroundColor: "white" }}>
         <Sider
           theme=""
@@ -47,7 +46,7 @@ const ProfileAdminSideBar = () => {
               className="elements"
             >
               <Link
-                to="/dashboard"
+                to="dashboard"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 Dashboard
@@ -60,7 +59,7 @@ const ProfileAdminSideBar = () => {
               title="Job Posters"
             >
               <Link
-                to="/profilerequests"
+                to="profilerequests"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="profile-requests" className="elements">
@@ -68,7 +67,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/viewactiveprofiles"
+                to="viewactiveprofiles"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="view-active-profiles" className="elements">
@@ -76,7 +75,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/viewdeclinedprofiles"
+                to="viewdeclinedprofiles"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="view-declined-profiles" className="elements">
@@ -84,7 +83,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/deactivatedprofile"
+                to="deactivatedprofile"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="deactivated-profiles" className="elements">
@@ -98,7 +97,7 @@ const ProfileAdminSideBar = () => {
               title="Job Seekers"
             >
               <Link
-                to="/jobseekerrequests"
+                to="jobseekerrequests"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="seeker-profile-requests" className="elements">
@@ -106,7 +105,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/activejobseekers"
+                to="activejobseekers"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="seeker-view-active-profiles" className="elements">
@@ -114,7 +113,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/declinedjobseekers"
+                to="declinedjobseekers"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="seeker-view-declined-profiles" className="elements">
@@ -122,7 +121,7 @@ const ProfileAdminSideBar = () => {
                 </Menu.Item>
               </Link>
               <Link
-                to="/deactivatedjobseekers"
+                to="deactivatedjobseekers"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="seeker-deactivated-profiles" className="elements">
@@ -132,23 +131,23 @@ const ProfileAdminSideBar = () => {
             </Menu.SubMenu>
             <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
               <Link
-                to="/seereview"
+                to="jobeekeravgratings"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="see-review" className="elements">
-                  See Review
+                  Job Seeker Ratings
                 </Menu.Item>
               </Link>
               <Link
-                to="/holdreview"
+                to="jobposteravgratings"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="review-hold" className="elements">
-                  Review Hold
+                  Job Poster Ratings
                 </Menu.Item>
               </Link>
               <Link
-                to="/deletereview"
+                to="deletereview"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 <Menu.Item key="delete-review" className="elements">
@@ -163,18 +162,11 @@ const ProfileAdminSideBar = () => {
               className="elements"
             >
               <Link
-                to="/accountsettings"
+                to="profile"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 Account Settings
               </Link>
-            </Menu.Item>
-            <Menu.Item
-              key="logout"
-              icon={<LogoutOutlined />}
-              className="elements"
-            >
-              Logout
             </Menu.Item>
           </Menu>
         </Sider>

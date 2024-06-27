@@ -1,38 +1,77 @@
-import React from "react";
-//styles
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BellFilled, UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Space, Button } from "antd";
 import "./Header.css";
-
-//   antdesign components
-import {BellOutlined, UserOutlined} from '@ant-design/icons';
-import { Input, Space } from "antd";
-const { Search } = Input;
-const onSearch = (value) => console.log(value);
-
+import logo from '../../assets/logo.svg'
 
 const Header = () => {
+  const [userData, setUserData] = useState({});
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const email = sessionStorage.getItem("email");
+      try {
+        const response = await axios.get('http://localhost:8000/get-admin-data', { params: { email } });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching user data", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.href = "/";
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">
+        Name: {userData.FirstName} {userData.LastName}
+      </Menu.Item>
+      <Menu.Item key="2">
+        Role: {userData.AdminRole}
+      </Menu.Item>
+      <Menu.Item key="2">
+        Email: {userData.Email}
+      </Menu.Item>
+      
+    </Menu>
+  );
+
   return (
     <div className="header-container">
-      <div className="welcome-msg">
-        <h3>Welcome,&nbsp;</h3>
-        <h3>Savindu</h3>
-      </div>
-      <div className="search-bar">
-        <Space direction="vertical" >
-          <Search
-            placeholder="Search...."
-            onSearch={onSearch}
-            style={{
-              width: 400,
-            }}
-          />
-        </Space>
+      <div className="logo">
+        <img src={logo} /> 
       </div>
       <div className="notification">
-      <BellOutlined />
+        <BellFilled style={{ color: 'white' }} />
       </div>
       <div className="profile">
-      <UserOutlined />&nbsp;&nbsp;&nbsp;    
-      <p>Savindu Nethsara</p>
+        <Dropdown
+          overlay={menu}
+          visible={dropdownVisible}
+          onVisibleChange={(flag) => setDropdownVisible(flag)}
+        >
+          <Space>
+            <UserOutlined style={{ color: 'white' }} />
+            <p style={{ color: 'white' }}>{userData.FirstName} {userData.LastName}</p>
+          </Space>
+        </Dropdown>
+      </div>
+      <div className="logout">
+        <Button
+          type="primary"
+          icon={<LogoutOutlined />}
+          onClick={handleLogout}
+          style={{ backgroundColor: 'transparent', borderColor: 'transparent', color: 'white' }}
+        >
+          Logout
+        </Button>
       </div>
     </div>
   );
