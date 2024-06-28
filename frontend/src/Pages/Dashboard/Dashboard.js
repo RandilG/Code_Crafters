@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DollarOutlined } from '@ant-design/icons';
 import { Card, Space, Statistic, Spin, message } from 'antd';
-import AppHeader from '../../components/AppHeader/AppHeader';
-import SideBar from '../../components/SideBar/SideBar';
 import BarGraph from '../../components/Graphs/TestGraph';
 import axios from 'axios';
 import RevenueGraph from '../../components/Graphs/RevenueGraph';
@@ -46,10 +44,6 @@ function Dashboard() {
   }
 
   return (
-    <div className="App">
-        <AppHeader />
-        <Space className="SideBaraANDPageContent">
-          <SideBar />
         <div className="PageContent">
           <div className="min-h-screen flex items-center justify-center">
             <div className="Cards">
@@ -159,8 +153,6 @@ function Dashboard() {
             </div>
           </div>
         </div>
-      </Space>
-    </div>
   );
 }
 

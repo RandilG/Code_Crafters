@@ -16,7 +16,7 @@ const FinancialAdminLogin = () => {
       const response = await axios.post('http://localhost:8000/financial-admin-login', values);
       message.success('Login successful');
       sessionStorage.setItem('email', email); 
-      navigate('/dashboard');
+      navigate('/financialadmin/dashboard');
       console.log(response.data);
     } catch (error) {
       if (error.response && error.response.status === 309) {
@@ -53,7 +53,7 @@ const FinancialAdminLogin = () => {
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input
-              placeholder="Email"
+              placeholder="email"
               style={styles.input}
             />
           </Form.Item>
@@ -63,7 +63,7 @@ const FinancialAdminLogin = () => {
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password
-              placeholder="Password"
+              placeholder="password"
               style={styles.input}
             />
           </Form.Item>

@@ -15,9 +15,9 @@ router.post('/sendMailOtp', (req, res) => {
 
 
 //Signup Process
-const requestOtp = require('../Functions/SignupOtp/emailverification');
-const verifyEmail = require('../Functions/SignupOtp/verifyEmail');
-const saveUserRouter = require('../Functions/SuperAdmin/saveUser');
+const requestOtp = require('../Functions/SuperAdmin/SignupOtp/emailverification');
+const verifyEmail = require('../Functions/SuperAdmin/SignupOtp/verifyEmail');
+const saveUserRouter = require('../Functions/SuperAdmin/AdminRegister/saveUser');
 
 router.post('/requestOtp', (req, res) => {
     requestOtp(req, res);
@@ -27,12 +27,12 @@ router.post('/verifyEmail', (req, res) => {
     verifyEmail(req, res);
 });
 
-router.post('/saveUser', (req, res) => {
-    saveUserRouter(req, res);
-});
-
 router.post('/resendOtp', (req, res) => {
     requestOtp(req, res);
+});
+
+router.post('/saveUser', (req, res) => {
+    saveUserRouter(req, res);
 });
 
 
@@ -60,7 +60,7 @@ router.put('/putData', (req, res) => {
 
 // Admin routes
 // const login = require('../Admin/login');
-const adminRegister = require('../Functions/SuperAdmin/register');
+const adminRegister = require('../Functions/SuperAdmin/AdminRegister/register');
 const FinancialAdminLogin = require('../Admin/FinancialAdminLogin/FinancialAdminLogin');
 const ChangePassword = require('../Admin/ChangePassword/ChangePassword');
 const resetPassword = require('../Admin/ResetPassword/ResetPassword');

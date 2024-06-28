@@ -4,7 +4,6 @@ import { EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const { Title } = Typography;
 
 const AdminProfile = () => {

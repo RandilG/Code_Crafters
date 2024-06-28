@@ -44,7 +44,7 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post('http://localhost:8000/reset-password', { email, ...values });
       message.success('Password changed successfully');
-      navigate('/login');
+      navigate('/financialadminloging');
     } catch (error) {
       message.error('Failed to change password');
     } finally {
