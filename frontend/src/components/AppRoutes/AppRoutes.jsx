@@ -6,14 +6,14 @@ import Revenue from "../../Pages/FinancialAdmin/Revenue/Revenue";
 import LogHome from "../../Pages/LogHome/LogHome";
 import Signup from "../../Pages/SuperAdmin/Signup/Signup";
 import Verification from "../../Pages/SuperAdmin/SignupVerification/SignupVerification";
-import ForgotPassword from "../../Pages/ForgotPassword/ForgotPassword";
+import ForgotPassword from "../../Pages/Common/ForgotPassword/ForgotPassword";
 import ChangePassword from "../../Pages/Common/ChangePassword/ChangePassword";
 import FinancialAdminLogin from "../../Pages/FinancialAdmin/FinancialAdminLogin/FinancialAdminLogin";
 import AdminProfile from "../../Pages/Common/AdminProfile/AdminProfile";
-import LayoutPage from "../LayoutPage/LayoutPage";
+import LayoutPage from "../FinancialAdmin/LayoutPage/LayoutPage";
 import SuperAdminDashboard from "../../Pages/SuperAdmin/Dashboard/SuperAdminDashboard";
 import SuperAdminLogin from "../../Pages/SuperAdmin/SuperAdminLogin/SuperAdminLogin";
-import SuperAdminLayoutPage from "../../Pages/SuperAdmin/LayoutPage/LayoutPage";
+import SuperAdminLayoutPage from "../SuperAdmin/LayoutPage/LayoutPage";
 
 function AppRoutes() {
     return (

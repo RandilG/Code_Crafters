@@ -1,5 +1,5 @@
 import React from 'react';
-import IncomeInfoTableJobPoster from "../../../components/Tables/IncomeInfoTableJobPoster";
+import IncomeInfoTableJobPoster from "../../../components/FinancialAdmin/Tables/IncomeInfoTableJobPoster";
 
 function Income() {
     return (

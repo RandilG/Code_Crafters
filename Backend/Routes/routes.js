@@ -60,12 +60,12 @@ router.put('/putData', (req, res) => {
 
 // Admin routes
 const adminRegister = require('../Functions/SuperAdmin/AdminRegister/register');
-const FinancialAdminLogin = require('../Admin/FinancialAdminLogin/FinancialAdminLogin');
-const ChangePassword = require('../Admin/ChangePassword/ChangePassword');
-const resetPassword = require('../Admin/ResetPassword/ResetPassword');
-const getFinancialAdmin = require('../Admin/GetFinancilAdmin/GetFinancilAdmin');
-const updateFinancialAdmin = require('../Admin/UpdateFinancialAdmin/UpdateFinancialAdmin');
-const updateAdminPassword = require('../Admin/UpdateAdminPassword/UpdateAdminPassword');
+const FinancialAdminLogin = require('../Functions/FinancialAdmin/FinancialAdminLogin/FinancialAdminLogin');
+const ChangePassword = require('../Functions/Common/ChangePassword/ChangePassword');
+const resetPassword = require('../Functions/Common/ResetPassword/ResetPassword');
+const FetchAdminProfile = require('../Functions/Common/FetchAdminProfile/FetchAdminProfile');
+const UpdateAdminProfile = require('../Functions/Common/UpdateAdminProfile/UpdateAdminProfile');
+const updateAdminPassword = require('../Functions/Common/UpdateAdminPassword/UpdateAdminPassword');
 const SuperAdminLogin = require('../Functions/SuperAdmin/SuperAdminLogin/SuperAdminLogin')
 
 router.post('/register', (req, res) => {
@@ -89,11 +89,11 @@ router.post('/reset-password', (req, res) => {
 });
 
 router.get('/get-admin-data', (req, res) => {
-    getFinancialAdmin(req, res);
+    FetchAdminProfile(req, res);
 });
 
 router.put('/update-admin', (req, res) => {
-    updateFinancialAdmin(req, res);
+    UpdateAdminProfile(req, res);
 });
 
 router.put('/update-admin-password', (req, res) => {
@@ -101,13 +101,13 @@ router.put('/update-admin-password', (req, res) => {
 });
 
 // Financial routes
-const fetchFinancialData = require('../Functions/FinancialAdmin/FetchFinancialData');
-const FetchFinancialDataJobSeeker = require('../Functions/FinancialAdmin/FetchFinancialDataJobSeeker');
-const GetPaymetData = require('../Functions/FinancialAdmin/GetPaymetData');
-const getGroupedIncome = require('../Functions/FinancialAdmin/GetGroupedIncome');
-const getMonthlyIncome = require('../Functions/FinancialAdmin/GetMonthlyIncome');
-const GetMonthlyRevenue = require('../Functions/FinancialAdmin/GetMonthlyRevenue');
-const GetGroupedRevenue = require('../Functions/FinancialAdmin/GetGroupedRevenue');
+const fetchFinancialData = require('../Functions/FinancialAdmin/FinancialFunctions/FetchFinancialData');
+const FetchFinancialDataJobSeeker = require('../Functions/FinancialAdmin/FinancialFunctions/FetchFinancialDataJobSeeker');
+const GetPaymetData = require('../Functions/FinancialAdmin/FinancialFunctions/GetPaymetData');
+const getGroupedIncome = require('../Functions/FinancialAdmin/FinancialFunctions/GetGroupedIncome');
+const getMonthlyIncome = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyIncome');
+const GetMonthlyRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyRevenue');
+const GetGroupedRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetGroupedRevenue');
 
 router.get('/getFinancialData', (req, res) => {
     fetchFinancialData(req, res);

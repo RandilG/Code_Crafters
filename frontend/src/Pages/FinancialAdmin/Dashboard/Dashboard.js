@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DollarOutlined } from '@ant-design/icons';
 import { Card, Space, Statistic, Spin, message } from 'antd';
-import BarGraph from '../../../components/Graphs/TestGraph';
+import BarGraph from '../../../components/FinancialAdmin/Graphs/TestGraph';
 import axios from 'axios';
-import RevenueGraph from '../../../components/Graphs/RevenueGraph';
+import RevenueGraph from '../../../components/FinancialAdmin/Graphs/RevenueGraph';
 
 
 function Dashboard() {
@@ -45,7 +45,7 @@ function Dashboard() {
 
   return (
         <div className="PageContent">
-          <div className="min-h-screen flex items-center justify-center">
+          <div className="flex items-center justify-center">
             <div className="Cards">
               <Space direction="horizontal" style={{ margin: '5%' }}>
                 <Card>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import "../../App.css";
 import profileImage from '../../Assets/image.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const LogHome = () => {
   const [role, setRole] = useState('');
@@ -25,7 +25,7 @@ const LogHome = () => {
             <img
               src={profileImage}
               alt="Profile"
-              className="w-56 h-56 rounded-full"
+              className="w-100 h-80"
             />
           </div>
         </div>
@@ -50,11 +50,6 @@ const LogHome = () => {
               className="px-4 py-2 text-orange-500 transition bg-white border border-orange-500 rounded-full hover:bg-orange-500 hover:text-white"
             >
               Login
-            </button>
-            <button className="px-4 py-2 text-orange-500 transition bg-white border border-orange-500 rounded-full hover:bg-orange-500 hover:text-white">
-              <Link to='/signup'>
-                Sign Up
-              </Link>
             </button>
           </div>
         </div>
