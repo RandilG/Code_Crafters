@@ -163,7 +163,7 @@ const Dashboard = (props: any) => {
                                 <Entypo name={"chat"} size={35} color={"#FFF"} />
                                 <Text style={styles.btnOrangeTxt}>CHAT{'\n'}WITH US</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("WithdrawSuccess")}>
+                            <TouchableOpacity style={styles.btnOrange} onPress={() => props.navigation.navigate("MyProfile")}>
                                 <FontAwesome name={"user-circle-o"} size={35} color={"#FFF"} />
                                 <Text style={styles.btnOrangeTxt}>MY{'\n'}PROFILE</Text>
                             </TouchableOpacity>

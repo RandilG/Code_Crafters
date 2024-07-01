@@ -24,11 +24,32 @@ const MobOtp = (props: any) => {
     const [seekerFName, setSeekerFName] = useState<any>();
     const [seekerLName, setSeekerLName] = useState<any>();
 
+    //Use when profile update
+    const [userName, setUserName] = useState<string>("");
+    const [fLine, setFLine] = useState<string>("");
+    const [sLine, setSLine] = useState<string>("");
+    const [street, setStreet] = useState<string>("");
+    const [city, setCity] = useState<string>("");
+    const [profilePic, setProfilePic] = useState<string>();
 
     useEffect(() => {
         setIsError(false);
         setIsLoading(true);
         setIsBtnLoading(false);
+        if (props.route.params.from === "signup") {
+            getData();
+        } else if (props.route.params.from === "profile") {
+            setUserName(props.route.params.userName);
+            setSeekerFName(props.route.params.fName);
+            setSeekerLName(props.route.params.lName);
+            setMobNumber(props.route.params.mobNum);
+            setFLine(props.route.params.addFLine);
+            setSLine(props.route.params.addSline);
+            setStreet(props.route.params.street);
+            setCity(props.route.params.city);
+            setProfilePic(props.route.params.profilePic);
+            setIsLoading(false);
+        }
 
         async function getData() {
             setSeekerFName(await AsyncStorage.getItem('firstName'));
@@ -37,8 +58,6 @@ const MobOtp = (props: any) => {
             setEmail(await AsyncStorage.getItem('email'));
             setIsLoading(false);
         }
-
-        getData();
     }, [])
 
     const [value, setValue] = useState<string>('');
@@ -59,8 +78,13 @@ const MobOtp = (props: any) => {
             const resp = await axios.get(server + `verifyOtp/${mobNumber}/${value}`);
             if (resp.data === HttpStatusCode.Accepted) {
                 setIsLoading(true);
-                if (formattedMobNo !== "") await AsyncStorage.setItem('mobNo', mobNumber);
-                sendMailOtp();
+                if (props.route.params.from === "signup") {
+                    if (formattedMobNo !== "") await AsyncStorage.setItem('mobNo', mobNumber);
+                    sendMailOtp();
+                } else if(props.route.params.from === "profile") {
+                    executeUpdate();
+                }
+
             } else if (resp.data === HttpStatusCode.NotAcceptable) {
                 setErrorTitle("Oops...!!");
                 setErrorMsg("Invalid OTP");
@@ -124,7 +148,7 @@ const MobOtp = (props: any) => {
     async function checkValidation(): Promise<boolean> {
         const seekerVali = new SeekerVali();
         let resp: SignupErr;
-        if(!newMobNumber) return false;
+        if (!newMobNumber) return false;
 
         resp = await seekerVali.mobileNo(newMobNumber);
         setIsNewMobErr(resp.isValid);
@@ -134,19 +158,19 @@ const MobOtp = (props: any) => {
     }
 
     //Send OTP to new number
-    async function sendNewNumberOtp(){
+    async function sendNewNumberOtp() {
         try {
             setIsModalBtnLoading(true);
             Keyboard.dismiss();
             const isValid = await checkValidation();
-            if(isValid){
+            if (isValid) {
                 setIsMobNoChange(false);
                 const resp = await axios.post(server + 'sendMobOtp', { "fName": seekerFName, "lName": seekerLName, "mobNo": formattedMobNo });
                 if (resp.data === HttpStatusCode.Ok) {
                     setMobNumber(formattedMobNo);
                     setIsModalBtnLoading(false);
                     setIsModalOpen(false);
-                }else{
+                } else {
                     setErrorTitle("Oops...!!");
                     setErrorMsg("Something went wrong");
                     setIsError(true);
@@ -188,6 +212,44 @@ const MobOtp = (props: any) => {
             setIsBtnLoading(false);
         }
     }
+
+    //Use when profile update
+    const executeUpdate = async () => {
+        try {
+            const resp = await axios.put(server + `updateProfile/${userName}`, {
+                "mobNum": formattedMobNo == "" ? mobNumber : formattedMobNo,
+                "addFLine": fLine,
+                "addSline": sLine,
+                "street": street,
+                "city": city,
+                "profilePic": profilePic
+            });
+
+            if (resp.data == HttpStatusCode.Ok) {
+                setIsLoading(false);
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'MyProfile',
+                    }]
+                })
+            } else {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+                setIsBtnLoading(false);
+            }
+
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+            setIsBtnLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={extStyles.body}>
@@ -233,7 +295,7 @@ const MobOtp = (props: any) => {
                     </View>
                     <View style={styles.resendMsgContainer}>
                         <Text style={styles.resendMsgTxt}>OTP not received? <Text style={styles.resendTxt} onPress={() => sendMobOtp()}>RESEND</Text></Text>
-                        {isFirstAttemptFail ? <Text style={styles.resendMsgTxt}>OR{'\n'}<Text style={styles.resendTxt} onPress={() => setIsModalOpen(true)}>CHANGE</Text> Mobile Number</Text> : null }
+                        {isFirstAttemptFail ? <Text style={styles.resendMsgTxt}>OR{'\n'}<Text style={styles.resendTxt} onPress={() => setIsModalOpen(true)}>CHANGE</Text> Mobile Number</Text> : null}
                     </View>
                     <View style={styles.btnContainer}>
                         <TouchableOpacity style={styles.btn} onPress={() => verifyOtp()} disabled={isBtnLoading}>
@@ -257,7 +319,7 @@ const MobOtp = (props: any) => {
                     </View>
                     <View style={styles.mobElementContainer}>
                         <View style={{ ...styles.element, ...{ borderBottomColor: isNewMobErr ? "#F2994A" : "#FF4122" } }}>
-                            <TextInput value={newMobNumber || isMobNoChange ? newMobNumber : mobNumber} keyboardType={"phone-pad"} style={styles.mobTxtInput} maxLength={12} onChangeText={(value) => {setNewMobNumber(value), setIsMobNoChange(true)}}/>
+                            <TextInput value={newMobNumber || isMobNoChange ? newMobNumber : mobNumber} keyboardType={"phone-pad"} style={styles.mobTxtInput} maxLength={12} onChangeText={(value) => { setNewMobNumber(value), setIsMobNoChange(true) }} />
                         </View>
                         {!isNewMobErr ? <Text style={styles.errorMsgTxt}>{newMobErr}</Text> : null}
                     </View>

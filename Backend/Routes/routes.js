@@ -67,6 +67,16 @@ const getWalletData = require('../Functions/JobSeeker/Wallet/getWalletData');
 const checkBankAccount = require('../Functions/JobSeeker/Wallet/checkBankAccount');
 const createBankAc = require('../Functions/JobSeeker/Wallet/createBankAc');
 const withdraw = require('../Functions/JobSeeker/Wallet/withdraw');
+const getProfile = require('../Functions/JobSeeker/GetData/profile');
+const updateProfile = require('../Functions/JobSeeker/Profile/update');
+
+router.put('/updateProfile/:userName', (req, res) => {
+    updateProfile(req, res);
+})
+
+router.get('/profile/:userName', (req, res) => {
+    getProfile(req, res);
+});
 
 router.post('/withdraw', (req, res) => {
     withdraw(req, res);

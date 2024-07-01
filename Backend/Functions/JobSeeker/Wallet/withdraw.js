@@ -76,7 +76,6 @@ module.exports = async function withdraw(req, res) {
         };
 
         resp = await client.post("transfers", transferRequest);
-        console.log(resp);
 
         await queryAsync("COMMIT"); 
 

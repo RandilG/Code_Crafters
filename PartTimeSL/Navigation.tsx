@@ -20,6 +20,7 @@ import RatePoster from "./screens/RatePoster";
 import Chat from "./screens/Chat";
 import AddBankAc from "./screens/AddBankAc";
 import WithdrawSuccess from "./screens/WithdrawSuccess";
+import MyProfile from "./screens/MyProfile";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="MyProfile" component={MyProfile} />
                 <Stack.Screen name="WithdrawSuccess" component={WithdrawSuccess} />
                 <Stack.Screen name="AddBankAc" component={AddBankAc} />
                 <Stack.Screen name="Chat" component={Chat} />

@@ -207,7 +207,7 @@ const Signup = (props: any) => {
             } else {
                 props.navigation.reset({
                     index: 0,
-                    routes: [{ name: 'MobOtp' }]
+                    routes: [{ name: 'MobOtp', params: {from: 'signup'} }]
                 });
             }
         } catch (error) {
