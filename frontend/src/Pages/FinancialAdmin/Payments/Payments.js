@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space } from "antd";
-import PaymentInfoTable from "../../components/Tables/PaymentInfoTable";
-import IncomeInfoTableJobSeeker from "../../components/Tables/IncomeInfoTableJobSeekers";
+import PaymentInfoTable from "../../../components/Tables/PaymentInfoTable";
+import IncomeInfoTableJobSeeker from "../../../components/Tables/IncomeInfoTableJobSeekers";
 
 
 function Payments() {

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { DollarOutlined } from '@ant-design/icons';
 import { Card, Space, Statistic, Spin, message } from 'antd';
-import BarGraph from '../../components/Graphs/TestGraph';
+import BarGraph from '../../../components/Graphs/TestGraph';
 import axios from 'axios';
-import RevenueGraph from '../../components/Graphs/RevenueGraph';
+import RevenueGraph from '../../../components/Graphs/RevenueGraph';
 
 
 function Dashboard() {

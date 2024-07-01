@@ -42,7 +42,7 @@ const Verification = () => {
 
         if (saveResponse.status === 200) {
           localStorage.removeItem('formData');
-          navigate('/dashboard');
+          navigate('/SuperAdmin/SuperAdminDashboard');
         } else {
           setError(saveResponse.data.error || 'Failed to save user data');
         }

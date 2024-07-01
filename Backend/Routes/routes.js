@@ -59,7 +59,6 @@ router.put('/putData', (req, res) => {
 });
 
 // Admin routes
-// const login = require('../Admin/login');
 const adminRegister = require('../Functions/SuperAdmin/AdminRegister/register');
 const FinancialAdminLogin = require('../Admin/FinancialAdminLogin/FinancialAdminLogin');
 const ChangePassword = require('../Admin/ChangePassword/ChangePassword');
@@ -67,10 +66,7 @@ const resetPassword = require('../Admin/ResetPassword/ResetPassword');
 const getFinancialAdmin = require('../Admin/GetFinancilAdmin/GetFinancilAdmin');
 const updateFinancialAdmin = require('../Admin/UpdateFinancialAdmin/UpdateFinancialAdmin');
 const updateAdminPassword = require('../Admin/UpdateAdminPassword/UpdateAdminPassword');
-
-// router.post('/login', (req, res) => {
-//     login(req, res);
-// });
+const SuperAdminLogin = require('../Functions/SuperAdmin/SuperAdminLogin/SuperAdminLogin')
 
 router.post('/register', (req, res) => {
     adminRegister(req, res);
@@ -78,6 +74,10 @@ router.post('/register', (req, res) => {
 
 router.post('/financial-admin-login', (req, res) => {
     FinancialAdminLogin(req, res);
+});
+
+router.post('/super-admin-login', (req, res) => {
+    SuperAdminLogin(req, res);
 });
 
 router.post('/financial-admin-change-password', (req, res) => {

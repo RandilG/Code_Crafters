@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
-const connection = require('../../Services/connection');
+const connection = require('../../../Services/connection');
 
-async function FinancialAdminLogin(req, res) {
+async function SuperAdminLogin(req, res) {
     const { email, password } = req.body;
 
     try {
-        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Financial'";
+        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Super'";
         connection.query(sql, [email], async (err, result) => {
             if (err) {
                 console.error("Error during login query:", err);
@@ -33,9 +33,9 @@ async function FinancialAdminLogin(req, res) {
             }
         });
     } catch (error) {
-        console.error("Error in FinancialAdminLogin:", error);
+        console.error("Error in SuperAdminLogin:", error);
         return res.status(500).send("Internal server error.");
     }
 }
 
-module.exports = FinancialAdminLogin;
+module.exports = SuperAdminLogin;

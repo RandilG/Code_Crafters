@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 import { BellFilled, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Dropdown, Menu, Space, Button } from "antd";
 import "./Header.css";
@@ -39,18 +40,23 @@ const Header = () => {
       <Menu.Item key="2">
         Email: {userData.Email}
       </Menu.Item>
-      
+
     </Menu>
   );
 
   return (
     <div className="header-container">
       <div className="logo">
-        <img src={logo} /> 
+        <img src={logo} alt="Company Logo" />
       </div>
+
+
       <div className="notification">
-        <BellFilled style={{ color: 'white' }} />
+        <Link to="/financialAdmin/Notification">
+          <BellFilled style={{ color: 'white' }} />
+        </Link>
       </div>
+
       <div className="profile">
         <Dropdown
           overlay={menu}
