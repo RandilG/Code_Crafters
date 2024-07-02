@@ -88,9 +88,8 @@ const Login = (props: any) => {
     //Get seeker name and earning coins
     async function getSeekerData(userName: string) {
         try {
-            const resp = await axios.get(server + `dashboard/${userName}`);
+            const resp = await axios.get(server + `getGender/${userName}`);
             if (resp.data !== HttpStatusCode.InternalServerError && resp.data !== HttpStatusCode.NotFound) {
-                await AsyncStorage.multiSet([['name', resp.data.firstName], ['coins', String(resp.data.coins)], ['badge', String(resp.data.badge)]]);
                 await EncryptedStorage.setItem('gender', resp.data.gender);
                 //Navigate to the dashboard
                 props.navigation.reset({

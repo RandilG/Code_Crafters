@@ -10,10 +10,19 @@ import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import ErrorPopup from "../components/ErrorPopUp";
+import AppLoader from "../components/AppLoader";
+import { setErrorMsg, setErrorTitle } from "../global/variable";
+import axios, { HttpStatusCode } from "axios";
+import { server } from "../service/constant";
 
 const Dashboard = (props: any) => {
     const [carouselWidth, setCarouselWidth] = useState<number>(0);
     const carouselRef = useRef<any>(null);
+
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
     let activeIndex: number = 0;
 
@@ -73,20 +82,40 @@ const Dashboard = (props: any) => {
     const [name, setName] = useState<any>();
     const [coins, setCoins] = useState<any>();
     const [badge, setBadge] = useState<any>();
-    //Get dashboard data from local storage
+    const [rate, setRate] = useState<number>(0);
+    const [reviews, setReviews] = useState<any[]>([]);
+    //Get dashboard data
     async function getData() {
-        setName(await AsyncStorage.getItem('name'));
-        setCoins(await AsyncStorage.getItem('coins'));
-        setBadge(await AsyncStorage.getItem('badge'));
+        try {
+            setIsLoading(true);
+            const session = await EncryptedStorage.getItem('session');
+            let uName: string = '';
+            if (session) uName = JSON.parse(session).userName;
+            const resp = await axios.get(server + `dashboard/${uName}`);
+            if (resp.data !== HttpStatusCode.NotFound && resp.data !== HttpStatusCode.InternalServerError) {
+                setName(resp.data.firstName);
+                setCoins(resp.data.coins);
+                setBadge(resp.data.badge)
+                setRate(resp.data.rates);
+                setReviews(resp.data.reviews);
+                setIsLoading(false);
+            } else {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+        }
     }
 
     async function Logout() {
-        await EncryptedStorage.clear();
-        await AsyncStorage.clear();
-        props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }]
-        });
+
     }
 
     return (
@@ -123,7 +152,7 @@ const Dashboard = (props: any) => {
                         </View>
                     </View>
                 </View>
-                <ScrollView style={{ width: '100%', height: '100%' }}>
+                <ScrollView style={{ width: '100%', height: '100%' }} showsVerticalScrollIndicator={false}>
                     <View style={styles.carouselOutBox}>
                         <View style={styles.carouselConatiner} onLayout={(event) => { const { width } = event.nativeEvent.layout; setCarouselWidth(width) }}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={carouselRef} pagingEnabled onScroll={handleScroll} scrollEventThrottle={200}>
@@ -169,14 +198,139 @@ const Dashboard = (props: any) => {
                             </TouchableOpacity>
                         </View>
                     </View>
+                    <View style={styles.rateCard}>
+                        <View style={{ height: '100%', width: '70%' }}>
+                            <Text style={styles.rateCardTitle}>My Ratings</Text>
+                            <View style={styles.starConatiner}>
+                                <Ionicons name="star" size={35} color={rate >= 1 ? "#FCE404" : "#C3C3C3"} />
+                                <Ionicons name="star" size={35} color={rate >= 2 ? "#FCE404" : "#C3C3C3"} style={styles.star} />
+                                <Ionicons name="star" size={35} color={rate >= 3 ? "#FCE404" : "#C3C3C3"} style={styles.star} />
+                                <Ionicons name="star" size={35} color={rate >= 4 ? "#FCE404" : "#C3C3C3"} style={styles.star} />
+                                <Ionicons name="star" size={35} color={rate >= 5 ? "#FCE404" : "#C3C3C3"} style={styles.star} />
+                            </View>
+                        </View>
+                        <View style={{ height: '100%', width: '30%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={styles.rateNumber}>{rate}</Text>
+                        </View>
+                    </View>
+                    <Text style={styles.reviewTitle}>My Reviews</Text>
+                    {
+                        reviews.length !== 0 ?
+                            reviews.map((review, index) => (
+                                <RateCard key={index} name={review.posterName} rates={review.rate} review={review.review} />
+                            ))
+                            :
+                            <Text style={styles.noContentTxt}>No reviews to show</Text>
+                    }
                 </ScrollView>
             </View>
+            {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
+            {isLoading ? <AppLoader /> : null}
         </SafeAreaView>
     )
 }
 
+const RateCard: React.FC<any> = ({ name, rates, review }) => {
+    return (
+        <View style={styles.reviewCard}>
+            <View style={styles.reviewCardHeader}>
+                <View style={{ width: '60%' }}>
+                    <Text style={styles.posterName}>{name}</Text>
+                </View>
+                <View style={{ width: '40%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                    <MaterialIcons name={"star"} size={20} color={'#FCE404'} />
+                    <MaterialIcons name={"star"} size={20} color={rates >= 2 ? '#FCE404' : '#C3C3C3'} />
+                    <MaterialIcons name={"star"} size={20} color={rates >= 3 ? '#FCE404' : '#C3C3C3'} />
+                    <MaterialIcons name={"star"} size={20} color={rates >= 4 ? '#FCE404' : '#C3C3C3'} />
+                    <MaterialIcons name={"star"} size={20} color={rates == 5 ? '#FCE404' : '#C3C3C3'} />
+                </View>
+            </View>
+            <View>
+                <Text style={styles.reviewTxt}>{review}</Text>
+            </View>
+        </View>
+    );
+}
+
 
 const styles = StyleSheet.create({
+    noContentTxt: {
+        textAlign: 'center',
+        fontStyle: 'italic',
+        fontWeight: '500',
+        fontSize: 14,
+        color: '#9AA5B1'
+    },
+
+    reviewTxt: {
+        fontSize: 14,
+        color: '#373737',
+        textAlign: 'justify'
+    },
+
+    posterName: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#FE8235'
+    },
+
+    reviewCardHeader: {
+        width: '100%',
+        flexDirection: 'row',
+    },
+
+    reviewCard: {
+        width: '90%',
+        backgroundColor: '#FFF',
+        alignSelf: 'center',
+        borderRadius: 10,
+        marginVertical: 5,
+        elevation: 5,
+        padding: 10
+    },
+
+    reviewTitle: {
+        textAlign: 'center',
+        fontSize: 16,
+        color: '#373737',
+        fontWeight: '700'
+    },
+
+    rateNumber: {
+        fontSize: 50,
+        color: '#373737',
+        fontWeight: '700'
+    },
+
+    star: {
+        marginHorizontal: 4
+    },
+
+    starConatiner: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 10
+    },
+
+    rateCardTitle: {
+        fontSize: 18,
+        color: '#373737',
+        fontWeight: '600'
+    },
+
+    rateCard: {
+        width: '90%',
+        height: 100,
+        backgroundColor: "#FFF",
+        borderRadius: 20,
+        elevation: 5,
+        alignSelf: 'center',
+        padding: 10,
+        marginVertical: 15,
+        flexDirection: 'row'
+    },
+
     btnOrangeTxt: {
         fontSize: 15,
         color: "#FFF",

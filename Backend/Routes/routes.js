@@ -71,6 +71,11 @@ const getProfile = require('../Functions/JobSeeker/GetData/profile');
 const updateProfile = require('../Functions/JobSeeker/Profile/update');
 const changePassword = require('../Functions/JobSeeker/Profile/changePassword');
 const deleteAccount = require('../Functions/JobSeeker/Profile/deleteAccount');
+const getGender = require('../Functions/JobSeeker/GetData/getGender');
+
+router.get('/getGender/:userName', (req, res) => {
+    getGender(req, res);
+})  
 
 router.put('/deleteAccount/:userName', (req, res) => {
     deleteAccount(req, res);
