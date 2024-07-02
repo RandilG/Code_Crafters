@@ -69,6 +69,11 @@ const createBankAc = require('../Functions/JobSeeker/Wallet/createBankAc');
 const withdraw = require('../Functions/JobSeeker/Wallet/withdraw');
 const getProfile = require('../Functions/JobSeeker/GetData/profile');
 const updateProfile = require('../Functions/JobSeeker/Profile/update');
+const changePassword = require('../Functions/JobSeeker/Profile/changePassword');
+
+router.put('/changePassword/:userName', (req, res) => {
+    changePassword(req, res);
+})
 
 router.put('/updateProfile/:userName', (req, res) => {
     updateProfile(req, res);

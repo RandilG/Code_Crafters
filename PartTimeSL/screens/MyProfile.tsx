@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { BackHandler, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import LottieView from "lottie-react-native";
 import Feather from "react-native-vector-icons/Feather";
 import ErrorPopup from "../components/ErrorPopUp";
@@ -19,6 +19,27 @@ import SeekerVali from "../validations/seekerVali";
 
 
 const MyProfile = (props: any) => {
+
+    //Handle back event
+    useEffect(() => {
+        const backAction = () => {
+            props.navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Dashboard',
+                }]
+            })
+          return true;
+        };
+    
+        const backHandler = BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction
+        );
+    
+        return () => backHandler.remove();
+      }, []);
+
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
@@ -36,9 +57,9 @@ const MyProfile = (props: any) => {
     const [street, setStreet] = useState<string>("");
     const [city, setCity] = useState<string>("");
     const [profilePic, setProfilePic] = useState<string>();
+    const [previousMobNo, setPreviousMobNo] = useState<string>("");
 
     let formattedMobNo: string;
-    let previousMobNo: string;
 
     //Fetch seeker profile data
     const getData = async () => {
@@ -53,7 +74,7 @@ const MyProfile = (props: any) => {
                 setLastName(resp.data.lNAme);
                 setMobileNumber(resp.data.mobNum);
                 formattedMobNo = resp.data.mobNum;
-                previousMobNo = resp.data.mobNum;
+                setPreviousMobNo(resp.data.mobNum);
                 setBirthDay(resp.data.dob);
                 setNic(resp.data.nic);
                 setFLine(resp.data.addFline);
@@ -192,9 +213,11 @@ const MyProfile = (props: any) => {
 
         //Acceptable mobile number formats --> (0771234567, 94771234567, +94771234567)
         resp = await seekerVali.mobileNo(mobileNumber);
-        setValidation((prev) => ({ ...prev, mobNumError: resp.error, mobNum: resp.isValid }));
         formattedMobNo = resp.content;
-        if (isValid) isValid = resp.isValid;
+        if(formattedMobNo !== mobileNumber){
+            setValidation((prev) => ({ ...prev, mobNumError: resp.error, mobNum: resp.isValid }));
+            if (isValid) isValid = resp.isValid;
+        }
 
         resp = await seekerVali.checkAddFLineValidity(fLine);
         setValidation((prev) => ({ ...prev, addressError: resp.error, fLine: resp.isValid }));
@@ -288,6 +311,7 @@ const MyProfile = (props: any) => {
             });
 
             if (resp.data == HttpStatusCode.Ok) {
+                setIsLoading(false);
                 props.navigation.navigate("MyProfile");
             } else {
                 setErrorTitle("Oops...!!");
@@ -424,7 +448,7 @@ const MyProfile = (props: any) => {
                                 }
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#FE8235' } }}>
+                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#FE8235' } }} onPress={() => props.navigation.navigate("ChangePassword")}>
                                 <Text style={{ ...styles.btnTxt, ...{ color: '#FFF' } }}>Change Password</Text>
                             </TouchableOpacity>
 
