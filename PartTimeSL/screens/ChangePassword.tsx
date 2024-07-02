@@ -92,8 +92,12 @@ const ChangePassword = (props: any) => {
 
     const handleChange = async () => {
         try {
+            setIsLoading(true);
             const isValid = await checkValidation();
-            if (!isValid) return;
+            if (!isValid){
+                setIsLoading(false);
+                return
+            };
 
             const session = await EncryptedStorage.getItem('session');
             let uName: string = '';
@@ -322,8 +326,8 @@ const styles = StyleSheet.create({
         elevation: 5,
         position: 'absolute',
         zIndex: 1,
-        bottom: 50,
-        top: 50,
+        bottom: 100,
+        top: 100,
         padding: 10
     },
 
