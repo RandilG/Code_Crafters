@@ -16,6 +16,10 @@ import ImagePopUp from "../components/ImagePopUp";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { firebaseApp } from "../service/firebase";
 import SeekerVali from "../validations/seekerVali";
+import DeleteAccountPopUp from "../components/DeleteAccountPopUp";
+import Modal from "react-native-modal";
+import Entypo from "react-native-vector-icons/Entypo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const MyProfile = (props: any) => {
@@ -29,16 +33,16 @@ const MyProfile = (props: any) => {
                     name: 'Dashboard',
                 }]
             })
-          return true;
+            return true;
         };
-    
+
         const backHandler = BackHandler.addEventListener(
-          'hardwareBackPress',
-          backAction
+            'hardwareBackPress',
+            backAction
         );
-    
+
         return () => backHandler.remove();
-      }, []);
+    }, []);
 
     const [isError, setIsError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -214,7 +218,7 @@ const MyProfile = (props: any) => {
         //Acceptable mobile number formats --> (0771234567, 94771234567, +94771234567)
         resp = await seekerVali.mobileNo(mobileNumber);
         formattedMobNo = resp.content;
-        if(formattedMobNo !== mobileNumber){
+        if (formattedMobNo !== mobileNumber) {
             setValidation((prev) => ({ ...prev, mobNumError: resp.error, mobNum: resp.isValid }));
             if (isValid) isValid = resp.isValid;
         }
@@ -235,6 +239,9 @@ const MyProfile = (props: any) => {
 
         return isValid;
     }
+
+    //Delete account functions
+    const [isDeletePressed, setIsDeletePressed] = useState<boolean>(false);
 
     const updateSeeker = async () => {
         try {
@@ -330,6 +337,60 @@ const MyProfile = (props: any) => {
             setIsBtnLoading(false);
         }
     };
+
+    //Handle delete account
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
+
+    const openPasswordModal = () => {
+        setIsDeletePressed(false);
+        setIsPasswordModalOpen(true);
+    };
+
+    const executeDelete = async (password: string) => {
+        try {
+            setIsPasswordModalOpen(false);
+            setIsLoading(true);
+            const resp = await axios.put(server + `deleteAccount/${userName}`, {
+                password: password
+            });
+            if (resp.data === HttpStatusCode.Ok) {
+                //Navigate to login screen
+                await EncryptedStorage.clear();
+                await AsyncStorage.clear();
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }]
+                });
+            } else if (resp.data === HttpStatusCode.NotAcceptable) {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Invalid password");
+                setIsError(true);
+                setIsLoading(false);
+            } else {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+        }
+    };
+
+    //Handle logout process
+    const logout = async() => {
+        //Navigate to login screen
+        await EncryptedStorage.clear();
+        await AsyncStorage.clear();
+        props.navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }]
+        });
+    }
 
 
     return (
@@ -444,22 +505,21 @@ const MyProfile = (props: any) => {
                                         <LottieView source={require('../assets/jsons/btn_loader.json')} loop autoPlay style={styles.btnLoader} />
                                     </View>
                                     :
-                                    <Text style={{ ...styles.btnTxt, ...{ color: '#FFF' } }}>Update Profile</Text>
+                                    <Text style={styles.btnTxt}>Update Profile</Text>
                                 }
                             </TouchableOpacity>
 
                             <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#FE8235' } }} onPress={() => props.navigation.navigate("ChangePassword")}>
-                                <Text style={{ ...styles.btnTxt, ...{ color: '#FFF' } }}>Change Password</Text>
+                                <Text style={styles.btnTxt}>Change Password</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#FF4747' } }}>
-                                <Text style={{ ...styles.btnTxt, ...{ color: '#FFF' } }}>Delete Account</Text>
+                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#FF4747' } }} onPress={() => setIsDeletePressed(true)}>
+                                <Text style={styles.btnTxt}>Delete Account</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#373737' } }}>
-                                <Text style={{ ...styles.btnTxt, ...{ color: '#FFF' } }}>Logout</Text>
+                            <TouchableOpacity style={{ ...styles.button, ...{ backgroundColor: '#373737' } }} onPress={() => logout()}>
+                                <Text style={styles.btnTxt}>Logout</Text>
                             </TouchableOpacity>
-
                         </ScrollView>
                     </View>
                 </View>
@@ -467,11 +527,107 @@ const MyProfile = (props: any) => {
             {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : null}
             {isLoading ? <AppLoader /> : null}
             {isModalOpen ? <ImagePopUp closeModal={() => setIsModalOpen(false)} openCamera={captureDoc} openFiles={selectDoc} /> : null}
+            {isDeletePressed ? <DeleteAccountPopUp colseConfirm={() => setIsDeletePressed(false)} proceedDelete={() => openPasswordModal()} /> : null}
+            {isPasswordModalOpen ? <PasswordModal setIsPasswordModalOpen={setIsPasswordModalOpen} executeDelete={executeDelete}/> : null}
         </SafeAreaView>
     );
 };
 
+const PasswordModal: React.FC<any> = ({ setIsPasswordModalOpen, executeDelete}) => {
+    const [password, setPassword] = useState<string>("");
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    return (
+        <Modal isVisible={true} backdropOpacity={0.4} style={styles.modal} animationIn={'fadeIn'} animationOut={'fadeOut'} animationInTiming={500} animationOutTiming={500}>
+            <View style={styles.passwordContainer}>
+                <Text style={styles.passwordTitle}>Enter Password</Text>
+                <View style={styles.elementContainer}>
+                    <View style={{ ...styles.element, ...{ flexDirection: 'row', height: 50, borderBottomColor: "#F2994A" } }}>
+                        <View style={{ width: '90%', height: '100%', justifyContent: 'center' }}>
+                            <TextInput style={styles.input} keyboardType={"default"} onChangeText={(value: any) => setPassword(value)} secureTextEntry={!isPasswordVisible} />
+                        </View>
+                        <View style={{ width: '10%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                            <Entypo name={isPasswordVisible ? "eye" : "eye-with-line"} size={20} color={"rgba(242, 153, 74, 0.6)"} onPress={() => setIsPasswordVisible(!isPasswordVisible)} />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.modalBtnConatiner}>
+                    <TouchableOpacity style={styles.cancelBtn} onPress={() => setIsPasswordModalOpen(false)}>
+                        <Text style={styles.btnTxt}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.deleteBtn, ...{ opacity: password === "" ? .6 : 1 } }} disabled={password === ""} onPress={() => executeDelete(password)}>
+                        <Text style={styles.btnTxt}>Delete</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    );
+}
+
 const styles = StyleSheet.create({
+    deleteBtn: {
+        width: 100,
+        height: 35,
+        backgroundColor: '#FF4747',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    cancelBtn: {
+        width: 100,
+        height: 35,
+        backgroundColor: '#373737',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    modalBtnConatiner: {
+        width: '100%',
+        height: 90,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingVertical: 20
+    },
+
+    input: {
+        fontSize: 14,
+        color: '#373737'
+    },
+
+    element: {
+        width: '100%',
+        borderBottomWidth: 1,
+        borderBottomColor: '#F2994A',
+        flexDirection: 'row'
+    },
+
+    elementContainer: {
+        marginTop: 10,
+        width: '100%'
+    },
+
+    passwordTitle: {
+        textAlign: 'center',
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#FE8235'
+    },
+
+    passwordContainer: {
+        height: 200,
+        width: '90%',
+        backgroundColor: '#FFF',
+        borderRadius: 15,
+        padding: 15
+    },
+
+    modal: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     btnLoader: {
         width: '80%',
         height: '80%',
@@ -499,7 +655,8 @@ const styles = StyleSheet.create({
 
     btnTxt: {
         fontSize: 16,
-        fontWeight: '700'
+        fontWeight: '700',
+        color: '#FFF'
     },
 
     button: {

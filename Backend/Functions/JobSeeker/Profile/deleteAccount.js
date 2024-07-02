@@ -2,27 +2,24 @@ const { HttpStatusCode } = require('axios');
 const connection = require('../../../Services/connection');
 const bcrypt = require('bcrypt');
 
-module.exports = async function changePassword(req, res) {
+module.exports = async function deleteAccount(req, res){
     try {
-        const { userName } = req.params;
-        const { currentPassword, newPassword } = req.body;
+        const {userName} = req.params;
+        const {password} = req.body;
 
         const query1 = "SELECT password FROM parttime_srilanka.job_seeker WHERE job_seeker.UserName = ?;";
 
         let resp = await queryAsync(query1, userName);
 
         const encryptedPW = resp[0].password;
-        const isMatch = await bcrypt.compare(currentPassword, encryptedPW);
+        const isMatch = await bcrypt.compare(password, encryptedPW);
 
         if (!isMatch) return res.json(HttpStatusCode.NotAcceptable);
 
-        const saltRound = 10;
-        const encryptedPassword = await bcrypt.hash(newPassword, saltRound);
+        const query2 = "UPDATE `parttime_srilanka`.`job_seeker` SET `terminated` = '1' WHERE (`UserName` = ?);";
 
-        const query2 = "UPDATE `parttime_srilanka`.`job_seeker` SET `password` = ? WHERE (`UserName` = ?);"
-
-        await queryAsync(query2, [encryptedPassword, userName]);
-
+        await queryAsync(query2, userName);
+      
         return res.json(HttpStatusCode.Ok);
     } catch (error) {
         console.log(error);

@@ -70,6 +70,11 @@ const withdraw = require('../Functions/JobSeeker/Wallet/withdraw');
 const getProfile = require('../Functions/JobSeeker/GetData/profile');
 const updateProfile = require('../Functions/JobSeeker/Profile/update');
 const changePassword = require('../Functions/JobSeeker/Profile/changePassword');
+const deleteAccount = require('../Functions/JobSeeker/Profile/deleteAccount');
+
+router.put('/deleteAccount/:userName', (req, res) => {
+    deleteAccount(req, res);
+})
 
 router.put('/changePassword/:userName', (req, res) => {
     changePassword(req, res);
