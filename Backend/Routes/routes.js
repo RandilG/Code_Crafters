@@ -58,7 +58,7 @@ router.put('/putData', (req, res) => {
     updateData(req, res);
 });
 
-// Admin routes
+// Super Admin routes
 const adminRegister = require('../Functions/SuperAdmin/AdminRegister/register');
 const FinancialAdminLogin = require('../Functions/FinancialAdmin/FinancialAdminLogin/FinancialAdminLogin');
 const ChangePassword = require('../Functions/Common/ChangePassword/ChangePassword');
@@ -66,7 +66,11 @@ const resetPassword = require('../Functions/Common/ResetPassword/ResetPassword')
 const FetchAdminProfile = require('../Functions/Common/FetchAdminProfile/FetchAdminProfile');
 const UpdateAdminProfile = require('../Functions/Common/UpdateAdminProfile/UpdateAdminProfile');
 const updateAdminPassword = require('../Functions/Common/UpdateAdminPassword/UpdateAdminPassword');
-const SuperAdminLogin = require('../Functions/SuperAdmin/SuperAdminLogin/SuperAdminLogin')
+const SuperAdminLogin = require('../Functions/SuperAdmin/SuperAdminLogin/SuperAdminLogin');
+const adminCount = require ('../Functions/SuperAdmin/AdminCount/AdminCount');
+const jobCount = require('../Functions/SuperAdmin/JobCount/JobCount');
+const GetAdminList = require('../Functions/SuperAdmin/GetAdminList/getAdminList');
+const UpdateAdminStatus = require('../Functions/SuperAdmin/UpdateAdminStatus/UpdateAdminStatus');
 
 router.post('/register', (req, res) => {
     adminRegister(req, res);
@@ -98,6 +102,22 @@ router.put('/update-admin', (req, res) => {
 
 router.put('/update-admin-password', (req, res) => {
     updateAdminPassword(req, res);
+});
+
+router.get('/get-admin-count', (req, res) => {
+  adminCount(req, res);
+});
+
+router.get('/get-job-count', (req, res) => {
+  jobCount(req, res);
+});
+
+router.get('/get-admin-list', (req, res) =>{
+  GetAdminList(req,res);
+});
+
+router.put('/update-admin-status', (req, res) => {
+  UpdateAdminStatus(req,res);
 });
 
 // Financial routes

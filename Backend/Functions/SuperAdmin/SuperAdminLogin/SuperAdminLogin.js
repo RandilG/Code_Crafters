@@ -5,7 +5,7 @@ async function SuperAdminLogin(req, res) {
     const { email, password } = req.body;
 
     try {
-        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Super'";
+        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Super' AND status = 'Active'";
         connection.query(sql, [email], async (err, result) => {
             if (err) {
                 console.error("Error during login query:", err);
