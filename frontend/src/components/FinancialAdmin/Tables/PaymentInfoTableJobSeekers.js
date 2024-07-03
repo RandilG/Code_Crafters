@@ -25,7 +25,7 @@ const columns = [
     },
 ];
 
-const IncomeInfoTableJobSeeker = () => {
+const PaymentInfoTableJobSeeker = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 7;
@@ -83,4 +83,4 @@ const IncomeInfoTableJobSeeker = () => {
     );
 };
 
-export default IncomeInfoTableJobSeeker;
+export default PaymentInfoTableJobSeeker;

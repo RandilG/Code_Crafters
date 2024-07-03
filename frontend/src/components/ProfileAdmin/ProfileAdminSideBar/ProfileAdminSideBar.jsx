@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import "./SuperAdminSideBar.css";
-import Logo from "../../Common/Logo/Logo";
+import "./ProfileAdminSideBar.css";
+import Logo from "../Logo/Logo";
 
 import {
-  DashboardOutlined,
-  DollarOutlined,
-  PlusCircleOutlined,
-  BellOutlined,
-  SettingOutlined,
-  UserAddOutlined,
   ProfileOutlined,
   EyeOutlined,
+  SettingOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
 const { Sider } = Layout;
 
-const SuperAdminSideBar = () => {
+const ProfileAdminSideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   const toggleCollapsed = () => {
@@ -44,83 +40,7 @@ const SuperAdminSideBar = () => {
               height: "100vh",
             }}
           >
-            <Menu.Item
-              key="SuperAdminDashboard"
-              icon={<DashboardOutlined />}
-              className="elements"
-            >
-              <Link
-                to="SuperAdminDashboard"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Dashboard
-              </Link>
-            </Menu.Item>
-            
-            <Menu.Item
-              key="Signup"
-              icon={<UserAddOutlined />}
-              className="elements"
-            >
-              <Link
-                to="Signup"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Admin Register
-              </Link>
-            </Menu.Item>
 
-            <Menu.Item
-              key="Notification"
-              icon={<BellOutlined />}
-              className="elements"
-            >
-              <Link
-                to="Notification"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Notification
-              </Link>
-            </Menu.Item>
-
-            {/* Financial */}
-
-            <Menu.SubMenu key="Payment" icon={<DollarOutlined />} title="Payment">
-              <Link
-                to="JobseekerPayments"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-
-                <Menu.Item key="JobseekerPayments" className="elements">
-                  Job Seeker Payment
-                </Menu.Item>
-              </Link>
-              <Link
-                to="JobPosterPayment"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="JobPosterPayment" className="elements">
-                  Job Poster Payment
-                </Menu.Item>
-              </Link>
-            </Menu.SubMenu>
-
-            <Menu.Item
-              key="FinancialAdminRevenue"
-              icon={<PlusCircleOutlined />}
-              className="elements"
-            >
-              <Link
-                to="FinancialAdminRevenue"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Revenue
-              </Link>
-            </Menu.Item>
-
-                       
-
-            {/* Profile */}
             <Menu.SubMenu
               key="profile"
               icon={<ProfileOutlined />}
@@ -198,6 +118,7 @@ const SuperAdminSideBar = () => {
               </Link>
             </Menu.SubMenu>
 
+
             <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
               <Link
                 to="jobeekeravgratings"
@@ -226,19 +147,26 @@ const SuperAdminSideBar = () => {
               </Link>
             </Menu.SubMenu>
 
+            
             <Menu.Item
-              key="SuperAdminUserProfile"
+              key="UserProfile"
               icon={<SettingOutlined />}
               className="elements"
             >
               <Link
-                to="SuperAdminUserProfile"
+                to="UserProfile"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
                 Account Settings
               </Link>
             </Menu.Item>
-            
+            <Menu.Item
+              key="logout"
+              icon={<LogoutOutlined />}
+              className="elements"
+            >
+              Logout
+            </Menu.Item>
           </Menu>
         </Sider>
       </Layout>
@@ -246,4 +174,4 @@ const SuperAdminSideBar = () => {
   );
 };
 
-export default SuperAdminSideBar;
+export default ProfileAdminSideBar;

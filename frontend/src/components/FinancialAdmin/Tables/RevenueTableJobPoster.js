@@ -25,7 +25,7 @@ const columns = [
     },
 ];
 
-const PaymentInfoTableJobPoster = () => {
+const RevenueInfoTableJobPoster = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const pageSize = 7;
@@ -83,4 +83,4 @@ const PaymentInfoTableJobPoster = () => {
     );
 };
 
-export default PaymentInfoTableJobPoster;
+export default RevenueInfoTableJobPoster;

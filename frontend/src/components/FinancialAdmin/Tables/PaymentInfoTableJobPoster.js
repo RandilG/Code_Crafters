@@ -38,7 +38,7 @@ const columns = [
   },
 ];
 
-const IncomeTable = () => {
+const PaymentInfoTableJobPoster = () => {
   const [data, setData] = useState([]); // State to hold fetched data
   const [loading, setLoading] = useState(true); // State to manage loading state
   const [currentPage, setCurrentPage] = useState(1); // State to manage current page
@@ -99,4 +99,4 @@ const IncomeTable = () => {
   );
 };
 
-export default IncomeTable;
+export default PaymentInfoTableJobPoster;

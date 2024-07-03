@@ -137,4 +137,124 @@ router.get('/groupedrevenue', (req, res) => {
     GetGroupedRevenue(req, res);
 });
 
+
+//Profile Admin
+const jobPosterRequests = require("../Functions/ProfileAdmin/JobPosterRequests/JobPosterRequests");
+const declineRequest = require("../Functions/ProfileAdmin/DeclineRequest/DeclineRequest");
+const acceptJobPosterRequest = require("../Functions/ProfileAdmin/AcceptJobPosterRequest/AcceptJobPosterRequest");
+const declinedAccounts = require("../Functions/ProfileAdmin/DeclinedAccounts/DeclinedAccounts");
+const activeAccounts = require("../Functions/ProfileAdmin/ActiveAccounts/ActiveAccounts");
+const getHoldAccounts = require("../Functions/ProfileAdmin/GetHoldAccounts/GetHoldAccounts");
+const activateAccount = require("../Functions/ProfileAdmin/ActivateAccount/ActivateAccount");
+const deactivateAccount = require("../Functions/ProfileAdmin/DeactivateAccount/DeactivateAccount");
+const declineJobSeekerRequest = require("../Functions/ProfileAdmin/DeclineJobSeekerRequest/DeclineJobSeekerRequest");
+const jobSeekerRequests = require("../Functions/ProfileAdmin/JobSeekerRequests/JobSeekerRequests");
+const acceptJobSeekerRequest = require("../Functions/ProfileAdmin/AcceptJobSeekerRequest/AcceptJobSeekerRequest");
+const getActiveJobSeekers = require("../Functions/ProfileAdmin/GetActiveJobSeekers/GetActiveJobSeekers");
+const getDeclinedJobSeekrs = require("../Functions/ProfileAdmin/GetDeclinedJobSeekers/GetDeclinedJobSeekers");
+const getDeactivatedJobSeekers = require("../Functions/ProfileAdmin/GetDeactivatedJobSeekers/GetDeactivatedJobSeeker");
+const activateJobSeeker = require("../Functions/ProfileAdmin/ActivateJobSeeker/ActivateJobSeeker");
+const deactivateJobseeker = require("../Functions/ProfileAdmin/DeactivateJobSeeker/DeactivateJobSeeker");
+const getJobPoterAvgRatings = require("../Functions/ProfileAdmin/GetJobPosterAvgRatings/GetJobPosterAvgRatings");
+const getJobSeekerAvgRatings = require("../Functions/ProfileAdmin/GetJobSeekerRatings/GetJobSeekerAvgRatings");
+const profileAdminLogin = require("../Functions/ProfileAdmin/ProfileAdminLogin/ProfileAdminLogin");
+const countJPApprovedJobs = require("../Functions/ProfileAdmin/AJPCount/AJPCount");
+const countJSApprovedJobs = require("../Functions/ProfileAdmin/AJSCount/AJSCount");
+const countJPDeclinedJobs = require("../Functions/ProfileAdmin/DJPCount/DJPCount");
+const countJSDeclinedJobs = require("../Functions/ProfileAdmin/DJSCount/DJSCount");
+
+router.get("/jobposterrequests", (req, res) => {
+    jobPosterRequests(req, res);
+  });
+  
+  router.put("/declinerequest/:id", (req, res) => {
+    declineRequest(req, res);
+  });
+  
+  router.put("/acceptrequest/:id", (req, res) => {
+    acceptJobPosterRequest(req, res);
+  });
+  
+  router.get("/declinedaccounts", (req, res) => {
+    declinedAccounts(req, res);
+  });
+  
+  router.get("/activeaccounts", (req, res) => {
+    activeAccounts(req, res);
+  });
+  
+  router.get("/getholdedaccounts", (req, res) => {
+    getHoldAccounts(req, res);
+  });
+  
+  router.put("/activateaccount/:id", (req, res) => {
+    activateAccount(req, res);
+  });
+  
+  router.put("/deactivateaccount/:id", (req, res) =>{
+    deactivateAccount(req, res);
+  });
+  
+  
+  router.get("/getjobseekerrequests", (req, res)=>{
+    jobSeekerRequests(req, res)
+  })
+  
+  router.put("/declinejobseeker/:id" , (req, res)=>{
+    declineJobSeekerRequest(req, res);
+  });
+  
+  router.put("/acceptjobseekerrequest/:id", (req, res)=>{
+    acceptJobSeekerRequest(req, res);
+  });
+  
+  router.get("/activejobseerkers", (req, res)=>{
+    getActiveJobSeekers(req, res)
+  });
+  
+  router.get("/declinedjobseerkers", (req, res)=>{
+    getDeclinedJobSeekrs(req, res)
+  });
+  
+  router.get("/getdeactivatedseekers", (req, res)=>{
+    getDeactivatedJobSeekers(req, res);
+  });
+  
+  router.put("/activateseeker/:id", (req, res)=>{
+    activateJobSeeker(req, res)
+  });
+  
+  router.put("/deactivateseeker/:id", (req, res)=>{
+    deactivateJobseeker(req, res);
+  });
+  
+  router.get('/job-poster-avg-ratings', (req, res)=>{
+    getJobPoterAvgRatings(req, res)
+  })
+  
+  router.get('/job-seeker-avg-ratings', (req, res)=>{
+    getJobSeekerAvgRatings(req, res)
+  })
+  
+  router.post('/profile-admin-login', (req, res)=>{
+    profileAdminLogin(req, res);
+  })
+
+  router.get('/approved-jobposters-count', (req, res)=>{
+    countJPApprovedJobs(req, res)
+  })
+  
+  router.get('/approved-jobseekers-count', (req, res)=>{
+    countJSApprovedJobs(req, res)
+  })
+  
+  router.get('/declined-jobposters-count', (req, res)=>{
+    countJPDeclinedJobs(req, res)
+  })
+  
+  router.get('/declined-jobseekers-count', (req, res)=>{
+    countJSDeclinedJobs(req, res)
+  })
+
+
 module.exports = router;

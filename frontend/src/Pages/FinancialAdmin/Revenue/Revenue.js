@@ -1,12 +1,12 @@
 import React from 'react';
-import IncomeInfoTableJobPoster from "../../../components/FinancialAdmin/Tables/IncomeInfoTableJobPoster";
+import RevenueTableJobPoster from "../../../components/FinancialAdmin/Tables/RevenueTableJobPoster";
 
 function Income() {
     return (
 
         <div className="IncomeTableContainer">
             <div className="IncomeTableColumn" style={{ marginRight: '20px' }}>
-                <IncomeInfoTableJobPoster />
+                <RevenueTableJobPoster />
             </div>
         </div>
 

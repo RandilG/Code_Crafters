@@ -55,18 +55,25 @@ const ProfileAdminSideBar = () => {
             </Menu.Item>
             
             
-            <Menu.Item
-              key="Payments"
-              icon={<DollarOutlined />}
-              className="elements"
-            >
+            <Menu.SubMenu key="Payment" icon={<DollarOutlined />} title="Payment">
               <Link
-                to="Payments"
+                to="JobseekerPayments"
                 style={{ textDecoration: "none", color: "#fff" }}
               >
-                Payments
+
+                <Menu.Item key="JobseekerPayments" className="elements">
+                  Job Seeker Payment
+                </Menu.Item>
               </Link>
-            </Menu.Item>
+              <Link
+                to="JobPosterPayment"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="JobPosterPayment" className="elements">
+                  Job Poster Payment
+                </Menu.Item>
+              </Link>
+            </Menu.SubMenu>
 
             <Menu.Item
               key="Revenue"
