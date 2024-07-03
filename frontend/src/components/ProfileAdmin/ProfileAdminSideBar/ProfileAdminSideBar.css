@@ -1,0 +1,25 @@
+
+
+.siderbar-container{
+    width: 20%;
+}
+
+
+.elements{
+    padding-top: 3%;
+    padding-bottom: 3%;
+    margin-bottom: 2%;
+    margin-top: 3%;
+
+}
+
+.elements:hover{
+    background: #FFA500;
+    border-radius: 0;
+}
+
+
+.header{
+    width:100%;
+}
+
