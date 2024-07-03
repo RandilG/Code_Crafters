@@ -72,6 +72,11 @@ const updateProfile = require('../Functions/JobSeeker/Profile/update');
 const changePassword = require('../Functions/JobSeeker/Profile/changePassword');
 const deleteAccount = require('../Functions/JobSeeker/Profile/deleteAccount');
 const getGender = require('../Functions/JobSeeker/GetData/getGender');
+const appNotifications = require('../Functions/JobSeeker/GetData/appNotifications');
+
+router.get('/appNotifications/:userName', (req, res) => {
+    appNotifications(req, res);
+})
 
 router.get('/getGender/:userName', (req, res) => {
     getGender(req, res);
@@ -160,6 +165,11 @@ router.get('/seekerAvailability/:email', (req, res) => {
 //Profile Admin
 const getPendingSeekers = require('../Functions/Admin/Profile/getPendingSeekers');
 const updateSeekerStatus = require('../Functions/Admin/Profile/updateSeekerStatus');
+const sendSeekerAppNotify = require('../Functions/Admin/Common/sendSeekerAppNotify');
+
+router.post('/sendSeekerAppNotify', (req, res) => {
+    sendSeekerAppNotify(req, res);
+})
 
 router.put('/updateSeekerStatus/:seekerUname', (req, res) => {
     updateSeekerStatus(req, res);

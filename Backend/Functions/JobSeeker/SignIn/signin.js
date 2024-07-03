@@ -9,9 +9,10 @@ dotenv.config();
 module.exports = async function signIn(req, res){
     try {
         const {userName, password} = req.params;
-        const query = "SELECT password, status FROM parttime_srilanka.job_seeker WHERE job_seeker.UserName = ?;";
+        const query = "SELECT password, status, deleted FROM parttime_srilanka.job_seeker WHERE job_seeker.UserName = ?;";
         const resp = await queryAsync(query, userName);
         if(resp.length!=0){
+            if(resp[0].deleted) return res.json(HttpStatusCode.NotFound);
             const encryptedPW = resp[0].password;
             const status = resp[0].status;
             if(status === "approved"){

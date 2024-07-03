@@ -148,7 +148,7 @@ const Dashboard = (props: any) => {
                             }
                         </View>
                         <View style={styles.badgeDivider}>
-                            <MaterialCommunityIcons name={"bell-ring"} size={25} color={"#FFF"} onPress={() => Logout()} />
+                            <MaterialCommunityIcons name={"bell-ring"} size={25} color={"#FFF"} onPress={() => props.navigation.navigate("Notfications")} />
                         </View>
                     </View>
                 </View>

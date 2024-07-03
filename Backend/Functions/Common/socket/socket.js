@@ -11,6 +11,14 @@ module.exports = function initializeSocket(server) {
             socket.join(jobId);
         });
 
+        socket.on('joinCommonNotification', () => {
+            socket.join();
+        })
+
+        socket.on('joinSeekerNotification', (userName) => {
+            socket.join(userName);
+        })
+
         socket.on('disconnect', () => {
             console.log('A user disconnected');
         });
