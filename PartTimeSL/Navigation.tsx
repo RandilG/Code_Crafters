@@ -23,6 +23,7 @@ import WithdrawSuccess from "./screens/WithdrawSuccess";
 import MyProfile from "./screens/MyProfile";
 import ChangePassword from "./screens/ChangePassword";
 import Notifications from "./screens/Notifications";
+import RecoverPassword from "./screens/RecoverPassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
                 <Stack.Screen name="Notfications" component={Notifications} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} />
                 <Stack.Screen name="MyProfile" component={MyProfile} />

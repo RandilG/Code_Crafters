@@ -49,6 +49,11 @@ const MobOtp = (props: any) => {
             setCity(props.route.params.city);
             setProfilePic(props.route.params.profilePic);
             setIsLoading(false);
+        } else if (props.route.params.from === "login") {
+            setSeekerFName(props.route.params.fName);
+            setSeekerLName(props.route.params.lName);
+            setMobNumber(props.route.params.mobNum);
+            setIsLoading(false);
         }
 
         async function getData() {
@@ -81,8 +86,17 @@ const MobOtp = (props: any) => {
                 if (props.route.params.from === "signup") {
                     if (formattedMobNo !== "") await AsyncStorage.setItem('mobNo', mobNumber);
                     sendMailOtp();
-                } else if(props.route.params.from === "profile") {
+                } else if (props.route.params.from === "profile") {
                     executeUpdate();
+                } else if (props.route.params.from === "login") {
+                    props.navigation.reset({
+                        index: 0,
+                        routes: [{
+                            name: 'RecoverPassword', params: {
+                                mobNo: formattedMobNo == "" ? mobNumber : formattedMobNo
+                            }
+                        }]
+                    });
                 }
 
             } else if (resp.data === HttpStatusCode.NotAcceptable) {
@@ -267,7 +281,7 @@ const MobOtp = (props: any) => {
                     </View>
                     <View style={styles.messageContainer}>
                         <Text style={styles.messageTxt}>
-                            Thank you for registering with us. Please type the OTP that is shared on your mobile
+                            Please type the OTP that is shared on your mobile
                         </Text>
                         <Text style={styles.mobileNoTxt}>
                             {mobNumber}

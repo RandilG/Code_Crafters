@@ -14,16 +14,16 @@ import { server } from "../service/constant";
 const Notifications = (props: any) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-    
+
     const [userName, setUserName] = useState<string>("");
     const [notifications, setNotofications] = useState<any[]>([]);
 
     useEffect(() => {
         setIsLoading(true);
         getData();
-    },[]);
+    }, []);
 
-    async function getData(){
+    async function getData() {
         try {
             const session = await EncryptedStorage.getItem('session');
             let uName: string = '';
@@ -65,7 +65,7 @@ const Notifications = (props: any) => {
                             Notifications
                         </Text>
                         <Text style={styles.subHeadingTxt}>
-                            Register as a Job Seeker
+                            Timely Job Updates
                         </Text>
                     </View>
                 </View>
@@ -74,9 +74,9 @@ const Notifications = (props: any) => {
                     <ScrollView showsVerticalScrollIndicator={false}>
                         {notifications.length != 0 ?
                             notifications.map((notification, index) => (
-                                <NotifyCard key={index} title={notification.title} message={notification.message} date={notification.date}/>
+                                <NotifyCard key={index} title={notification.title} message={notification.message} date={notification.date} />
                             ))
-                        :
+                            :
                             <Text style={styles.noContentTxt}>No notifications to show</Text>
                         }
                     </ScrollView>
@@ -88,7 +88,7 @@ const Notifications = (props: any) => {
     )
 }
 
-const NotifyCard: React.FC<any> = ({title, message, date}) => {
+const NotifyCard: React.FC<any> = ({ title, message, date }) => {
     return (
         <View style={styles.card}>
             <View style={styles.header}>

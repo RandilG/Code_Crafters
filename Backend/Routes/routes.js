@@ -73,26 +73,36 @@ const changePassword = require('../Functions/JobSeeker/Profile/changePassword');
 const deleteAccount = require('../Functions/JobSeeker/Profile/deleteAccount');
 const getGender = require('../Functions/JobSeeker/GetData/getGender');
 const appNotifications = require('../Functions/JobSeeker/GetData/appNotifications');
+const mobNoAvailability = require('../Functions/JobSeeker/GetData/mobNoAvailability');
+const recoverPassword = require('../Functions/JobSeeker/SignIn/recoverPassword');
+
+router.put('/recoverPassword/:mobNo', (req, res) => {
+    recoverPassword(req, res);
+});
+
+router.get('/mobNoAvailability/:mobNo', (req, res) => {
+    mobNoAvailability(req, res);
+});
 
 router.get('/appNotifications/:userName', (req, res) => {
     appNotifications(req, res);
-})
+});
 
 router.get('/getGender/:userName', (req, res) => {
     getGender(req, res);
-})  
+});  
 
 router.put('/deleteAccount/:userName', (req, res) => {
     deleteAccount(req, res);
-})
+});
 
 router.put('/changePassword/:userName', (req, res) => {
     changePassword(req, res);
-})
+});
 
 router.put('/updateProfile/:userName', (req, res) => {
     updateProfile(req, res);
-})
+});
 
 router.get('/profile/:userName', (req, res) => {
     getProfile(req, res);

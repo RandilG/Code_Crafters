@@ -10,8 +10,12 @@ import axios, { HttpStatusCode } from "axios";
 import { server } from "../service/constant";
 import EncryptedStorage from "react-native-encrypted-storage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoader from "../components/AppLoader";
+import Modal from "react-native-modal";
+import SeekerVali from "../validations/seekerVali";
 
 const Login = (props: any) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
     const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
     const [isValid, setIsValid] = useState<boolean>(true);
@@ -84,7 +88,7 @@ const Login = (props: any) => {
             setIsError(true);
         }
     }
-    
+
     //Get seeker name and earning coins
     async function getSeekerData(userName: string) {
         try {
@@ -110,6 +114,8 @@ const Login = (props: any) => {
             setIsError(true);
         }
     }
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     return (
         <SafeAreaView style={extStyles.body}>
@@ -155,7 +161,7 @@ const Login = (props: any) => {
                         </View>
                     </View>
                     <View style={styles.fogPWContainer}>
-                        <Text style={styles.fogPWTxt} onPress={() => Alert.alert("To be implement")}>Forgot password?</Text>
+                        <Text style={styles.fogPWTxt} onPress={() => setIsModalOpen(true)}>Forgot password?</Text>
                     </View>
                     <View style={styles.btnContainer}>
                         {!isValid ?
@@ -182,11 +188,243 @@ const Login = (props: any) => {
                 </View>
             </View>
             {isError ? <ErrorPopup closeModal={() => setIsError(false)} /> : false}
+            {isLoading ? <AppLoader /> : null}
+            {isModalOpen ? <MobNoModal setIsModalOpen={setIsModalOpen} setIsError={setIsError} setIsLoading={setIsLoading} setErrorTitle={setErrorTitle} setErrorMsg={setErrorMsg} props={props}/> : null}
         </SafeAreaView>
     )
 }
 
+const MobNoModal: React.FC<any> = ({ setIsModalOpen, setIsError, setErrorTitle, setErrorMsg, setIsLoading, props }) => {
+    const [isValid, setIsValid] = useState<boolean>(true);
+    const [error, setError] = useState<string>("");
+    const [mobileNumber, setMobileNumber] = useState<string>("");
+    const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
+
+    let formattedMobNo = "";
+
+    async function checkValidation() {
+        //Check mobile number start with 94
+        if (mobileNumber.slice(0, 2) === '94') {
+            //Is mobile number has 11 digits
+            if (!/^\d{11}$/.test(mobileNumber)) {
+                setError('Invalid mobile number');
+                setIsValid(false);
+                return false;
+            } else {
+                //Add + mark to begining of mobile number
+                formattedMobNo = '+' + mobileNumber;
+                setMobileNumber('+' + mobileNumber);
+                return true;
+            }
+        }
+
+        //Check mobile number start with 0
+        if (mobileNumber.charAt(0) === '0') {
+            //Is mobile number has 10 digits
+            if (!/^\d{10}$/.test(mobileNumber)) {
+                setError('Invalid mobile number');
+                setIsValid(false);
+                return false;
+            } else {
+                //Remove 0 and add +94 to beginig of mobile number
+                formattedMobNo = '+94' + mobileNumber.slice(1);
+                setMobileNumber('+94' + mobileNumber.slice(1))
+                return true;
+            }
+        }
+
+        //Check mobile number statrt with +94
+        if (mobileNumber.slice(0, 3) === '+94') {
+            //Is mobile number has 12 digits and 3rd digit not a 0
+            if (
+                !(mobileNumber.length == 12) ||
+                mobileNumber.charAt(3) === '0' ||
+                !/^\d{10}$/.test(mobileNumber.slice(1, 11))
+            ) {
+                setError('Invalid mobile number');
+                setIsValid(false);
+                return false;
+            } else {
+                formattedMobNo = mobileNumber;
+                return true;
+            }
+        }
+
+        setError('Invalid mobile number');
+        setIsValid(false);
+        return false;
+    }
+
+    const handleProceed = async () => {
+        try {
+            setIsBtnLoading(true);
+            setIsValid(true);
+            const valid = await checkValidation();
+            if(valid){
+                checkMobNo();
+            }else{
+                setIsBtnLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsBtnLoading(false);
+            setIsError(true);
+        }
+    }
+
+    const checkMobNo = async () => {
+        try {
+            const resp = await axios.get(server + `mobNoAvailability/${formattedMobNo}`);
+            console.log(resp.data);
+            if(resp.data !== HttpStatusCode.NotFound){
+                setIsLoading(true);
+                setIsBtnLoading(false);
+                setIsModalOpen(false);
+                sendOtp(resp.data.firstName, resp.data.lastName);
+                return;
+            }
+            setErrorTitle("Oops...!!");
+            setErrorMsg("The mobile number not available");
+            setIsBtnLoading(false);
+            setIsError(true);
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsBtnLoading(false);
+            setIsError(true);
+        }
+    }
+
+    //Send mobile OTP
+    async function sendOtp(firstName:string, lastName:string): Promise<void> {
+        try {
+            const resp = await axios.post(server + 'sendMobOtp', { "fName": firstName, "lName": lastName, "mobNo": formattedMobNo });
+            if (resp.data !== HttpStatusCode.Ok) {
+                setErrorTitle("Oops...!!");
+                setErrorMsg("Something went wrong");
+                setIsError(true);
+                setIsLoading(false);
+                setIsBtnLoading(false);
+            } else {
+                setIsLoading(false);
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'MobOtp', params: {
+                            from: 'login',
+                            fName: firstName,
+                            lName: lastName,
+                            mobNum: formattedMobNo,
+                        }
+                    }]
+                });
+            }
+        } catch (error) {
+            console.log(error);
+            setErrorTitle("Oops...!!");
+            setErrorMsg("Something went wrong");
+            setIsError(true);
+            setIsLoading(false);
+            setIsBtnLoading(false);
+        }
+    }
+
+    return (
+        <Modal isVisible={true} style={styles.mobNoModal}>
+            <View style={styles.modalContainer}>
+                <Text style={styles.modalTitle}>Enter Your Registered Mobile Number</Text>
+                <View style={styles.elementContainer}>
+                    {!isValid ? <Text style={styles.errorMsgTxt}>{error}</Text> : null}
+                    <View style={{ ...styles.element, ...{ borderBottomColor: isValid ? "#F2994A" : "#FF4122" } }}>
+                        <View style={styles.inputContainer}>
+                            <TextInput style={styles.input} keyboardType={"phone-pad"} onChangeText={(value) => setMobileNumber(value)} />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.modalBtnContainer}>
+                    <TouchableOpacity style={styles.cancelBtn} onPress={() => setIsModalOpen(false)}>
+                        <Text style={styles.modalBtnTxt}>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.proceedBtn, ...{ opacity: mobileNumber === "" ? .6 : 1 } }} disabled={mobileNumber === "" || isBtnLoading} onPress={() => handleProceed()}>
+                        {isBtnLoading ?
+                            <View style={styles.btnLoaderContainer}>
+                                <LottieView source={require('../assets/jsons/btn_loader.json')} loop autoPlay style={styles.btnLoader} />
+                            </View>
+                            :
+                            <Text style={styles.modalBtnTxt}>Proceed</Text>
+                        }
+
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
 const styles = StyleSheet.create({
+    modalBtnTxt: {
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#FFF'
+    },
+
+    proceedBtn: {
+        width: 100,
+        height: 35,
+        backgroundColor: '#F2994A',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    cancelBtn: {
+        width: 100,
+        height: 35,
+        backgroundColor: '#373737',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalBtnContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingTop: 15
+    },
+
+    errorMsgTxt: {
+        fontSize: 10,
+        color: "#FF4122",
+        fontWeight: '600'
+    },
+
+    requiredMark: {
+        color: "#FF4122",
+        fontWeight: '800'
+    },
+
+    modalTitle: {
+        fontSize: 24,
+        color: '#F2994A',
+        fontWeight: '600',
+        textAlign: 'center'
+    },
+
+    modalContainer: {
+        width: '90%',
+        backgroundColor: '#FFF',
+        borderRadius: 15,
+        padding: 15
+    },
+
+    mobNoModal: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
     errTxt: {
         fontSize: 12,
         color: "#FF4122",
