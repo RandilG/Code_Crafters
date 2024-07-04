@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { BackHandler, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { setErrorMsg, setErrorTitle } from "../global/variable";
 import Modal from 'react-native-modal';
@@ -18,6 +18,26 @@ import socket from "../service/socket";
 import moment from "moment";
 
 const AppliedJobs = (props: any) => {
+    //Handle back event
+    useEffect(() => {
+        const backAction = () => {
+            props.navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'DashBoard',
+                }]
+            })
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
 
@@ -60,7 +80,7 @@ const AppliedJobs = (props: any) => {
             <View style={styles.mainContainer}>
                 <View style={styles.headerContainer}>
                     <View style={styles.backBtnContainer}>
-                        <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.goBack()} />
+                        <AntDesign name="left" size={30} color={"#FFF"} onPress={() => props.navigation.navigate('Dashboard')} />
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.titleTxt}>
@@ -114,6 +134,7 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
 
             socket.on('timerStarted', (data) => {
                 setTimer(data.timer);
+                setIsCancel(false);
             });
 
             return () => {
@@ -178,7 +199,7 @@ const JobCard: React.FC<any> = ({ userName, job_id, title, hRate, wHours, income
                 </TouchableOpacity>
             </Modal>
             {isDescView ? <JobDescription description={description} closeDesc={() => setIsDescView(false)} /> : null}
-            {isCancel ? <JobCancelPopUp colseConfirm={() => setIsCancel(false)} proceedJob={() => console.log("Clicked")} /> : null}
+            {isCancel ? <JobCancelPopUp colseConfirm={() => setIsCancel(false)} proceedJob={() => {setIsCancel(false), props.navigation.navigate("CancelJob", {jobId: job_id, userName: userName})}} /> : null}
         </View>
 
     )

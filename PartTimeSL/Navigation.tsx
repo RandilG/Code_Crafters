@@ -24,6 +24,7 @@ import MyProfile from "./screens/MyProfile";
 import ChangePassword from "./screens/ChangePassword";
 import Notifications from "./screens/Notifications";
 import RecoverPassword from "./screens/RecoverPassword";
+import CancelJob from "./screens/CancelJob";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ const Navigation = (props: any) => {
     return (
         <NavigationContainer>
             <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="CancelJob" component={CancelJob} />
                 <Stack.Screen name="RecoverPassword" component={RecoverPassword} />
                 <Stack.Screen name="Notfications" component={Notifications} />
                 <Stack.Screen name="ChangePassword" component={ChangePassword} />

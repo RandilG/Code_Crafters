@@ -75,6 +75,11 @@ const getGender = require('../Functions/JobSeeker/GetData/getGender');
 const appNotifications = require('../Functions/JobSeeker/GetData/appNotifications');
 const mobNoAvailability = require('../Functions/JobSeeker/GetData/mobNoAvailability');
 const recoverPassword = require('../Functions/JobSeeker/SignIn/recoverPassword');
+const cancelJob = require('../Functions/JobSeeker/Jobs/cancelJob');
+
+router.post('/cancelJob/:userName/:jobId', (req, res) => {
+    cancelJob(req, res);
+})
 
 router.put('/recoverPassword/:mobNo', (req, res) => {
     recoverPassword(req, res);
