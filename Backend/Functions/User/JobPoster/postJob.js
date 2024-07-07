@@ -2,48 +2,37 @@ const connection = require('./../../../Services/connection');
 
 module.exports = async function postJob(req, res) {
   const {
-    job_id,
+    tempory_job_id,
     title,
     job_date,
-    start_time,
     amount_of_seekers,
     work_hours,
     hourly_rate,
-    latitude,
-    longitude,
-    gender,
-    description,
-    status,
-    job_poster
+    job_poster,
+    selectedTitle // Ensure selectedTitle is correctly parsed from req.body
   } = req.body;
 
-  // Calculate total payment
-  const total_payment = work_hours * hourly_rate;
+  console.log('Title received:', selectedTitle); // Log selectedTitle instead of title
 
-  // Check if total payment is above 1500
-  if (total_payment <= 1500) {
-    res.status(400).json({ message: 'Total payment must be above 1500' });
-    return;
-  }
+  // Ensure selectedTitle is used in your SQL query or wherever needed
 
+  // Example SQL query
   const sql = `
-    INSERT INTO job (
-      job_id, title, posted_date, job_date, start_time, 
-      amount_of_seekers, work_hours, hourly_rate, 
-      latitude, longitude, gender, description, status, job_poster
-    ) VALUES (?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO temporary_job (
+      tempory_job_id, posted_date, job_date, amount_of_seekers, 
+      work_hours, hourly_rate, status, title, job_poster
+    ) VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?)
   `;
 
   connection.query(sql, [
-    job_id, title, job_date, start_time, amount_of_seekers, 
-    work_hours, hourly_rate, latitude, longitude, gender, 
-    description, status, job_poster
+    tempory_job_id, job_date, amount_of_seekers, 
+    work_hours, hourly_rate, 'Pending', selectedTitle, job_poster
   ], (err, results) => {
     if (err) {
-      res.status(500).json({ message: err.message });
-      return;
+      console.error('Error posting job:', err);
+      return res.status(500).json({ message: 'Error posting job. Please try again later.' });
     }
     console.log('Job posted successfully!');
-    res.status(201).json({ result: results });
+    res.status(201).json({ message: 'Job posted successfully', result: results });
   });
-}
+};

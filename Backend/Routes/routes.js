@@ -9,17 +9,22 @@ const login = require('../Functions/User/JobPoster/login')
 const register = require('../Functions/User/JobPoster/register')
 //const jobposterRegister = require('./../Functions/User/JobPoster/register')
 const emailVerify = require('../Functions/Otp/emailVerify')
+const sendMobOtp = require('../Functions/Otp/sendMobOtp');
+const verifyOtp = require('../Functions/Otp/verifyOtp');
 const postJob = require('../Functions/User/JobPoster/postJob')
 const displayJob = require('../Functions/User/JobPoster/displayJob')
 const displayallJob = require('../Functions/User/JobPoster/displayallJob')
 const updateJob = require('../Functions/User/JobPoster/updateJob')
 const deleteJob = require('../Functions/User/JobPoster/deleteJob')
 const rateSeeker = require('../Functions/User/JobPoster/rateSeeker')
-const displayallPaymentInfo = require('../Functions/User/JobPoster/displayallPaymentInfo')
-const displayPaymentInfo = require('../Functions/User/JobPoster/displayPaymentInfo')
 const changePassword = require('../Functions/User/JobPoster/changePassword')
 const viewallCompletedJobInfo = require('../Functions/User/JobPoster/viewallCompletedJobInfo')
 const viewCompletedJobInfo = require('../Functions/User/JobPoster/viewCompletedJobInfo')
+const viewJobSeeker = require('../Functions/User/JobPoster/viewJobSeeker');
+const displayJobData = require('../Functions/User/JobPoster/displayJobData')
+const updateProfile = require('../Functions/User/JobPoster/updateProfile')
+const updateProfilePicture = require('../Functions/User/JobPoster/updateProfilePicture')
+const displayProfileInfo = require('../Functions/User/JobPoster/displayProfileInfo')
 /*const cancelJob = require('../Functions/User/JobPoster/cancelJob')*/
 
 
@@ -44,11 +49,20 @@ router.post('/login', (req, res) => {
   });
 
 router.post('/register', (req, res)=> {  
+  console.log("Called")
   register(req, res);
   })
 
 router.post('/emailVerify', (req, res) => {  
   emailVerify(req, res)
+})
+
+router.get('/verifyOtp/:user/:otp', (req, res) => {
+  verifyOtp(req, res);
+})
+
+router.post('/sendMobOtp', (req, res) => {
+  sendMobOtp(req, res);
 })
 
 router.post('/postJob', (req, res) => {  
@@ -76,14 +90,6 @@ router.post('/rateSeeker', (req, res) => {
   rateSeeker(req, res)
 })
 
-router.get('/displayallPaymentInfo', (req, res) => {  
-  displayallPaymentInfo(req, res)
-})
-
-router.get('/displayPaymentInfo/:id', (req, res) => {    
-  displayPaymentInfo(req, res)
-})
-
 router.post('/changePassword', (req, res) => {  
   changePassword(req, res)
 })
@@ -96,8 +102,29 @@ router.get('/viewCompletedJobInfo/:id', (req, res) => {
   viewCompletedJobInfo(req, res)
 })
 
+router.get('/viewJobSeeker', (req, res) => {
+  viewJobSeeker(req, res)
+});
+
+router.get('/displayJobData', (req, res) => {
+  displayJobData(req, res)
+})
+
+router.put('/updateProfile/:id', (req, res) => {  
+  updateProfile(req, res)
+})
+
+router.put('/updateProfilePicture/:id', (req, res) => {  
+  updateProfilePicture(req, res)
+})
+
+router.get('/displayProfileInfo/:EmailAddress', (req, res) => {    
+  displayProfileInfo(req, res)
+})
+
 /*router.put('/cancelJob/:id', (req, res) => {  
   cancelJob(req, res)
 })*/
+
 
 module.exports = router

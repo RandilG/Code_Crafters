@@ -1,7 +1,7 @@
 const connection = require('./../../../Services/connection');
 
 module.exports = async function displayJob(req, res) {
-  const query = "SELECT * FROM parttime_srilanka.job WHERE job_id = ?";
+  const query = "SELECT * FROM parttime_srilanka.temporary_job WHERE tempory_job_id = ?";
   const job_id = req.params.job_id;  // Get job_id from the request parameters
 
   //console.log('Received job_id:', job_id);  // Log the received job_id
@@ -19,4 +19,6 @@ module.exports = async function displayJob(req, res) {
     res.json(results[0]);
     console.log("job Data retrived!")
   });
+
+  
 };

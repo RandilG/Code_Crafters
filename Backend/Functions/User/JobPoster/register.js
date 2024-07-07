@@ -19,6 +19,7 @@ module.exports = async function register(req, res) {
 
     // If there are existing records, return an error
     if (duplicateCheckResult.length > 0) {
+ 
       return res.status(400).json({ error: 'User with the same details already exists.' });
     }
 
