@@ -37,6 +37,7 @@ import ProfileAdminLogin from '../../Pages/ProfileAdmin/ProfileAdminLogin/Profil
 import ProfileAdminDashboard from "../../Pages/ProfileAdmin/Dashboard/Dashboard";
 import JobPosterPayment from "../../Pages/FinancialAdmin/Payments/JobPosterPayment";
 import JobSeekerPayments from "../../Pages/FinancialAdmin/Payments/JobSeekerPayments";
+import JobCancelRequests from "../../Pages/ProfileAdmin/JobCancelRequests/JobCancelRequests";
 
 
 function AppRoutes() {
@@ -95,6 +96,7 @@ function AppRoutes() {
                 <Route path='activejobseekers' element={<JobSeekerActiveProfiles />} />
                 <Route path='declinedjobseekers' element={<JobSeekerDeclinedProfiles />} />
                 <Route path='deactivatedjobseekers' element={<JobSeekerDeactivatedProfiles />} />
+                <Route path='jobcancelrequests' element={<JobCancelRequests/>}/>
             </Route>
 
         </Routes>
