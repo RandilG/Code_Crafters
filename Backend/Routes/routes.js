@@ -185,6 +185,8 @@ const countJSDeclinedJobs = require("../Functions/ProfileAdmin/DJSCount/DJSCount
 const getJobCancelRequests = require('../Functions/ProfileAdmin/GetJobCancelRequests/GetJobCancelRequests');
 const approveJobCancelRequest = require('../Functions/ProfileAdmin/ApproveJobCancelRequest/ApproveJobCancelRequest');
 const rejectJobCancelRequest = require('../Functions/ProfileAdmin/RejectJobCancelRequest/RejectJobCancelRequest');
+const totalrequestCount = require('../Functions/ProfileAdmin/TotalProfileRequest/TotalProfileRequest');
+const JobHandlingRequest = require('../Functions/ProfileAdmin/JobHandlingRequest/JobHandlingRequest');
 
 router.get("/jobposterrequests", (req, res) => {
     jobPosterRequests(req, res);
@@ -290,5 +292,13 @@ router.get("/jobposterrequests", (req, res) => {
   router.delete('/reject-job-cancel-request', (req, res) => {
     rejectJobCancelRequest(req,res);
   })
+
+router.get('/totalrequest', (req, res) => {
+  totalrequestCount(req, res);
+})
+
+router.get('/jobhandlingrequest', (req, res) => {
+  JobHandlingRequest(req, res);
+})
 
 module.exports = router;

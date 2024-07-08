@@ -6,7 +6,7 @@ import {
   ProfileOutlined,
   EyeOutlined,
   SettingOutlined,
-  LogoutOutlined,
+  DashboardOutlined,
   CloseCircleOutlined
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
@@ -42,6 +42,12 @@ const ProfileAdminSideBar = () => {
               height: "100vh",
             }}
           >
+            <Menu.Item key="Dashboard" icon={<DashboardOutlined />} className="elements">
+              <Link to="ProfileAdminDashboard" style={{ textDecoration: "none", color: "#fff" }}>
+              Dashboard
+              </Link>
+            </Menu.Item>
+
             <Menu.SubMenu
               key="profile"
               icon={<ProfileOutlined />}

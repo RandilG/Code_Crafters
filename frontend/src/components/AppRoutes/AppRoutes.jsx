@@ -24,7 +24,6 @@ import SuperAdminLayoutPage from "../SuperAdmin/LayoutPage/LayoutPage";
 import ProfileAdminLayoutPage from '../ProfileAdmin/ProfileAdminLayoutPage/ProfileAdminLayoutPage';
 import ProfileRequests from '../../Pages/ProfileAdmin/ProfileRequests/ProfileRequests';
 import DeactivatedAccounts from '../../Pages/ProfileAdmin/DeactivatedAccounts/DeactivatedAccounts';
-import DeleteReview from '../../Pages/ProfileAdmin/DeleteReview/DeleteReview';
 import ActiveViewComponent from '../../Pages/ProfileAdmin/ActiveViewComponent/ActiveViewComponent ';
 import DeclinedViewComponent from '../../Pages/ProfileAdmin/DeclinedViewComponent/DeclinedViewComponent ';
 import JobSeekerProfileRequests from '../../Pages/ProfileAdmin/JobSeekerProfileRequests/JobSeekerProfileRequests'
@@ -71,7 +70,6 @@ function AppRoutes() {
                 <Route path='profilerequests' element={<ProfileRequests />} />
                 <Route path='jobeekeravgratings' element={<JobSeekerRatings />} />
                 <Route path='jobposteravgratings' element={<JobPosterRatings />} />
-                <Route path='deletereview' element={<DeleteReview />} />
                 <Route path='viewactiveprofiles' element={<ActiveViewComponent />} />
                 <Route path='viewdeclinedprofiles' element={<DeclinedViewComponent />} />
                 <Route path='deactivatedprofile' element={<DeactivatedAccounts />} />
@@ -88,7 +86,6 @@ function AppRoutes() {
                 <Route path='profilerequests' element={<ProfileRequests />} />
                 <Route path='jobeekeravgratings' element={<JobSeekerRatings />} />
                 <Route path='jobposteravgratings' element={<JobPosterRatings />} />
-                <Route path='deletereview' element={<DeleteReview />} />
                 <Route path='viewactiveprofiles' element={<ActiveViewComponent />} />
                 <Route path='viewdeclinedprofiles' element={<DeclinedViewComponent />} />
                 <Route path='deactivatedprofile' element={<DeactivatedAccounts />} />
