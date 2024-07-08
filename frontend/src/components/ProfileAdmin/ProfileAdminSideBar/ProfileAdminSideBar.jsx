@@ -116,9 +116,6 @@ const ProfileAdminSideBar = () => {
                 Account Settings
               </Link>
             </Menu.Item>
-            <Menu.Item key="logout" icon={<LogoutOutlined />} className="elements">
-              Logout
-            </Menu.Item>
           </Menu>
         </Sider>
       </Layout>
