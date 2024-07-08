@@ -27,10 +27,10 @@ const ChangePassword = () => {
         confirmPassword: values.confirmPassword
       };
 
-      const response = await axios.post('http://localhost:8000/profile-admin-change-password', requestData);
+      const response = await axios.post('http://localhost:8000/changepassword', requestData);
       message.success('Password changed successfully');
       console.log(response.data);
-      navigate('/Dashboard');
+      navigate('/');
     } catch (error) {
       message.error('Failed to change password. Please try again.');
       console.error(error);

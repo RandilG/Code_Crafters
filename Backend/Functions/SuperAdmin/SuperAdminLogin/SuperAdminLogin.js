@@ -5,7 +5,7 @@ async function SuperAdminLogin(req, res) {
     const { email, password } = req.body;
 
     try {
-        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Super' AND status = 'Active'";
+        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Super'";
         connection.query(sql, [email], async (err, result) => {
             if (err) {
                 console.error("Error during login query:", err);
@@ -17,14 +17,25 @@ async function SuperAdminLogin(req, res) {
             }
 
             const admin = result[0];
+
+            if (admin.status != 'Active') {
+                if (isPasswordCorrect) {
+                    return res.status(309).send("");
+                } else {
+                    return res.status(401).send("Invalid credentials.");
+                }
+            }
+
+            
+            console.log(admin);
+            const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
             if (admin.password_status === 'temporary') {
-                if (admin.Password === password) {
+                if (isPasswordCorrect) {
                     return res.status(309).send("Password must be changed.");
                 } else {
                     return res.status(401).send("Invalid credentials.");
                 }
             } else {
-                const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
                 if (!isPasswordCorrect) {
                     return res.status(401).send("Invalid credentials.");
                 } else {

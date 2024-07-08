@@ -84,7 +84,7 @@ router.post('/super-admin-login', (req, res) => {
     SuperAdminLogin(req, res);
 });
 
-router.post('/financial-admin-change-password', (req, res) => {
+router.post('/changepassword', (req, res) => {
     ChangePassword(req, res);
 });
 
@@ -182,11 +182,6 @@ const countJPApprovedJobs = require("../Functions/ProfileAdmin/AJPCount/AJPCount
 const countJSApprovedJobs = require("../Functions/ProfileAdmin/AJSCount/AJSCount");
 const countJPDeclinedJobs = require("../Functions/ProfileAdmin/DJPCount/DJPCount");
 const countJSDeclinedJobs = require("../Functions/ProfileAdmin/DJSCount/DJSCount");
-const getJobCancelRequests = require('../Functions/ProfileAdmin/GetJobCancelRequests/GetJobCancelRequests');
-const approveJobCancelRequest = require('../Functions/ProfileAdmin/ApproveJobCancelRequest/ApproveJobCancelRequest');
-const rejectJobCancelRequest = require('../Functions/ProfileAdmin/RejectJobCancelRequest/RejectJobCancelRequest');
-const totalrequestCount = require('../Functions/ProfileAdmin/TotalProfileRequest/TotalProfileRequest');
-const JobHandlingRequest = require('../Functions/ProfileAdmin/JobHandlingRequest/JobHandlingRequest');
 
 router.get("/jobposterrequests", (req, res) => {
     jobPosterRequests(req, res);
@@ -281,24 +276,5 @@ router.get("/jobposterrequests", (req, res) => {
     countJSDeclinedJobs(req, res)
   })
 
-  router.get('/job-cancel-requests', (req, res) => {
-    getJobCancelRequests(req, res);
-  })
-
-  router.put('/approve-job-cancel-request', (req, res) => {
-    approveJobCancelRequest(req, res);
-  })
-
-  router.delete('/reject-job-cancel-request', (req, res) => {
-    rejectJobCancelRequest(req,res);
-  })
-
-router.get('/totalrequest', (req, res) => {
-  totalrequestCount(req, res);
-})
-
-router.get('/jobhandlingrequest', (req, res) => {
-  JobHandlingRequest(req, res);
-})
 
 module.exports = router;

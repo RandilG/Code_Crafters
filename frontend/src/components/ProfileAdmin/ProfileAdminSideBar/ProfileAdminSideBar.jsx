@@ -6,12 +6,10 @@ import {
   ProfileOutlined,
   EyeOutlined,
   SettingOutlined,
-  DashboardOutlined,
-  CloseCircleOutlined
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
-
 const { Sider } = Layout;
 
 const ProfileAdminSideBar = () => {
@@ -22,105 +20,152 @@ const ProfileAdminSideBar = () => {
   };
 
   return (
-    <div className="siderbar-container">
+    <div className="siderbar-container" >
       <Layout style={{ width: "15%", backgroundColor: "white" }}>
         <Sider
-          theme="light"
+          theme=""
           collapsed={collapsed}
           style={{ backgroundColor: "#005758", width: "20%" }}
         >
           <Logo toggleCollapsed={toggleCollapsed} />
           <Menu
-            theme="dark"
+            theme=""
             mode="inline"
             className="menu-bar"
             style={{
               backgroundColor: "#005758",
-              color: "#fff",
+              color: "#ffff",
               fontWeight: "500",
               fontSize: "16px",
               height: "100vh",
             }}
           >
-            <Menu.Item key="Dashboard" icon={<DashboardOutlined />} className="elements">
-              <Link to="ProfileAdminDashboard" style={{ textDecoration: "none", color: "#fff" }}>
-              Dashboard
-              </Link>
-            </Menu.Item>
 
             <Menu.SubMenu
               key="profile"
               icon={<ProfileOutlined />}
               title="Job Posters"
             >
-              <Menu.Item key="profile-requests" className="elements">
-                <Link to="profilerequests" style={{ textDecoration: "none", color: "#fff" }}>
+              <Link
+                to="profilerequests"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="profile-requests" className="elements">
                   Account Requests
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="view-active-profiles" className="elements">
-                <Link to="viewactiveprofiles" style={{ textDecoration: "none", color: "#fff" }}>
+                </Menu.Item>
+              </Link>
+              <Link
+                to="viewactiveprofiles"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="view-active-profiles" className="elements">
                   Active Profiles
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="view-declined-profiles" className="elements">
-                <Link to="viewdeclinedprofiles" style={{ textDecoration: "none", color: "#fff" }}>
+                </Menu.Item>
+              </Link>
+              <Link
+                to="viewdeclinedprofiles"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="view-declined-profiles" className="elements">
                   Declined Profiles
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="deactivated-profiles" className="elements">
-                <Link to="deactivatedprofile" style={{ textDecoration: "none", color: "#fff" }}>
+                </Menu.Item>
+              </Link>
+              <Link
+                to="deactivatedprofile"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="deactivated-profiles" className="elements">
                   Deactivated Profiles
-                </Link>
-              </Menu.Item>
+                </Menu.Item>
+              </Link>
             </Menu.SubMenu>
             <Menu.SubMenu
               key="seeker-profile"
               icon={<ProfileOutlined />}
               title="Job Seekers"
             >
-              <Menu.Item key="seeker-profile-requests" className="elements">
-                <Link to="jobseekerrequests" style={{ textDecoration: "none", color: "#fff" }}>
+              <Link
+                to="jobseekerrequests"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="seeker-profile-requests" className="elements">
                   Account Requests
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="seeker-view-active-profiles" className="elements">
-                <Link to="activejobseekers" style={{ textDecoration: "none", color: "#fff" }}>
-                  Active Profiles
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="seeker-view-declined-profiles" className="elements">
-                <Link to="declinedjobseekers" style={{ textDecoration: "none", color: "#fff" }}>
-                  Declined Profiles
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="seeker-deactivated-profiles" className="elements">
-                <Link to="deactivatedjobseekers" style={{ textDecoration: "none", color: "#fff" }}>
-                  Deactivated Profiles
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
-              <Menu.Item key="see-review" className="elements">
-                <Link to="jobeekeravgratings" style={{ textDecoration: "none", color: "#fff" }}>
-                  Job Seeker Ratings
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="review-hold" className="elements">
-                <Link to="jobposteravgratings" style={{ textDecoration: "none", color: "#fff" }}>
-                  Job Poster Ratings
-                </Link>
-              </Menu.Item>
-            </Menu.SubMenu>
-            <Menu.Item key="job-cancel-requests" className="elements" icon={<CloseCircleOutlined />}>
-              <Link to="jobcancelrequests" style={{ textDecoration: "none", color: "#fff" }}>
-                Job Cancel Requests
+                </Menu.Item>
               </Link>
-            </Menu.Item>
-            <Menu.Item key="UserProfile" icon={<SettingOutlined />} className="elements">
-              <Link to="UserProfile" style={{ textDecoration: "none", color: "#fff" }}>
+              <Link
+                to="activejobseekers"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="seeker-view-active-profiles" className="elements">
+                  Active Profiles
+                </Menu.Item>
+              </Link>
+              <Link
+                to="declinedjobseekers"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="seeker-view-declined-profiles" className="elements">
+                  Declined Profiles
+                </Menu.Item>
+              </Link>
+              <Link
+                to="deactivatedjobseekers"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="seeker-deactivated-profiles" className="elements">
+                  Deactivated Profiles
+                </Menu.Item>
+              </Link>
+            </Menu.SubMenu>
+
+
+            <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
+              <Link
+                to="jobeekeravgratings"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+
+                <Menu.Item key="see-review" className="elements">
+                  Job Seeker Ratings
+                </Menu.Item>
+              </Link>
+              <Link
+                to="jobposteravgratings"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="review-hold" className="elements">
+                  Job Poster Ratings
+                </Menu.Item>
+              </Link>
+              <Link
+                to="deletereview"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+                <Menu.Item key="delete-review" className="elements">
+                  Delete Review
+                </Menu.Item>
+              </Link>
+            </Menu.SubMenu>
+
+            
+            <Menu.Item
+              key="UserProfile"
+              icon={<SettingOutlined />}
+              className="elements"
+            >
+              <Link
+                to="UserProfile"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
                 Account Settings
               </Link>
+            </Menu.Item>
+            <Menu.Item
+              key="logout"
+              icon={<LogoutOutlined />}
+              className="elements"
+            >
+              Logout
             </Menu.Item>
           </Menu>
         </Sider>

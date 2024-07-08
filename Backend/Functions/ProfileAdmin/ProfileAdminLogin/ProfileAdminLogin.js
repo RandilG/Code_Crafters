@@ -1,11 +1,11 @@
 const bcrypt = require('bcrypt');
-const connection = require('../../../Services/connection'); // Adjust path as per your file structure
+const connection = require('../../../Services/connection');
 
-async function profileAdminLogin(req, res) {
+async function ProfileAdminLogin(req, res) {
     const { email, password } = req.body;
 
     try {
-        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'profile' AND status = 'Active'";
+        const sql = "SELECT * FROM admins WHERE Email = ? AND AdminRole = 'Profile'";
         connection.query(sql, [email], async (err, result) => {
             if (err) {
                 console.error("Error during login query:", err);
@@ -17,14 +17,25 @@ async function profileAdminLogin(req, res) {
             }
 
             const admin = result[0];
+
+            if (admin.status != 'Active') {
+                if (isPasswordCorrect) {
+                    return res.status(309).send("");
+                } else {
+                    return res.status(401).send("Invalid credentials.");
+                }
+            }
+
+            
+            console.log(admin);
+            const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
             if (admin.password_status === 'temporary') {
-                if (admin.Password === password) {
+                if (isPasswordCorrect) {
                     return res.status(309).send("Password must be changed.");
                 } else {
                     return res.status(401).send("Invalid credentials.");
                 }
             } else {
-                const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
                 if (!isPasswordCorrect) {
                     return res.status(401).send("Invalid credentials.");
                 } else {
@@ -33,9 +44,9 @@ async function profileAdminLogin(req, res) {
             }
         });
     } catch (error) {
-        console.error("Error in profileAdminLogin:", error);
+        console.error("Error in ProfileAdminLogin:", error);
         return res.status(500).send("Internal server error.");
     }
 }
 
-module.exports = profileAdminLogin;
+module.exports = ProfileAdminLogin;
