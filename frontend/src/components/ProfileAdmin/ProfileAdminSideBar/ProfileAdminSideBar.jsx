@@ -6,7 +6,9 @@ import {
   ProfileOutlined,
   EyeOutlined,
   SettingOutlined,
-  LogoutOutlined,
+  DashOutlined,
+  CloseCircleOutlined
+  
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -40,6 +42,18 @@ const ProfileAdminSideBar = () => {
               height: "100vh",
             }}
           >
+            <Menu.Item
+              key="ProfileAdminDashboard"
+              icon={<DashOutlined />}
+              className="elements"
+            >
+              <Link
+                to="ProfileAdminDashboard"
+                style={{ textDecoration: "none", color: "#fff" }}
+              >
+              Dashboard
+              </Link>
+            </Menu.Item> 
 
             <Menu.SubMenu
               key="profile"
@@ -137,16 +151,13 @@ const ProfileAdminSideBar = () => {
                   Job Poster Ratings
                 </Menu.Item>
               </Link>
-              <Link
-                to="deletereview"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="delete-review" className="elements">
-                  Delete Review
-                </Menu.Item>
-              </Link>
+              
             </Menu.SubMenu>
-
+            <Menu.Item key="job-cancel-requests" className="elements" icon={<CloseCircleOutlined />}>
+              <Link to="jobcancelrequests" style={{ textDecoration: "none", color: "#fff" }}>
+                Job Cancel Requests
+              </Link>
+            </Menu.Item>
             
             <Menu.Item
               key="UserProfile"
@@ -160,13 +171,7 @@ const ProfileAdminSideBar = () => {
                 Account Settings
               </Link>
             </Menu.Item>
-            <Menu.Item
-              key="logout"
-              icon={<LogoutOutlined />}
-              className="elements"
-            >
-              Logout
-            </Menu.Item>
+            
           </Menu>
         </Sider>
       </Layout>
