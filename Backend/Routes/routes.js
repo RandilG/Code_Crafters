@@ -84,7 +84,7 @@ router.post('/super-admin-login', (req, res) => {
     SuperAdminLogin(req, res);
 });
 
-router.post('/financial-admin-change-password', (req, res) => {
+router.post('/changepassword', (req, res) => {
     ChangePassword(req, res);
 });
 

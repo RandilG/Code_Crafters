@@ -2,7 +2,7 @@ const connection = require('../../../Services/connection');
 const bcrypt = require('bcrypt');
 
 async function changePassword(req, res) {
-  const sql = `UPDATE admins SET Password = ?, pasword_status = 'changed' WHERE Email = ?`;
+  const sql = `UPDATE admins SET Password = ?, password_status = 'changed' WHERE Email = ?`;
   
   const { email, newPassword } = req.body; 
 
