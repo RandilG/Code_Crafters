@@ -157,7 +157,7 @@ const Dashboard = (props: any) => {
                         <View style={styles.carouselConatiner} onLayout={(event) => { const { width } = event.nativeEvent.layout; setCarouselWidth(width) }}>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} ref={carouselRef} pagingEnabled onScroll={handleScroll} scrollEventThrottle={200}>
                                 <View style={{ ...styles.scrollItem, ...{ width: carouselWidth, backgroundColor: '#12CD45' } }}>
-                                    <Text>Item 1</Text>
+                                    <Image source={require('../assets/images/cover.png')} style={{resizeMode: 'stretch', width: '100%', height: '100%', borderRadius: 15}}/>
                                 </View>
                                 <View style={{ ...styles.scrollItem, ...{ width: carouselWidth, backgroundColor: '#9922AA' } }}>
                                     <Text>Item 2</Text>
