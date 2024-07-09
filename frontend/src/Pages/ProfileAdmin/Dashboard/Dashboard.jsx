@@ -130,7 +130,7 @@ function Dashboard() {
 
       <div className="Charts" style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
         <div style={{ width: '45%' }}>
-          <StatusChart />
+          <StatusChart /> 
         </div>
         <div style={{ width: '45%' }}>
           {/* <PieChart /> */}
