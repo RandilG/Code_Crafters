@@ -6,7 +6,7 @@ import {
   ProfileOutlined,
   EyeOutlined,
   SettingOutlined,
-  DashOutlined,
+  DashboardOutlined,
   CloseCircleOutlined
   
 } from "@ant-design/icons";
@@ -44,7 +44,7 @@ const ProfileAdminSideBar = () => {
           >
             <Menu.Item
               key="ProfileAdminDashboard"
-              icon={<DashOutlined />}
+              icon={<DashboardOutlined />}
               className="elements"
             >
               <Link

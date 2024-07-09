@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Table, Rate } from 'antd';
 import axios from 'axios';
 
-
 const JobPosterRatings = () => {
   const [data, setData] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
@@ -68,17 +67,57 @@ const JobPosterRatings = () => {
   ];
 
   return (
-    <div>
-      <center>
-      <h1>Poster Ratings</h1>
-      <Table
-        columns={columns}
-        dataSource={data}
-        onChange={handleChange}
-        pagination={false}
-        style={{width:'80%'}}
-      />
-      </center>
+    <div style={{ 
+      backgroundColor: '#f0f2f5', 
+      minHeight: '100vh', 
+      padding: '20px',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        padding: '20px'
+      }}>
+        <h1 style={{
+          textAlign: 'center',
+          color: '#1890ff',
+          fontSize: '28px',
+          marginBottom: '20px',
+          borderBottom: '2px solid #1890ff',
+          paddingBottom: '10px'
+        }}>Job Poster Ratings</h1>
+        <Table
+          columns={columns}
+          dataSource={data}
+          onChange={handleChange}
+          pagination={{ 
+            pageSize: 10, 
+            showSizeChanger: true, 
+            showQuickJumper: true,
+            style: { marginTop: '20px' }
+          }}
+          style={{
+            width: '100%',
+            overflowX: 'auto'
+          }}
+          rowKey="EmailAddress"
+          rowClassName={(record, index) => index % 2 === 0 ? 'even-row' : 'odd-row'}
+        />
+      </div>
+      <style>{`
+        .even-row { background-color: #fafafa; }
+        .odd-row { background-color: #ffffff; }
+        .ant-table-thead > tr > th {
+          background-color: #1890ff;
+          color: white;
+        }
+        .ant-table-tbody > tr:hover > td {
+          background-color: #e6f7ff;
+        }
+      `}</style>
     </div>
   );
 };

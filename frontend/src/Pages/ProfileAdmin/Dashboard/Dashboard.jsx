@@ -3,7 +3,7 @@ import { TeamOutlined, UserOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { Card, Space, Statistic, Spin, message } from 'antd';
 import axios from 'axios';
 import StatusChart from '../../../components/ProfileAdmin/Chart/Chart';
-// import PieChart from '../../../components/ProfileAdmin/Circle/Circle';
+import PieChart from '../../../components/ProfileAdmin/Circle/Circle';
 
 const gradientStyles = {
   activeMembers: {
@@ -69,71 +69,74 @@ function Dashboard() {
   }, []);
 
   if (loading) {
-    return <Spin tip="Loading..." />;
+    return <Spin tip="Loading..." style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />;
   }
 
   return (
-    <div className="PageContent">
+    <div className="PageContent" style={{ padding: '20px', backgroundColor: '#f0f2f5' }}>
       <div className="flex items-center justify-center">
-        <div className="Cards">
-          <Space direction="horizontal" style={{ margin: '5%' }}>
-            <Card style={{ ...gradientStyles.activeMembers, borderRadius: '10px' }}>
-              <p>Active Members</p>
+        <div className="Cards" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+          <Space direction="horizontal" style={{ margin: '5%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+            <Card style={{ ...gradientStyles.activeMembers, borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', flex: '1 1 300px', margin: '10px' }}>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>Active Members</p>
               <Space>
                 <TeamOutlined
                   style={{
                     color: 'green',
                     fontSize: '50px',
                     backgroundColor: 'rgba(0,255,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
+                    borderRadius: '50%',
+                    padding: '15px',
+                    marginRight: '20px'
                   }}
                 />
-                <Statistic title="Active Members" value={activeMembers} />
+                <Statistic title="Active Members" value={activeMembers} valueStyle={{ fontSize: '24px', fontWeight: 'bold' }} />
               </Space>
             </Card>
 
-            <Card style={{ ...gradientStyles.profileRequests, borderRadius: '10px' }}>
-              <p>Profile Requests</p>
+            <Card style={{ ...gradientStyles.profileRequests, borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', flex: '1 1 300px', margin: '10px' }}>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>Profile Requests</p>
               <Space>
                 <UserOutlined
                   style={{
                     color: 'blue',
                     fontSize: '50px',
                     backgroundColor: 'rgba(0,0,255,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
+                    borderRadius: '50%',
+                    padding: '15px',
+                    marginRight: '20px'
                   }}
                 />
-                <Statistic title="Profile Requests" value={profileRequests} />
+                <Statistic title="Profile Requests" value={profileRequests} valueStyle={{ fontSize: '24px', fontWeight: 'bold' }} />
               </Space>
             </Card>
 
-            <Card style={{ ...gradientStyles.jobHandlingRequests, borderRadius: '10px' }}>
-              <p>Job Handling Requests</p>
+            <Card style={{ ...gradientStyles.jobHandlingRequests, borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', flex: '1 1 300px', margin: '10px' }}>
+              <p style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>Job Handling Requests</p>
               <Space>
                 <FileDoneOutlined
                   style={{
                     color: 'red',
                     fontSize: '50px',
                     backgroundColor: 'rgba(255,0,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
+                    borderRadius: '50%',
+                    padding: '15px',
+                    marginRight: '20px'
                   }}
                 />
-                <Statistic title="Job Handling Requests" value={jobHandlingRequests} />
+                <Statistic title="Job Handling Requests" value={jobHandlingRequests} valueStyle={{ fontSize: '24px', fontWeight: 'bold' }} />
               </Space>
             </Card>
           </Space>
         </div>
       </div>
 
-      <div className="Charts" style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0' }}>
-        <div style={{ width: '45%' }}>
+      <div className="Charts" style={{ display: 'flex', justifyContent: 'space-around', margin: '40px 0', flexWrap: 'wrap' }}>
+        <div style={{ width: '35%', minWidth: '300px', marginBottom: '20px', backgroundColor: 'white', borderRadius: '15px', padding: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
           <StatusChart /> 
         </div>
-        <div style={{ width: '45%' }}>
-          {/* <PieChart /> */}
+        <div style={{ width: '35%', minWidth: '300px', marginBottom: '20px', backgroundColor: 'white', borderRadius: '15px', padding: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+          <PieChart />
         </div>
       </div>
     </div>
