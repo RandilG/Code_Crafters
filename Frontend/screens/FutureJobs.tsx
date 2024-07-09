@@ -18,16 +18,19 @@ import moment from 'moment';
 import {setErrorMsg, setErrorTitle} from '../global/variable';
 import ErrorPopup from '../components/errorPopUp';
 import AppLoader from '../components/appLoader';
+import {io} from 'socket.io-client';
 
-// Define the main functional component 'FutureJobs'
-const FutureJobs = (props: any) => {
+// Initialize the socket connection
+const socket = io('http://10.0.2.2:3000');
+
+const FutureJobs: React.FC<any> = (props) => {
   // Define state variables using the 'useState'
   const [futureJobs, setFutureJobs] = useState<any[]>([]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-    //change email for specific job poster
-  const userName = 'zab@example.com';
+  // Change email for specific job poster
+  const userName = 'hmpridmika@gmail.com';
 
   // Function to fetch future jobs from the job table
   async function getFutureJobs() {
@@ -35,17 +38,17 @@ const FutureJobs = (props: any) => {
       const response = await axios.get(server + `fetchFutureJobs/${userName}`);
 
       if (response.status === HttpStatusCode.Ok) {
-         // If request is successful, update state with fetched data
+        // If request is successful, update state with fetched data
         setFutureJobs(response.data);
         setIsLoading(false);
       } else if (response.status === HttpStatusCode.InternalServerError) {
         // If internal server error, set error state
         setErrorTitle('Oops...!');
-        setErrorMsg('response.data[0]');
+        setErrorMsg(response.data[0]);
         setIsLoading(false);
         setIsError(true);
       } else {
-        //set generic error message
+        // Set generic error message
         setErrorTitle('Oops...!');
         setErrorMsg('Something wrong has happened..');
         setIsError(true);
@@ -57,7 +60,7 @@ const FutureJobs = (props: any) => {
       setErrorMsg('Something wrong has happened..');
       setIsError(true);
       setIsLoading(false);
-      console.log(error); 
+      console.log(error);
     }
   }
 
@@ -65,7 +68,11 @@ const FutureJobs = (props: any) => {
     setIsError(false);
     setIsLoading(true);
     getFutureJobs();
-  }, []);// Empty dependency array means this effect runs only once after initial render
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []); // Empty dependency array means this effect runs only once after initial render
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -141,9 +148,37 @@ const JobsCard: React.FC<any> = ({
   wHours,
   hRate,
   appliedCount,
+  jobId,
 }) => {
-  
-  const isToday: boolean = jobDate == moment(new Date()).format('YYYY-MM-DD');
+  const [timeLeft, setTimeLeft] = useState<string>('');
+  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+
+  const isToday: boolean = jobDate === moment(new Date()).format('YYYY-MM-DD');
+
+  useEffect(() => {
+    if (isToday) {
+      socket.emit('joinJobRoom', jobId);
+
+      socket.on('timerStarted', data => {
+        setTimeLeft(data.timer);
+      });
+
+      return () => {
+        socket.off('timerStarted');
+      };
+    }
+  }, []);
+
+  const handleStartPress = async () => {
+    try {
+      setIsTimerRunning(true);
+
+      const resp = await axios.post(server + 'jobTimer', {jobId: jobId});
+      console.log(resp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Card
@@ -152,7 +187,10 @@ const JobsCard: React.FC<any> = ({
           ? styles.cardContainerSame
           : styles.cardContainerDifferent
       }>
-      <Text style={styles.cardTitle}>{title} </Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text style={styles.cardTitle}>{title}</Text>
+        <Text style={styles.timerText}>{timeLeft}</Text>
+      </View>
       <View style={{flexDirection: 'row'}}>
         <View>
           <Card.Content>
@@ -172,12 +210,10 @@ const JobsCard: React.FC<any> = ({
         <View>
           <Card.Content>
             <Text style={styles.cardAttribute}>
-              <Text style={styles.attributeBold}>Work Hours: </Text>
-              {wHours}
+              <Text style={styles.attributeBold}>Work Hours: </Text> {wHours}
             </Text>
             <Text style={styles.cardAttribute}>
-              <Text style={styles.attributeBold}>Hourly Rate: </Text>
-              {hRate}
+              <Text style={styles.attributeBold}>Hourly Rate: </Text> {hRate}
             </Text>
             <Text style={styles.cardAttribute}>
               <Text style={styles.attributeBold}>Applied Seekers: </Text>{' '}
@@ -187,16 +223,21 @@ const JobsCard: React.FC<any> = ({
         </View>
       </View>
       <Card.Actions>
-        <TouchableOpacity style={styles.leftButton} onPress={() => Alert.alert("pressed cancel button")}>
+        <TouchableOpacity
+          style={styles.leftButton}
+          onPress={() => Alert.alert('Pressed Cancel button')}>
           <Text style={styles.buttonTextLeft}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          disabled={!isToday}
+          disabled={!isToday || isTimerRunning}
           style={{
             ...styles.rightButton,
-            ...{backgroundColor: isToday ? '#FE8235' : '#908883'},
+            ...{
+              backgroundColor:
+                isToday && !isTimerRunning ? '#FE8235' : '#908883',
+            },
           }}
-          onPress={() => Alert.alert('Pressed Start button')}>
+          onPress={() => handleStartPress()}>
           <Text style={styles.buttonTextRight}>Start</Text>
         </TouchableOpacity>
       </Card.Actions>
@@ -205,6 +246,14 @@ const JobsCard: React.FC<any> = ({
 };
 
 const styles = StyleSheet.create({
+  timerText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FE8235',
+    marginRight: 16,
+    alignSelf: 'center',
+  },
+
   buttonTextRight: {
     textAlign: 'center',
     marginHorizontal: 5,

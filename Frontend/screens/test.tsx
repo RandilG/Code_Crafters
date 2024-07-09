@@ -24,6 +24,14 @@ const Test = (props: any) => {
         title="Click me to navigate to screen 3"
         onPress={() => props.navigation.navigate('CompletePayment')}
       />
+      <Button
+        title="Click me to navigate to poster chat"
+        onPress={() => props.navigation.navigate('ChatScreen')}
+      />
+        <Button
+          title="Click me to navigate to seeker chat"
+          onPress={() => props.navigation.navigate('SeekerChatScreen')}
+        />
     </SafeAreaView>
   );
 };

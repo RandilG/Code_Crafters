@@ -6,6 +6,7 @@ const connection = require("../../../Services/connection");
 const dotenv = require("dotenv");
 const moment = require("moment");
 const { HttpStatusCode } = require("axios");
+const {sendPaymentMail} = require("../Financial/sendEmail");
 
 dotenv.config();
 
@@ -23,10 +24,12 @@ module.exports = async function payments(req, res) {
 
     // insert payment detail in to the payment table
     const query3 = "INSERT INTO `parttime_srilanka`.`payment` (`amount`, `payment_date`, `payment_id`, `seeker_charge`, `service_charge`, `job_id`) VALUES (?, ?, ?, ?, ?, ?);";
-
+         
     // delete relevant data from the tempory job table
     const query4 = "DELETE FROM `parttime_srilanka`.`temporary_job` WHERE (`tempory_job_id` = ?);";
 
+    const query5 = "SELECT JobPosterID ,FirstName,job_poster,amount,EmailAddress FROM  payment,job_poster,job WHERE job.job_poster=job_poster.EmailAddress AND payment.job_id=job.job_id AND job_poster.EmailAddress=?"
+    //console.log(query5)
     const date = moment().format("YYYY-MM-DD");
 
     let values = [req.params.tempJobId];
@@ -64,6 +67,23 @@ module.exports = async function payments(req, res) {
 
     await queryAsync("COMMIT"); // commit the transaction to the DB
 
+    let data1 = await queryAsync(query5, [data[0].job_poster]);
+
+    const emailValues = {
+      EmailAddress: data1[0].EmailAddress,
+      FirstName: data1[0].FirstName,
+      amount: amount,
+    };
+
+    sendPaymentMail(emailValues, (error, info) => {
+      if (error) {
+        console.log("Error in sendPaymentMail:", error);
+      } else {
+        console.log("Email sent successfully:", info.response);
+      }
+    });
+
+
     return res.status(HttpStatusCode.Ok).json("Transaction successfully completed");
   } catch (error) {
     await queryAsync("ROLLBACK"); // if error happen,recover the transaction
@@ -87,4 +107,4 @@ function queryAsync(query, values) {
       }
     });
   });
-}
+};

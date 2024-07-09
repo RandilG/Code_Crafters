@@ -11,7 +11,8 @@ import CompletePayment from './screens/CompletePayment';
 import errorPopUp from './components/errorPopUp';
 import FutureJobs from './screens/FutureJobs';
 import InProgressJobs from './screens/InProgressJobs';
-import CompletedJobs from './screens/CompletedJobs';
+import ChatScreen from './screens/ChatScreen';
+import SeekerChatScreen from './screens/SeekerChatScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +63,16 @@ const Navigation = (props: any) => {
          <Stack.Screen 
         name="InProgressJobs"
         component={InProgressJobs}
+        options={{headerShown: false}}
+        />
+        <Stack.Screen 
+        name="ChatScreen"
+        component={ChatScreen}
+        options={{headerShown: false}}
+        />
+        <Stack.Screen 
+        name="SeekerChatScreen"
+        component={SeekerChatScreen}
         options={{headerShown: false}}
         />
       </Stack.Navigator>

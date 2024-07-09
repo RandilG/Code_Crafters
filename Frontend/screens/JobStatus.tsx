@@ -32,7 +32,7 @@ const JobStatus = (props: any) => {
   }
 
   //change email for specific user
-  const userName = 'zab@example.com'; 
+  const userName = 'hmpridmika@gmail.com'; 
 
   //fetch pending jobs
   async function getPendingJobs() {
