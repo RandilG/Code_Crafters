@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Table, Button, Dropdown, Menu } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Table, Button, Dropdown, Menu, Typography } from 'antd';
+import { DownOutlined, UserOutlined, FileOutlined, TeamOutlined, BankOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const DashboardCard = ({ number, text, color }) => (
-  <Card style={{ backgroundColor: color, color: 'white', borderRadius: '8px', marginBottom: '20px' }}>
-    <div style={{ fontSize: '32px', fontWeight: 'bold' }}>{number}</div>
-    <div>{text}</div>
+const { Title } = Typography;
+
+const DashboardCard = ({ number, text, color, icon }) => (
+  <Card 
+    hoverable
+    style={{ 
+      backgroundColor: color, 
+      color: 'white', 
+      borderRadius: '12px', 
+      marginBottom: '20px',
+      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+      transition: 'all 0.3s'
+    }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div>
+        <div style={{ fontSize: '36px', fontWeight: 'bold' }}>{number}</div>
+        <div style={{ fontSize: '16px' }}>{text}</div>
+      </div>
+      <div style={{ fontSize: '48px', opacity: 0.8 }}>{icon}</div>
+    </div>
   </Card>
 );
 
@@ -66,6 +83,12 @@ const SuperAdminDashboard = () => {
     }
   };
 
+  const statusColors = {
+    Active: '#52c41a',
+    Suspend: '#f5222d',
+    Hold: '#1890ff'
+  };
+
   const columns = [
     { 
       title: 'Admin Name', 
@@ -78,12 +101,17 @@ const SuperAdminDashboard = () => {
       title: 'Status', 
       dataIndex: 'status', 
       key: 'status',
-      render: (status) => {
-        const color = status === 'Active' ? 'green' : 
-                      status === 'Suspend' ? 'red' : 
-                      status === 'Hold' ? 'blue' : 'orange';
-        return <span style={{ color }}>{status}</span>;
-      }
+      render: (status) => (
+        <span style={{ 
+          color: statusColors[status] || '#faad14',
+          fontWeight: 'bold',
+          padding: '4px 8px',
+          borderRadius: '4px',
+          backgroundColor: `${statusColors[status]}22` // 22 is for 13% opacity
+        }}>
+          {status}
+        </span>
+      )
     },
     { title: 'AdminRole', dataIndex: 'AdminRole', key: 'AdminRole' },
     {
@@ -94,18 +122,18 @@ const SuperAdminDashboard = () => {
           overlay={
             <Menu>
               <Menu.Item key="1" onClick={() => handleStatusChange(record, 'Active')}>
-                Active
+                <span style={{ color: statusColors.Active }}>Active</span>
               </Menu.Item>
               <Menu.Item key="2" onClick={() => handleStatusChange(record, 'Suspend')}>
-                Suspend
+                <span style={{ color: statusColors.Suspend }}>Suspend</span>
               </Menu.Item>
               <Menu.Item key="3" onClick={() => handleStatusChange(record, 'Hold')}>
-                Hold
+                <span style={{ color: statusColors.Hold }}>Hold</span>
               </Menu.Item>
             </Menu>
           }
         >
-          <Button>
+          <Button style={{ borderRadius: '6px' }}>
             Actions <DownOutlined />
           </Button>
         </Dropdown>
@@ -114,15 +142,29 @@ const SuperAdminDashboard = () => {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Row gutter={16}>
-        <Col span={6}><DashboardCard number={adminCount} text="Admin Count" color="#5cdbd3" /></Col>
-        <Col span={6}><DashboardCard number={jobPosterCount} text="Job Poster Count" color="#b37feb" /></Col>
-        <Col span={6}><DashboardCard number={jobSeekerCount} text="Job Seeker Count" color="#69c0ff" /></Col>
-        <Col span={6}><DashboardCard number={jobCount} text="Job Count" color="#ffa940" /></Col>
+    <div style={{ padding: '30px', backgroundColor: '#f0f2f5', minHeight: '100vh' }}>
+      <Title level={2} style={{ marginBottom: '24px', color: '#1890ff' }}>Super Admin Dashboard</Title>
+      <Row gutter={24}>
+        <Col span={6}><DashboardCard number={adminCount} text="Admin Count" color="#5cdbd3" icon={<UserOutlined />} /></Col>
+        <Col span={6}><DashboardCard number={jobPosterCount} text="Job Poster Count" color="#b37feb" icon={<BankOutlined />} /></Col>
+        <Col span={6}><DashboardCard number={jobSeekerCount} text="Job Seeker Count" color="#69c0ff" icon={<TeamOutlined />} /></Col>
+        <Col span={6}><DashboardCard number={jobCount} text="Job Count" color="#ffa940" icon={<FileOutlined />} /></Col>
       </Row>
-      <Card title="Admin List" style={{ marginTop: '20px' }}>
-        <Table columns={columns} dataSource={adminData} />
+      <Card 
+        title={<Title level={4}>Admin List</Title>} 
+        style={{ 
+          marginTop: '30px', 
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+        }}
+      >
+        <Table 
+          columns={columns} 
+          dataSource={adminData}
+          pagination={{ pageSize: 5 }}
+          rowKey="Email"
+          style={{ overflowX: 'auto' }}
+        />
       </Card>
     </div>
   );

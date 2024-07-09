@@ -37,7 +37,6 @@ const Verification = () => {
       });
 
       if (response.status === 200) {
-        // If OTP verification is successful, save user data to the database
         const saveResponse = await axios.post('http://localhost:8000/saveUser', formData);
 
         if (saveResponse.status === 200) {
@@ -72,11 +71,13 @@ const Verification = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-xl w-full max-w-md shadow-lg">
-        <h1 className="text-2xl font-semibold mb-6 text-center">OTP Verification</h1>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="flex justify-center space-x-2">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h1 className="text-4xl font-bold text-center text-orange-600 mb-12">OTP Verification</h1>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="flex justify-center space-x-4">
             {otp.map((data, index) => (
               <input
                 key={index}
@@ -85,34 +86,34 @@ const Verification = () => {
                 maxLength="1"
                 value={data}
                 onChange={(e) => handleChange(e.target, index)}
-                className="w-10 h-10 text-center border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                className="w-12 h-12 text-center text-2xl font-semibold border-2 border-orange-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
               />
             ))}
           </div>
-          {error && <p className="text-red-500 text-sm mt-1 text-center">{error}</p>}
-          <div className="flex justify-between mt-6">
+          {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
+          <div className="flex justify-center space-x-6 mt-8">
             <button
               type="button"
               onClick={handleBack}
-              className="px-4 py-2 bg-white border border-orange-500 text-orange-500 rounded-full hover:bg-orange-500 hover:text-white transition"
+              className="px-8 py-3 bg-white text-orange-500 border-2 border-orange-500 rounded-full hover:bg-orange-50 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Go Back
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
+              className="px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Verify
             </button>
           </div>
-          <div className="text-center mt-4">
+          <div className="text-center mt-6">
             {resendCountdown > 0 ? (
-              <p className="text-sm text-gray-500">Resend code in {resendCountdown}s</p>
+              <p className="text-lg text-gray-600">Resend code in {resendCountdown}s</p>
             ) : (
               <button
                 type="button"
                 onClick={resendCode}
-                className="text-sm text-orange-500 hover:underline"
+                className="text-lg text-orange-500 hover:underline font-semibold"
               >
                 Resend Code
               </button>
