@@ -26,6 +26,47 @@ const gradientStyles = {
   },
 };
 
+const dashboardStyles = {
+  pageContent: {
+    padding: '20px',
+    backgroundColor: '#f0f2f5',
+    minHeight: '100vh',
+  },
+  cardsContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: '20px',
+    marginBottom: '30px',
+  },
+  card: {
+    width: '300px',
+    borderRadius: '15px',
+    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+    transition: 'transform 0.3s ease-in-out',
+    ':hover': {
+      transform: 'translateY(-5px)',
+    },
+  },
+  cardTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  },
+  icon: {
+    fontSize: '40px',
+    padding: '10px',
+    borderRadius: '50%',
+    marginRight: '15px',
+  },
+  graphContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '20px',
+    flexWrap: 'wrap',
+  },
+};
+
 function Dashboard() {
   const [incomeData, setIncomeData] = useState(null);
   const [revenueData, setRevenueData] = useState(null);
@@ -58,116 +99,32 @@ function Dashboard() {
   }, []);
 
   if (loading || !incomeData || !revenueData) {
-    return <Spin tip="Loading..." />;
+    return <Spin size="large" tip="Loading..." />;
   }
 
   return (
-    <div className="PageContent">
-      <div className="flex items-center justify-center">
-        <div className="Cards">
-          <Space direction="horizontal" style={{ margin: '5%' }}>
-            <Card style={{ ...gradientStyles.todayIncome, borderRadius: '10px' }}>
-              <p>Today Income</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'green',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(0,255,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Daily" value={incomeData.total_today} />
-              </Space>
-            </Card>
-
-            <Card style={{ ...gradientStyles.monthIncome, borderRadius: '10px' }}>
-              <p>This Month Income</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'blue',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(0,0,255,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Monthly" value={incomeData.total_month} />
-              </Space>
-            </Card>
-
-            <Card style={{ ...gradientStyles.yearIncome, borderRadius: '10px' }}>
-              <p>This Year Income</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'red',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(255,0,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Yearly" value={incomeData.total_year} />
-              </Space>
-            </Card>
-
-            <Card style={{ ...gradientStyles.todayRevenue, borderRadius: '10px', marginLeft: '50px' }}>
-              <p>Today Revenue</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'green',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(0,255,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Daily" value={revenueData.total_today} />
-              </Space>
-            </Card>
-
-            <Card style={{ ...gradientStyles.monthRevenue, borderRadius: '10px' }}>
-              <p>This Month Revenue</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'blue',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(0,0,255,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Monthly" value={revenueData.total_month} />
-              </Space>
-            </Card>
-
-            <Card style={{ ...gradientStyles.yearRevenue, borderRadius: '10px' }}>
-              <p>This Year Revenue</p>
-              <Space>
-                <DollarOutlined
-                  style={{
-                    color: 'red',
-                    fontSize: '50px',
-                    backgroundColor: 'rgba(255,0,0,0.25)',
-                    borderRadius: 30,
-                    padding: 8,
-                  }}
-                />
-                <Statistic title="Yearly" value={revenueData.total_year} />
-              </Space>
-            </Card>
-          </Space>
-          <br />
-          <Space>
-            <BarGraph />
-            <RevenueGraph />
-          </Space>
-        </div>
+    <div style={dashboardStyles.pageContent}>
+      <div style={dashboardStyles.cardsContainer}>
+        {[
+          { title: 'Today Income', data: incomeData.total_today, style: gradientStyles.todayIncome, iconColor: 'green' },
+          { title: 'This Month Income', data: incomeData.total_month, style: gradientStyles.monthIncome, iconColor: 'blue' },
+          { title: 'This Year Income', data: incomeData.total_year, style: gradientStyles.yearIncome, iconColor: 'red' },
+          { title: 'Today Revenue', data: revenueData.total_today, style: gradientStyles.todayRevenue, iconColor: 'green' },
+          { title: 'This Month Revenue', data: revenueData.total_month, style: gradientStyles.monthRevenue, iconColor: 'blue' },
+          { title: 'This Year Revenue', data: revenueData.total_year, style: gradientStyles.yearRevenue, iconColor: 'red' },
+        ].map((item, index) => (
+          <Card key={index} style={{ ...dashboardStyles.card, ...item.style }}>
+            <p style={dashboardStyles.cardTitle}>{item.title}</p>
+            <Space>
+              <DollarOutlined style={{ ...dashboardStyles.icon, color: item.iconColor, backgroundColor: `rgba(${item.iconColor === 'green' ? '0,255,0' : item.iconColor === 'blue' ? '0,0,255' : '255,0,0'},0.25)` }} />
+              <Statistic value={item.data} />
+            </Space>
+          </Card>
+        ))}
+      </div>
+      <div style={dashboardStyles.graphContainer}>
+        <BarGraph />
+        <RevenueGraph />
       </div>
     </div>
   );

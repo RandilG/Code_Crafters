@@ -39,7 +39,6 @@ const Signup = () => {
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
       try {
-        // Make a POST request to the backend to send OTP
         const response = await fetch('http://localhost:8000/requestOtp', {
           method: 'POST',
           headers: {
@@ -53,11 +52,8 @@ const Signup = () => {
         });
 
         if (response.ok) {
-          // Save data to localStorage
           localStorage.setItem('formData', JSON.stringify(formData));
-
-          // Navigate to verification page
-          navigate('/Verification');
+          navigate('/SuperAdmin/Verification');
         } else {
           setErrors({ form: 'Failed to send OTP. Please try again.' });
         }
@@ -70,50 +66,52 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 ">
-      <div className="bg-white p-8 rounded-xl w-full max-w-md shadow-lg mt-11">
-        <h1 className="text-2xl font-semibold mb-6 text-center">Admin Registration</h1>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            />
-            {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-4xl font-bold text-center text-orange-600 mb-12">Admin Registration</h1>
+        <form className="space-y-8" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <label className="block text-lg font-medium text-gray-700 mb-2">First Name</label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+              />
+              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+            </div>
+            <div>
+              <label className="block text-lg font-medium text-gray-700 mb-2">Last Name</label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+              />
+              {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+            </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            />
-            {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Email</label>
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+              className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
             />
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Admin Role</label>
+            <label className="block text-lg font-medium text-gray-700 mb-2">Admin Role</label>
             <select
               name="adminRole"
               value={formData.adminRole}
               onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+              className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
             >
               <option value="">Select a role</option>
               <option value="Financial">Financial</option>
@@ -122,39 +120,41 @@ const Signup = () => {
             </select>
             {errors.adminRole && <p className="text-red-500 text-sm mt-1">{errors.adminRole}</p>}
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-            />
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <label className="block text-lg font-medium text-gray-700 mb-2">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+              />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            </div>
+            <div>
+              <label className="block text-lg font-medium text-gray-700 mb-2">Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+              />
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+            </div>
           </div>
           {errors.form && <p className="text-red-500 text-sm mt-1">{errors.form}</p>}
-          <div className="flex space-x-4 mt-6 justify-between">
+          <div className="flex justify-center space-x-6 mt-12">
             <button
               type="submit"
-              className="px-4 py-2 bg-white border border-orange-500 text-orange-500 rounded-full hover:bg-orange-500 hover:text-white transition"
+              className="px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Verify
             </button>
             <Link
               to="/"
-              className="px-4 py-2 bg-white border border-orange-500 text-orange-500 rounded-full hover:bg-orange-500 hover:text-white transition text-center"
+              className="px-8 py-3 bg-white text-orange-500 border-2 border-orange-500 rounded-full hover:bg-orange-50 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Go Back
             </Link>

@@ -58,7 +58,6 @@ function AppRoutes() {
             </Route>
 
             <Route path="/SuperAdminLogin" element={<SuperAdminLogin />} />
-            <Route path="/Verification" element={<Verification />} />
             <Route path="/SuperAdmin" element={<SuperAdminLayoutPage />}>
                 <Route path="SuperAdminDashboard" element={<SuperAdminDashboard />} />
                 <Route path="SuperAdminUserProfile" element={<AdminProfile />} />
@@ -68,6 +67,7 @@ function AppRoutes() {
                 <Route path="JobSeekerPayments" element={<JobSeekerPayments />} /> 
                 <Route path="Notification" element={<Notification />} />
                 <Route path="Signup" element={<Signup />} />
+                <Route path="Verification" element={<Verification />} />
                 <Route path='profilerequests' element={<ProfileRequests />} />
                 <Route path='jobeekeravgratings' element={<JobSeekerRatings />} />
                 <Route path='jobposteravgratings' element={<JobPosterRatings />} />

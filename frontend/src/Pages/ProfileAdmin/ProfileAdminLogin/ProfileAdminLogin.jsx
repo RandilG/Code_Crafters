@@ -80,7 +80,7 @@ const ProfileAdminLogin = () => {
           </Form.Item>
 
           <Form.Item>
-          <Button
+            <Button
               type="link"
               style={styles.forgotPassword}
               onClick={() => navigate('/forgotpassword')}
@@ -100,36 +100,49 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     height: '100vh',
-    backgroundColor: '#f0f2f5',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
   },
   embossedContainer: {
-    backgroundColor: '#ffffff',
-    width:'25%',
-    padding: '40px 20px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    borderRadius: '8px',
-    border: '1px solid #e8e8e8',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    width: '350px',
+    padding: '40px 30px',
+    boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+    borderRadius: '15px',
+    border: '1px solid rgba(255, 255, 255, 0.3)',
     textAlign: 'center',
+    backdropFilter: 'blur(10px)',
   },
   title: {
-    marginBottom: '24px',
+    marginBottom: '30px',
+    color: '#333',
+    fontSize: '28px',
+    fontWeight: 'bold',
   },
   form: {
-    maxWidth: '300px',
-    margin: '0 auto',
+    width: '100%',
   },
   input: {
-    height: '40px',
+    height: '45px',
+    borderRadius: '8px',
+    fontSize: '16px',
   },
   button: {
     width: '100%',
-    height: '40px',
+    height: '45px',
     backgroundColor: 'rgb(0, 87, 88)',
     borderColor: 'rgb(0, 87, 88)',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    marginTop: '10px',
+    transition: 'all 0.3s ease',
   },
   forgotPassword: {
     padding: 0,
     height: '40px',
+    color: 'rgb(0, 87, 88)',
+    fontSize: '14px',
+    transition: 'color 0.3s ease',
   },
 };
 
