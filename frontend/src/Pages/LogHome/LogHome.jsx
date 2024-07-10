@@ -12,10 +12,8 @@ const LogHome = () => {
       navigate('/SuperAdminLogin');
     } else if (role === 'financialadmin') {
       navigate('/financialadminloging');
-    } else if (role === 'profile') {
+    } else if (role === 'profile_jobHandling') {
         navigate('/ProfileAdminLogin');
-    } else if (role === 'jobhandling') {
-      navigate('/jobhandling');
     }
   };
 
@@ -42,8 +40,7 @@ const LogHome = () => {
               <option value="" disabled>Select Admin Role</option>
               <option value="superadmin">Super Admin</option>
               <option value="financialadmin">Financial Admin</option>
-              <option value="profile">Profile Admin</option>
-              <option value="jobhandling">Job Handling Admin</option>
+              <option value="profile_jobHandling">Profile & Job Handling Admin</option>
             </select>
           </div>
           <div className="flex space-x-4 justify-center text-center">

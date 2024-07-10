@@ -24,6 +24,32 @@ function JobSeekerPayments() {
             overflow: 'hidden',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
         },
+        generateExcelButton: {
+            display: 'block',
+            margin: '2rem auto',
+            padding: '0.5rem 1rem',
+            backgroundColor: '#005758',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '1rem',
+        },
+    };
+
+    const handleGenerateExcel = () => {
+        fetch('/generate-excel')
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'job_seeker_payments.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            })
+            .catch(error => console.error('Error generating Excel file:', error));
     };
 
     return (
@@ -32,6 +58,9 @@ function JobSeekerPayments() {
             <div style={styles.paymentTableWrapper}>
                 <PaymentInfoTableJobSeeker />
             </div>
+            <button style={styles.generateExcelButton} onClick={handleGenerateExcel}>
+                Generate Excel
+            </button>
         </div>
     );
 }

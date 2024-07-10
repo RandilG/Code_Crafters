@@ -40,7 +40,7 @@ const ProfileAdminLogin = () => {
   return (
     <div style={styles.container}>
       <div style={styles.embossedContainer}>
-        <Title level={2} style={styles.title}>Profile Admin Login</Title>
+        <Title level={2} style={styles.title}>Profile & Job Handling Admin Login</Title>
         <Form
           name="login"
           initialValues={{ remember: true }}

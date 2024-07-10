@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { DollarOutlined } from '@ant-design/icons';
-import { Card, Space, Statistic, Spin, message } from 'antd';
+import { Typography, Card, Space, Statistic, Spin, message,  } from 'antd';
 import BarGraph from '../../../components/FinancialAdmin/Graphs/TestGraph';
 import axios from 'axios';
 import RevenueGraph from '../../../components/FinancialAdmin/Graphs/RevenueGraph';
+
+const { Title } = Typography;
 
 const gradientStyles = {
   todayIncome: {
@@ -104,6 +106,7 @@ function Dashboard() {
 
   return (
     <div style={dashboardStyles.pageContent}>
+      <Title level={2} style={{ marginBottom: '24px', color: '#1890ff' }}>Financial Admin Dashboard</Title>
       <div style={dashboardStyles.cardsContainer}>
         {[
           { title: 'Today Income', data: incomeData.total_today, style: gradientStyles.todayIncome, iconColor: 'green' },

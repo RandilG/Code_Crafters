@@ -6,11 +6,11 @@ const verifyOtp = require('../Functions/Common/otp/verifyOtp');
 const sendMailOtp = require('../Functions/Common/otp/sendMailOtp');
 
 router.post('/verifyOtp', (req, res) => {
-    verifyOtp(req, res);
+  verifyOtp(req, res);
 });
 
 router.post('/sendMailOtp', (req, res) => {
-    sendMailOtp(req, res);
+  sendMailOtp(req, res);
 });
 
 
@@ -20,19 +20,19 @@ const verifyEmail = require('../Functions/SuperAdmin/SignupOtp/verifyEmail');
 const saveUserRouter = require('../Functions/SuperAdmin/AdminRegister/saveUser');
 
 router.post('/requestOtp', (req, res) => {
-    requestOtp(req, res);
+  requestOtp(req, res);
 });
 
 router.post('/verifyEmail', (req, res) => {
-    verifyEmail(req, res);
+  verifyEmail(req, res);
 });
 
 router.post('/resendOtp', (req, res) => {
-    requestOtp(req, res);
+  requestOtp(req, res);
 });
 
 router.post('/saveUser', (req, res) => {
-    saveUserRouter(req, res);
+  saveUserRouter(req, res);
 });
 
 
@@ -43,19 +43,19 @@ const deleteData = require('../Functions/Test/deleteData');
 const updateData = require('../Functions/Test/updateData');
 
 router.get('/getData', (req, res) => {
-    getData(req, res);
+  getData(req, res);
 });
 
 router.post('/addData', (req, res) => {
-    postData(req, res);
+  postData(req, res);
 });
 
 router.delete('/deleteData', (req, res) => {
-    deleteData(req, res);
+  deleteData(req, res);
 });
 
 router.put('/putData', (req, res) => {
-    updateData(req, res);
+  updateData(req, res);
 });
 
 // Super Admin routes
@@ -67,41 +67,41 @@ const FetchAdminProfile = require('../Functions/Common/FetchAdminProfile/FetchAd
 const UpdateAdminProfile = require('../Functions/Common/UpdateAdminProfile/UpdateAdminProfile');
 const updateAdminPassword = require('../Functions/Common/UpdateAdminPassword/UpdateAdminPassword');
 const SuperAdminLogin = require('../Functions/SuperAdmin/SuperAdminLogin/SuperAdminLogin');
-const adminCount = require ('../Functions/SuperAdmin/AdminCount/AdminCount');
+const adminCount = require('../Functions/SuperAdmin/AdminCount/AdminCount');
 const jobCount = require('../Functions/SuperAdmin/JobCount/JobCount');
 const GetAdminList = require('../Functions/SuperAdmin/GetAdminList/getAdminList');
 const UpdateAdminStatus = require('../Functions/SuperAdmin/UpdateAdminStatus/UpdateAdminStatus');
 
 router.post('/register', (req, res) => {
-    adminRegister(req, res);
+  adminRegister(req, res);
 });
 
 router.post('/financial-admin-login', (req, res) => {
-    FinancialAdminLogin(req, res);
+  FinancialAdminLogin(req, res);
 });
 
 router.post('/super-admin-login', (req, res) => {
-    SuperAdminLogin(req, res);
+  SuperAdminLogin(req, res);
 });
 
 router.post('/changepassword', (req, res) => {
-    ChangePassword(req, res);
+  ChangePassword(req, res);
 });
 
 router.post('/reset-password', (req, res) => {
-    resetPassword(req, res);
+  resetPassword(req, res);
 });
 
 router.get('/get-admin-data', (req, res) => {
-    FetchAdminProfile(req, res);
+  FetchAdminProfile(req, res);
 });
 
 router.put('/update-admin', (req, res) => {
-    UpdateAdminProfile(req, res);
+  UpdateAdminProfile(req, res);
 });
 
 router.put('/update-admin-password', (req, res) => {
-    updateAdminPassword(req, res);
+  updateAdminPassword(req, res);
 });
 
 router.get('/get-admin-count', (req, res) => {
@@ -112,12 +112,12 @@ router.get('/get-job-count', (req, res) => {
   jobCount(req, res);
 });
 
-router.get('/get-admin-list', (req, res) =>{
-  GetAdminList(req,res);
+router.get('/get-admin-list', (req, res) => {
+  GetAdminList(req, res);
 });
 
 router.put('/update-admin-status', (req, res) => {
-  UpdateAdminStatus(req,res);
+  UpdateAdminStatus(req, res);
 });
 
 // Financial routes
@@ -128,33 +128,38 @@ const getGroupedIncome = require('../Functions/FinancialAdmin/FinancialFunctions
 const getMonthlyIncome = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyIncome');
 const GetMonthlyRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyRevenue');
 const GetGroupedRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetGroupedRevenue');
+const GenerateExcel = require('../Functions/FinancialAdmin/GenerateExcel/GenerateExcel');
 
 router.get('/getFinancialData', (req, res) => {
-    fetchFinancialData(req, res);
+  fetchFinancialData(req, res);
 });
 
 router.get('/getFinancialDataJobSeeker', (req, res) => {
-    FetchFinancialDataJobSeeker(req, res);
+  FetchFinancialDataJobSeeker(req, res);
 });
 
 router.get('/paymentdata', (req, res) => {
-    GetPaymetData(req, res);
+  GetPaymetData(req, res);
 });
 
 router.get('/groupedincome', (req, res) => {
-    getGroupedIncome(req, res);
+  getGroupedIncome(req, res);
 });
 
 router.get('/monthlyincome', (req, res) => {
-    getMonthlyIncome(req, res);
+  getMonthlyIncome(req, res);
 });
 
 router.get('/monthlyrevenue', (req, res) => {
-    GetMonthlyRevenue(req, res);
+  GetMonthlyRevenue(req, res);
 });
 
 router.get('/groupedrevenue', (req, res) => {
-    GetGroupedRevenue(req, res);
+  GetGroupedRevenue(req, res);
+});
+
+router.get('/generate-pdf', (req, res) => {
+  GenerateExcel(req, res);
 });
 
 
@@ -190,104 +195,104 @@ const rejectJobCancelRequest = require('../Functions/ProfileAdmin/RejectJobCance
 
 
 router.get("/jobposterrequests", (req, res) => {
-    jobPosterRequests(req, res);
-  });
-  
-  router.put("/declinerequest/:id", (req, res) => {
-    declineRequest(req, res);
-  });
-  
-  router.put("/acceptrequest/:id", (req, res) => {
-    acceptJobPosterRequest(req, res);
-  });
-  
-  router.get("/declinedaccounts", (req, res) => {
-    declinedAccounts(req, res);
-  });
-  
-  router.get("/activeaccounts", (req, res) => {
-    activeAccounts(req, res);
-  });
-  
-  router.get("/getholdedaccounts", (req, res) => {
-    getHoldAccounts(req, res);
-  });
-  
-  router.put("/activateaccount/:id", (req, res) => {
-    activateAccount(req, res);
-  });
-  
-  router.put("/deactivateaccount/:id", (req, res) =>{
-    deactivateAccount(req, res);
-  });
-  
-  
-  router.get("/getjobseekerrequests", (req, res)=>{
-    jobSeekerRequests(req, res)
-  })
-  
-  router.put("/declinejobseeker/:id" , (req, res)=>{
-    declineJobSeekerRequest(req, res);
-  });
-  
-  router.put("/acceptjobseekerrequest/:id", (req, res)=>{
-    acceptJobSeekerRequest(req, res);
-  });
-  
-  router.get("/activejobseerkers", (req, res)=>{
-    getActiveJobSeekers(req, res)
-  });
-  
-  router.get("/declinedjobseerkers", (req, res)=>{
-    getDeclinedJobSeekrs(req, res)
-  });
-  
-  router.get("/getdeactivatedseekers", (req, res)=>{
-    getDeactivatedJobSeekers(req, res);
-  });
-  
-  router.put("/activateseeker/:id", (req, res)=>{
-    activateJobSeeker(req, res)
-  });
-  
-  router.put("/deactivateseeker/:id", (req, res)=>{
-    deactivateJobseeker(req, res);
-  });
-  
-  router.get('/job-poster-avg-ratings', (req, res)=>{
-    getJobPoterAvgRatings(req, res)
-  })
-  
-  router.get('/job-seeker-avg-ratings', (req, res)=>{
-    getJobSeekerAvgRatings(req, res)
-  })
-  
-  router.post('/profile-admin-login', (req, res)=>{
-    profileAdminLogin(req, res);
-  })
+  jobPosterRequests(req, res);
+});
 
-  router.get('/approved-jobposters-count', (req, res)=>{
-    countJPApprovedJobs(req, res)
-  })
-  
-  router.get('/approved-jobseekers-count', (req, res)=>{
-    countJSApprovedJobs(req, res)
-  })
-  
-  router.get('/declined-jobposters-count', (req, res)=>{
-    countJPDeclinedJobs(req, res)
-  })
-  
-  router.get('/declined-jobseekers-count', (req, res)=>{
-    countJSDeclinedJobs(req, res)
-  })
+router.put("/declinerequest/:id", (req, res) => {
+  declineRequest(req, res);
+});
 
- router.get('/jobhandlingrequest', (req, res)=>{
+router.put("/acceptrequest/:id", (req, res) => {
+  acceptJobPosterRequest(req, res);
+});
+
+router.get("/declinedaccounts", (req, res) => {
+  declinedAccounts(req, res);
+});
+
+router.get("/activeaccounts", (req, res) => {
+  activeAccounts(req, res);
+});
+
+router.get("/getholdedaccounts", (req, res) => {
+  getHoldAccounts(req, res);
+});
+
+router.put("/activateaccount/:id", (req, res) => {
+  activateAccount(req, res);
+});
+
+router.put("/deactivateaccount/:id", (req, res) => {
+  deactivateAccount(req, res);
+});
+
+
+router.get("/getjobseekerrequests", (req, res) => {
+  jobSeekerRequests(req, res)
+})
+
+router.put("/declinejobseeker/:id", (req, res) => {
+  declineJobSeekerRequest(req, res);
+});
+
+router.put("/acceptjobseekerrequest/:id", (req, res) => {
+  acceptJobSeekerRequest(req, res);
+});
+
+router.get("/activejobseerkers", (req, res) => {
+  getActiveJobSeekers(req, res)
+});
+
+router.get("/declinedjobseerkers", (req, res) => {
+  getDeclinedJobSeekrs(req, res)
+});
+
+router.get("/getdeactivatedseekers", (req, res) => {
+  getDeactivatedJobSeekers(req, res);
+});
+
+router.put("/activateseeker/:id", (req, res) => {
+  activateJobSeeker(req, res)
+});
+
+router.put("/deactivateseeker/:id", (req, res) => {
+  deactivateJobseeker(req, res);
+});
+
+router.get('/job-poster-avg-ratings', (req, res) => {
+  getJobPoterAvgRatings(req, res)
+})
+
+router.get('/job-seeker-avg-ratings', (req, res) => {
+  getJobSeekerAvgRatings(req, res)
+})
+
+router.post('/profile-admin-login', (req, res) => {
+  profileAdminLogin(req, res);
+})
+
+router.get('/approved-jobposters-count', (req, res) => {
+  countJPApprovedJobs(req, res)
+})
+
+router.get('/approved-jobseekers-count', (req, res) => {
+  countJSApprovedJobs(req, res)
+})
+
+router.get('/declined-jobposters-count', (req, res) => {
+  countJPDeclinedJobs(req, res)
+})
+
+router.get('/declined-jobseekers-count', (req, res) => {
+  countJSDeclinedJobs(req, res)
+})
+
+router.get('/jobhandlingrequest', (req, res) => {
   countJobHandlingRequest(req, res)
- })
+})
 
- router.get('/totalrequestCount', (req, res)=>{
-  totalrequestCount(req, res) 
+router.get('/totalrequestCount', (req, res) => {
+  totalrequestCount(req, res)
 })
 
 router.get('/job-cancel-requests', (req, res) => {
@@ -299,7 +304,7 @@ router.put('/approve-job-cancel-request', (req, res) => {
 })
 
 router.delete('/reject-job-cancel-request', (req, res) => {
-  rejectJobCancelRequest(req,res);
+  rejectJobCancelRequest(req, res);
 })
 
 module.exports = router;
