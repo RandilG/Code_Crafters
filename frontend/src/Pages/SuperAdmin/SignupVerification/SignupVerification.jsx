@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Verification = () => {
@@ -16,13 +15,20 @@ const Verification = () => {
   }, [resendCountdown]);
 
   const handleChange = (element, index) => {
-    if (/[^0-9]/.test(element.value)) return;
-    const newOtp = [...otp];
-    newOtp[index] = element.value;
-    setOtp(newOtp);
+    if (isNaN(element.value)) return false;
 
-    if (element.nextSibling && element.value) {
-      element.nextSibling.focus();
+    setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
+
+    // Focus next input
+    if (element.value !== '') {
+      if (index < 5) {
+        const nextInput = element.parentNode.nextElementSibling.querySelector('input');
+        if (nextInput) {
+          nextInput.focus();
+        }
+      } else {
+        element.blur();
+      }
     }
   };
 
@@ -31,25 +37,35 @@ const Verification = () => {
     const formData = JSON.parse(localStorage.getItem('formData'));
 
     try {
-      const response = await axios.post('http://localhost:8000/verifyEmail', {
-        email: formData.email,
-        otp: otp.join(''),
+      const response = await fetch('http://localhost:8000/verifyEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          otp: otp.join(''),
+        }),
       });
 
-      if (response.status === 200) {
-        const saveResponse = await axios.post('http://localhost:8000/saveUser', formData);
+      if (response.ok) {
+        const saveResponse = await fetch('http://localhost:8000/saveUser', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
 
-        if (saveResponse.status === 200) {
+        if (saveResponse.ok) {
           localStorage.removeItem('formData');
           navigate('/SuperAdmin/SuperAdminDashboard');
         } else {
-          setError(saveResponse.data.error || 'Failed to save user data');
+          const saveData = await saveResponse.json();
+          setError(saveData.error || 'Failed to save user data');
         }
       } else {
-        setError(response.data.error || 'Invalid OTP');
+        const data = await response.json();
+        setError(data.error || 'Invalid OTP');
       }
     } catch (error) {
-      setError(error.response.data.error || 'An unexpected error occurred');
+      setError('An unexpected error occurred');
     }
   };
 
@@ -58,11 +74,15 @@ const Verification = () => {
     const formData = JSON.parse(localStorage.getItem('formData'));
 
     try {
-      await axios.post('http://localhost:8000/resendOtp', {
-        email: formData.email,
+      await fetch('http://localhost:8000/resendOtp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+        }),
       });
     } catch (error) {
-      setError(error.response.data.error || 'An unexpected error occurred');
+      setError('An unexpected error occurred');
     }
   };
 
@@ -71,37 +91,40 @@ const Verification = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
         <div>
-          <h1 className="text-4xl font-bold text-center text-orange-600 mb-12">OTP Verification</h1>
+          <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-2">OTP Verification</h1>
+          <p className="text-center text-gray-600 mb-8">Enter the code sent to your email</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="flex justify-center space-x-4">
             {otp.map((data, index) => (
-              <input
-                key={index}
-                type="text"
-                name="otp"
-                maxLength="1"
-                value={data}
-                onChange={(e) => handleChange(e.target, index)}
-                className="w-12 h-12 text-center text-2xl font-semibold border-2 border-orange-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
+              <div key={index}>
+                <input
+                  type="text"
+                  name="otp"
+                  maxLength="1"
+                  value={data}
+                  onChange={(e) => handleChange(e.target, index)}
+                  onFocus={e => e.target.select()}
+                  className="w-12 h-12 text-center text-2xl font-semibold border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
             ))}
           </div>
           {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
-          <div className="flex justify-center space-x-6 mt-8">
+          <div className="flex justify-center space-x-4 mt-8">
             <button
               type="button"
               onClick={handleBack}
-              className="px-8 py-3 bg-white text-orange-500 border-2 border-orange-500 rounded-full hover:bg-orange-50 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300 ease-in-out text-lg font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Go Back
             </button>
             <button
               type="submit"
-              className="px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out text-lg font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Verify
             </button>
@@ -113,7 +136,7 @@ const Verification = () => {
               <button
                 type="button"
                 onClick={resendCode}
-                className="text-lg text-orange-500 hover:underline font-semibold"
+                className="text-lg text-blue-500 hover:underline font-semibold"
               >
                 Resend Code
               </button>

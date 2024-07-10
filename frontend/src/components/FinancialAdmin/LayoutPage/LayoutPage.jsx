@@ -1,7 +1,7 @@
 import React from "react";
 import "./LayoutPage.css";
 import Header from "../../Common/AppHeader/Header";
-import AdminSideBar from "../SideBar/AdminSideBar";
+import FinancialAdminSideBar from "../SideBar/AdminSideBar";
 import { Outlet } from "react-router-dom";
 
 const LayoutPage = () => {
@@ -12,7 +12,7 @@ const LayoutPage = () => {
       </div>
       <div className="body">
         <div className="">
-          <AdminSideBar />
+          <FinancialAdminSideBar />
         </div>
         <div className="content">
           <Outlet />

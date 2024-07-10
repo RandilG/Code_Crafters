@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaLock, FaUserShield } from 'react-icons/fa';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -23,14 +24,12 @@ const Signup = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
     if (!formData.firstName) newErrors.firstName = 'First name is required';
     if (!formData.lastName) newErrors.lastName = 'Last name is required';
     if (!formData.email) newErrors.email = 'Email is required';
     if (!formData.adminRole) newErrors.adminRole = 'Admin role is required';
     if (!formData.password) newErrors.password = 'Password is required';
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-
     return newErrors;
   };
 
@@ -41,9 +40,7 @@ const Signup = () => {
       try {
         const response = await fetch('http://localhost:8000/requestOtp', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             fName: formData.firstName,
             lName: formData.lastName,
@@ -66,95 +63,120 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 to-orange-200 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-orange-600 mb-12">Admin Registration</h1>
-        <form className="space-y-8" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
+        <div>
+          <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-2">Admin Registration</h1>
+          <p className="text-center text-gray-600 mb-8">Join our team and make a difference</p>
+        </div>
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">First Name</label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+              <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+              <div className="relative">
+                <FaUser className="absolute top-3 left-3 text-gray-400" />
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your first name"
+                />
+              </div>
+              {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">Last Name</label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+              <div className="relative">
+                <FaUser className="absolute top-3 left-3 text-gray-400" />
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your last name"
+                />
+              </div>
+              {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
             </div>
           </div>
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-            />
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <div className="relative">
+              <FaEnvelope className="absolute top-3 left-3 text-gray-400" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Enter your email address"
+              />
+            </div>
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">Admin Role</label>
-            <select
-              name="adminRole"
-              value={formData.adminRole}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-            >
-              <option value="">Select a role</option>
-              <option value="Financial">Financial</option>
-              <option value="Job handling">Job handling</option>
-              <option value="User handling">User handling</option>
-            </select>
-            {errors.adminRole && <p className="text-red-500 text-sm mt-1">{errors.adminRole}</p>}
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
+            <label className="block text-sm font-medium text-gray-700 mb-1">Admin Role</label>
+            <div className="relative">
+              <FaUserShield className="absolute top-3 left-3 text-gray-400" />
+              <select
+                name="adminRole"
+                value={formData.adminRole}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
+              >
+                <option value="">Select a role</option>
+                <option value="Financial">Financial</option>
+                <option value="Profile & Job handling">Profile & Job handling</option>
+              </select>
+            </div>
+            {errors.adminRole && <p className="text-red-500 text-xs mt-1">{errors.adminRole}</p>}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div className="relative">
+                <FaLock className="absolute top-3 left-3 text-gray-400" />
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Enter your password"
+                />
+              </div>
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
             </div>
             <div>
-              <label className="block text-lg font-medium text-gray-700 mb-2">Confirm Password</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full px-4 py-3 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
-              />
-              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+              <div className="relative">
+                <FaLock className="absolute top-3 left-3 text-gray-400" />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Confirm your password"
+                />
+              </div>
+              {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
             </div>
           </div>
           {errors.form && <p className="text-red-500 text-sm mt-1">{errors.form}</p>}
-          <div className="flex justify-center space-x-6 mt-12">
+          <div className="flex justify-center space-x-4 mt-8">
             <button
               type="submit"
-              className="px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 ease-in-out text-lg font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
-              Verify
+              Verify & Register
             </button>
             <Link
               to="/"
-              className="px-8 py-3 bg-white text-orange-500 border-2 border-orange-500 rounded-full hover:bg-orange-50 transition text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-300 ease-in-out text-lg font-semibold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
             >
               Go Back
             </Link>

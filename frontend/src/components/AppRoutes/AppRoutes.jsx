@@ -3,13 +3,13 @@ import { Route, Routes } from "react-router-dom";
 //Common
 import LogHome from "../../Pages/LogHome/LogHome";
 import ForgotPassword from "../../Pages/Common/ForgotPassword/ForgotPassword";
-import ChangePassword from "../../Pages/Common/ChangePassword/ChangePassword";
+// import ChangePassword from "../../Pages/Common/ChangePassword/ChangePassword";
 import AdminProfile from "../../Pages/Common/AdminProfile/AdminProfile";
 import LayoutPage from "../FinancialAdmin/LayoutPage/LayoutPage";
 
 //Financial Admin
 import Dashboard from "../../Pages/FinancialAdmin/Dashboard/Dashboard";
-import Notification from "../../Pages/Notification/Notification";
+// import Notification from "../../Pages/Notification/Notification";
 import Revenue from "../../Pages/FinancialAdmin/Revenue/Revenue";
 import FinancialAdminLogin from "../../Pages/FinancialAdmin/FinancialAdminLogin/FinancialAdminLogin";
 
@@ -46,12 +46,12 @@ function AppRoutes() {
             <Route path="/" element={<LogHome />} />
             <Route path="/LogHome" element={<LogHome />} />
             <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/changepassword" element={<ChangePassword />} />
+            {/* <Route path="/changepassword" element={<ChangePassword />} /> */}
             <Route path="/financialadminloging" element={<FinancialAdminLogin />} />
             <Route path="/financialAdmin" element={<LayoutPage />}>
                 <Route path="Dashboard" element={<Dashboard />} />
                 <Route path="Revenue" element={<Revenue />} />
-                <Route path="Notification" element={<Notification />} />
+                {/* <Route path="Notification" element={<Notification />} /> */}
                 <Route path="JobPosterPayment" element={<JobPosterPayment />} />
                 <Route path="JobSeekerPayments" element={<JobSeekerPayments />} />               
                 <Route path="UserProfile" element={<AdminProfile />} />
@@ -62,10 +62,10 @@ function AppRoutes() {
                 <Route path="SuperAdminDashboard" element={<SuperAdminDashboard />} />
                 <Route path="SuperAdminUserProfile" element={<AdminProfile />} />
                 <Route path="FinancialAdminRevenue" element={<Revenue />} />
-                <Route path="FinancialAdminNotification" element={<Notification />} />
+                {/* <Route path="FinancialAdminNotification" element={<Notification />} /> */}
                 <Route path="JobPosterPayment" element={<JobPosterPayment />} />
                 <Route path="JobSeekerPayments" element={<JobSeekerPayments />} /> 
-                <Route path="Notification" element={<Notification />} />
+                {/* <Route path="Notification" element={<Notification />} /> */}
                 <Route path="Signup" element={<Signup />} />
                 <Route path="Verification" element={<Verification />} />
                 <Route path='profilerequests' element={<ProfileRequests />} />

@@ -18,13 +18,13 @@ async function ProfileAdminLogin(req, res) {
 
             const admin = result[0];
 
-            if (admin.status != 'Active') {
-                if (isPasswordCorrect) {
-                    return res.status(309).send("");
-                } else {
-                    return res.status(401).send("Invalid credentials.");
-                }
-            }
+            // if (admin.status != 'Active') {
+            //     if (isPasswordCorrect) {
+            //         return res.status(309).send("");
+            //     } else {
+            //         return res.status(401).send("Invalid credentials.");
+            //     }
+            // }
 
             
             console.log(admin);

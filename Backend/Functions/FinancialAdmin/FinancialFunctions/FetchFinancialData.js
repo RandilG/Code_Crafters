@@ -12,8 +12,6 @@ module.exports = async function fetchFinancialData(req, res) {
         if(data1 != null){
             for (const job of data1) {
                 const user = await queryAsync(query2, job.job_poster);
-                // console.log(user[0].FirstName);
-                // console.log(user[0].LastName);
                 job.posterName = user[0].FirstName+' '+user[0].LastName;
                 returnData.push(job);
             }

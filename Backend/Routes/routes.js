@@ -61,7 +61,6 @@ router.put('/putData', (req, res) => {
 // Super Admin routes
 const adminRegister = require('../Functions/SuperAdmin/AdminRegister/register');
 const FinancialAdminLogin = require('../Functions/FinancialAdmin/FinancialAdminLogin/FinancialAdminLogin');
-const ChangePassword = require('../Functions/Common/ChangePassword/ChangePassword');
 const resetPassword = require('../Functions/Common/ResetPassword/ResetPassword');
 const FetchAdminProfile = require('../Functions/Common/FetchAdminProfile/FetchAdminProfile');
 const UpdateAdminProfile = require('../Functions/Common/UpdateAdminProfile/UpdateAdminProfile');
@@ -84,9 +83,6 @@ router.post('/super-admin-login', (req, res) => {
   SuperAdminLogin(req, res);
 });
 
-router.post('/changepassword', (req, res) => {
-  ChangePassword(req, res);
-});
 
 router.post('/reset-password', (req, res) => {
   resetPassword(req, res);
@@ -128,7 +124,7 @@ const getGroupedIncome = require('../Functions/FinancialAdmin/FinancialFunctions
 const getMonthlyIncome = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyIncome');
 const GetMonthlyRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetMonthlyRevenue');
 const GetGroupedRevenue = require('../Functions/FinancialAdmin/FinancialFunctions/GetGroupedRevenue');
-const GenerateExcel = require('../Functions/FinancialAdmin/GenerateExcel/GenerateExcel');
+// const generateFinancialReport = require('../Functions/FinancialAdmin/GeneratePdf/GeneratePdf');
 
 router.get('/getFinancialData', (req, res) => {
   fetchFinancialData(req, res);
@@ -158,9 +154,9 @@ router.get('/groupedrevenue', (req, res) => {
   GetGroupedRevenue(req, res);
 });
 
-router.get('/generate-pdf', (req, res) => {
-  GenerateExcel(req, res);
-});
+// router.post('/generate-pdf', (req, res) => {
+//   generateFinancialReport(req, res);
+// });
 
 
 //Profile Admin
