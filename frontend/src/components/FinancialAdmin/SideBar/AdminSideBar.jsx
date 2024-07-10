@@ -6,7 +6,7 @@ import {
   DashboardOutlined,
   DollarOutlined,
   PlusCircleOutlined,
-  BellOutlined,
+  // BellOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
@@ -88,7 +88,7 @@ const ProfileAdminSideBar = () => {
               </Link>
             </Menu.Item>
 
-            <Menu.Item
+            {/* <Menu.Item
               key="Notification"
               icon={<BellOutlined />}
               className="elements"
@@ -99,7 +99,7 @@ const ProfileAdminSideBar = () => {
               >
                 Notification
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
 
                        
             <Menu.Item

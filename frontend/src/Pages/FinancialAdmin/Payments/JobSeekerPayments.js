@@ -24,7 +24,7 @@ function JobSeekerPayments() {
             overflow: 'hidden',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
         },
-        generateExcelButton: {
+        generatePdfButton: {
             display: 'block',
             margin: '2rem auto',
             padding: '0.5rem 1rem',
@@ -37,19 +37,25 @@ function JobSeekerPayments() {
         },
     };
 
-    const handleGenerateExcel = () => {
-        fetch('/generate-excel')
+    const handleGeneratePdf = () => {
+        fetch('/generate-pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ fromDate: '2023-01-01', toDate: '2023-12-31' }) // Adjust the dates as needed
+        })
             .then(response => response.blob())
             .then(blob => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'job_seeker_payments.xlsx';
+                a.download = 'job_seeker_payments.pdf';
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
             })
-            .catch(error => console.error('Error generating Excel file:', error));
+            .catch(error => console.error('Error generating PDF file:', error));
     };
 
     return (
@@ -58,8 +64,8 @@ function JobSeekerPayments() {
             <div style={styles.paymentTableWrapper}>
                 <PaymentInfoTableJobSeeker />
             </div>
-            <button style={styles.generateExcelButton} onClick={handleGenerateExcel}>
-                Generate Excel
+            <button style={styles.generatePdfButton} onClick={handleGeneratePdf}>
+                Generate PDF
             </button>
         </div>
     );

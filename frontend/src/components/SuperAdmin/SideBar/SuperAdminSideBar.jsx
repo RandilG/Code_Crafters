@@ -6,7 +6,7 @@ import {
   DashboardOutlined,
   DollarOutlined,
   PlusCircleOutlined,
-  BellOutlined,
+  // BellOutlined,
   SettingOutlined,
   UserAddOutlined,
   ProfileOutlined,
@@ -70,7 +70,7 @@ const SuperAdminSideBar = () => {
               </Link>
             </Menu.Item>
 
-            <Menu.Item
+            {/* <Menu.Item
               key="Notification"
               icon={<BellOutlined />}
               className="elements"
@@ -81,7 +81,7 @@ const SuperAdminSideBar = () => {
               >
                 Notification
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
 
             {/* Financial */}
 
