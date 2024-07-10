@@ -18,29 +18,21 @@ async function FinancialAdminLogin(req, res) {
 
             const admin = result[0];
 
-            if (admin.status != 'Active') {
-                if (isPasswordCorrect) {
-                    return res.status(309).send("");
-                } else {
-                    return res.status(401).send("Invalid credentials.");
-                }
+            const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
+
+            if (!isPasswordCorrect) {
+                return res.status(401).send("Invalid credentials.");
             }
 
-            console.log(admin);
-            const isPasswordCorrect = await bcrypt.compare(password, admin.Password);
-            if (admin.password_status === 'temporary') {
-                if (isPasswordCorrect) {
-                    return res.status(309).send("Password must be changed.");
-                } else {
-                    return res.status(401).send("Invalid credentials.");
-                }
-            } else {
-                if (!isPasswordCorrect) {
-                    return res.status(401).send("Invalid credentials.");
-                } else {
-                    return res.status(200).json("Login successful.");
-                }
+            if (admin.status !== 'Active') {
+                return res.status(401).send("Contact admin.");
             }
+
+            if (admin.password_status === 'temporary') {
+                return res.status(309).send("Password must be changed.");
+            }
+
+            return res.status(200).json("Login successful.");
         });
     } catch (error) {
         console.error("Error in FinancialAdminLogin:", error);
