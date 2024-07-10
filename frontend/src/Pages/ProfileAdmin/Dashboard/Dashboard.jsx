@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { TeamOutlined, UserOutlined, FileDoneOutlined } from '@ant-design/icons';
-import { Card, Space, Statistic, Spin, message } from 'antd';
+import { Typography, Card, Space, Statistic, Spin, message } from 'antd';
 import axios from 'axios';
 import StatusChart from '../../../components/ProfileAdmin/Chart/Chart';
 import PieChart from '../../../components/ProfileAdmin/Circle/Circle';
+
+const { Title } = Typography;
 
 const gradientStyles = {
   activeMembers: {
@@ -72,8 +74,10 @@ function Dashboard() {
     return <Spin tip="Loading..." style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />;
   }
 
+
   return (
     <div className="PageContent" style={{ padding: '20px', backgroundColor: '#f0f2f5' }}>
+      <Title level={2} style={{ marginBottom: '24px', color: '#1890ff' }}>Profile and Job Handling Admin Dashboard</Title>
       <div className="flex items-center justify-center">
         <div className="Cards" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
           <Space direction="horizontal" style={{ margin: '5%', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>

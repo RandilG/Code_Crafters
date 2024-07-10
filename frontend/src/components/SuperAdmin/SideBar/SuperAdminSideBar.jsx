@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "./SuperAdminSideBar.css";
 import Logo from "../../Common/Logo/Logo";
-
 import {
   DashboardOutlined,
   DollarOutlined,
   PlusCircleOutlined,
-  // BellOutlined,
   SettingOutlined,
   UserAddOutlined,
   ProfileOutlined,
@@ -14,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
+
 const { Sider } = Layout;
 
 const SuperAdminSideBar = () => {
@@ -24,225 +23,85 @@ const SuperAdminSideBar = () => {
   };
 
   return (
-    <div className="siderbar-container" >
-      <Layout style={{ width: "15%", backgroundColor: "white" }}>
-        <Sider
-          theme=""
-          collapsed={collapsed}
-          style={{ backgroundColor: "#005758", width: "20%" }}
-        >
-          <Logo toggleCollapsed={toggleCollapsed} />
-          <Menu
-            theme=""
-            mode="inline"
-            className="menu-bar"
-            style={{
-              backgroundColor: "#005758",
-              color: "#ffff",
-              fontWeight: "500",
-              fontSize: "16px",
-              height: "100vh",
-            }}
-          >
-            <Menu.Item
-              key="SuperAdminDashboard"
-              icon={<DashboardOutlined />}
-              className="elements"
-            >
-              <Link
-                to="SuperAdminDashboard"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Dashboard
-              </Link>
-            </Menu.Item>
-            
-            <Menu.Item
-              key="Signup"
-              icon={<UserAddOutlined />}
-              className="elements"
-            >
-              <Link
-                to="Signup"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Admin Register
-              </Link>
-            </Menu.Item>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={toggleCollapsed}
+      width={220}
+      className="custom-sider"
+    >
+      <div className="logo-container">
+        <Logo />
+      </div>
+      <Menu mode="inline" className="menu-bar">
+        <Menu.Item key="SuperAdminDashboard" icon={<DashboardOutlined />}>
+          <Link to="SuperAdminDashboard">Dashboard</Link>
+        </Menu.Item>
+        
+        <Menu.Item key="Signup" icon={<UserAddOutlined />}>
+          <Link to="Signup">Admin Register</Link>
+        </Menu.Item>
 
-            {/* <Menu.Item
-              key="Notification"
-              icon={<BellOutlined />}
-              className="elements"
-            >
-              <Link
-                to="Notification"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Notification
-              </Link>
-            </Menu.Item> */}
+        <Menu.SubMenu key="Payment" icon={<DollarOutlined />} title="Payment">
+          <Menu.Item key="JobseekerPayments">
+            <Link to="JobseekerPayments">Job Seeker Payment</Link>
+          </Menu.Item>
+          <Menu.Item key="JobPosterPayment">
+            <Link to="JobPosterPayment">Job Poster Payment</Link>
+          </Menu.Item>
+        </Menu.SubMenu>
 
-            {/* Financial */}
+        <Menu.Item key="FinancialAdminRevenue" icon={<PlusCircleOutlined />}>
+          <Link to="FinancialAdminRevenue">Revenue</Link>
+        </Menu.Item>
 
-            <Menu.SubMenu key="Payment" icon={<DollarOutlined />} title="Payment">
-              <Link
-                to="JobseekerPayments"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
+        <Menu.SubMenu key="profile" icon={<ProfileOutlined />} title="Job Posters">
+          <Menu.Item key="profile-requests">
+            <Link to="profilerequests">Account Requests</Link>
+          </Menu.Item>
+          <Menu.Item key="view-active-profiles">
+            <Link to="viewactiveprofiles">Active Profiles</Link>
+          </Menu.Item>
+          <Menu.Item key="view-declined-profiles">
+            <Link to="viewdeclinedprofiles">Declined Profiles</Link>
+          </Menu.Item>
+          <Menu.Item key="deactivated-profiles">
+            <Link to="deactivatedprofile">Deactivated Profiles</Link>
+          </Menu.Item>
+        </Menu.SubMenu>
 
-                <Menu.Item key="JobseekerPayments" className="elements">
-                  Job Seeker Payment
-                </Menu.Item>
-              </Link>
-              <Link
-                to="JobPosterPayment"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="JobPosterPayment" className="elements">
-                  Job Poster Payment
-                </Menu.Item>
-              </Link>
-            </Menu.SubMenu>
+        <Menu.SubMenu key="seeker-profile" icon={<ProfileOutlined />} title="Job Seekers">
+          <Menu.Item key="seeker-profile-requests">
+            <Link to="jobseekerrequests">Account Requests</Link>
+          </Menu.Item>
+          <Menu.Item key="seeker-view-active-profiles">
+            <Link to="activejobseekers">Active Profiles</Link>
+          </Menu.Item>
+          <Menu.Item key="seeker-view-declined-profiles">
+            <Link to="declinedjobseekers">Declined Profiles</Link>
+          </Menu.Item>
+          <Menu.Item key="seeker-deactivated-profiles">
+            <Link to="deactivatedjobseekers">Deactivated Profiles</Link>
+          </Menu.Item>
+        </Menu.SubMenu>
 
-            <Menu.Item
-              key="FinancialAdminRevenue"
-              icon={<PlusCircleOutlined />}
-              className="elements"
-            >
-              <Link
-                to="FinancialAdminRevenue"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Revenue
-              </Link>
-            </Menu.Item>
+        <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
+          <Menu.Item key="see-review">
+            <Link to="jobeekeravgratings">Job Seeker Ratings</Link>
+          </Menu.Item>
+          <Menu.Item key="review-hold">
+            <Link to="jobposteravgratings">Job Poster Ratings</Link>
+          </Menu.Item>
+          <Menu.Item key="delete-review">
+            <Link to="deletereview">Delete Review</Link>
+          </Menu.Item>
+        </Menu.SubMenu>
 
-                       
-
-            {/* Profile */}
-            <Menu.SubMenu
-              key="profile"
-              icon={<ProfileOutlined />}
-              title="Job Posters"
-            >
-              <Link
-                to="profilerequests"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="profile-requests" className="elements">
-                  Account Requests
-                </Menu.Item>
-              </Link>
-              <Link
-                to="viewactiveprofiles"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="view-active-profiles" className="elements">
-                  Active Profiles
-                </Menu.Item>
-              </Link>
-              <Link
-                to="viewdeclinedprofiles"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="view-declined-profiles" className="elements">
-                  Declined Profiles
-                </Menu.Item>
-              </Link>
-              <Link
-                to="deactivatedprofile"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="deactivated-profiles" className="elements">
-                  Deactivated Profiles
-                </Menu.Item>
-              </Link>
-            </Menu.SubMenu>
-            <Menu.SubMenu
-              key="seeker-profile"
-              icon={<ProfileOutlined />}
-              title="Job Seekers"
-            >
-              <Link
-                to="jobseekerrequests"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="seeker-profile-requests" className="elements">
-                  Account Requests
-                </Menu.Item>
-              </Link>
-              <Link
-                to="activejobseekers"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="seeker-view-active-profiles" className="elements">
-                  Active Profiles
-                </Menu.Item>
-              </Link>
-              <Link
-                to="declinedjobseekers"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="seeker-view-declined-profiles" className="elements">
-                  Declined Profiles
-                </Menu.Item>
-              </Link>
-              <Link
-                to="deactivatedjobseekers"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="seeker-deactivated-profiles" className="elements">
-                  Deactivated Profiles
-                </Menu.Item>
-              </Link>
-            </Menu.SubMenu>
-
-            <Menu.SubMenu key="review" icon={<EyeOutlined />} title="Review">
-              <Link
-                to="jobeekeravgratings"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-
-                <Menu.Item key="see-review" className="elements">
-                  Job Seeker Ratings
-                </Menu.Item>
-              </Link>
-              <Link
-                to="jobposteravgratings"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="review-hold" className="elements">
-                  Job Poster Ratings
-                </Menu.Item>
-              </Link>
-              <Link
-                to="deletereview"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                <Menu.Item key="delete-review" className="elements">
-                  Delete Review
-                </Menu.Item>
-              </Link>
-            </Menu.SubMenu>
-
-            <Menu.Item
-              key="SuperAdminUserProfile"
-              icon={<SettingOutlined />}
-              className="elements"
-            >
-              <Link
-                to="SuperAdminUserProfile"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Account Settings
-              </Link>
-            </Menu.Item>
-            
-          </Menu>
-        </Sider>
-      </Layout>
-    </div>
+        <Menu.Item key="SuperAdminUserProfile" icon={<SettingOutlined />}>
+          <Link to="SuperAdminUserProfile">Account Settings</Link>
+        </Menu.Item>
+      </Menu>
+    </Sider>
   );
 };
 

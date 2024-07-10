@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom';
-import { BellFilled, UserOutlined, LogoutOutlined } from '@ant-design/icons';
-import { Dropdown, Menu, Space, Button } from "antd";
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import { Dropdown, Menu, Space, Button, Avatar } from "antd";
 import "./Header.css";
 import logo from '../../../Assets/Union.png';
 
@@ -30,56 +29,47 @@ const Header = () => {
   };
 
   const menu = (
-    <Menu>
-      <Menu.Item key="1">
-        Name: {userData.FirstName} {userData.LastName}
+    <Menu className="user-menu">
+      <Menu.Item key="1" className="user-menu-item">
+        <UserOutlined /> {userData.FirstName} {userData.LastName}
       </Menu.Item>
-      <Menu.Item key="2">
-        Role: {userData.AdminRole}
+      <Menu.Item key="2" className="user-menu-item">
+        <strong>Role:</strong> {userData.AdminRole}
       </Menu.Item>
-      <Menu.Item key="2">
-        Email: {userData.Email}
+      <Menu.Item key="3" className="user-menu-item">
+        <strong>Email:</strong> {userData.Email}
       </Menu.Item>
-
     </Menu>
   );
 
   return (
-    <div className="header-container">
+    <header className="header-container">
       <div className="logo">
         <img src={logo} alt="Company Logo" />
       </div>
 
-
-      <div className="notification">
-        <Link to="/financialAdmin/Notification">
-          <BellFilled style={{ color: 'white' }} />
-        </Link>
-      </div>
-
-      <div className="profile">
+      <div className="header-right">
         <Dropdown
           overlay={menu}
           visible={dropdownVisible}
           onVisibleChange={(flag) => setDropdownVisible(flag)}
+          trigger={['click']}
         >
-          <Space>
-            <UserOutlined style={{ color: 'white' }} />
-            <p style={{ color: 'white' }}>{userData.FirstName} {userData.LastName}</p>
+          <Space className="user-profile">
+            <Avatar icon={<UserOutlined />} className="user-avatar" />
+            <span className="user-name">{userData.FirstName} {userData.LastName}</span>
           </Space>
         </Dropdown>
-      </div>
-      <div className="logout">
         <Button
           type="primary"
           icon={<LogoutOutlined />}
           onClick={handleLogout}
-          style={{ backgroundColor: 'transparent', borderColor: 'transparent', color: 'white' }}
+          className="logout-button"
         >
           Logout
         </Button>
       </div>
-    </div>
+    </header>
   );
 };
 
