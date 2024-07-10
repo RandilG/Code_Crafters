@@ -6,7 +6,6 @@ require('moment-duration-format');
 module.exports = async function jobTimer(req, res) {
   try {
     const { jobId } = req.body;
-    console.log(jobId);
 
     const query1 = "SELECT work_hours, title FROM parttime_srilanka.job WHERE job_id = ?";
     const query2 = "SELECT j.FirstName, j.TpNumber FROM parttime_srilanka.job_seeker j JOIN parttime_srilanka.assigned_jobs a ON j.UserName = a.assigned_job_seeker WHERE a.assigned_job = ?;";
@@ -19,7 +18,7 @@ module.exports = async function jobTimer(req, res) {
     const seekerData = await queryAsync(query2, jobId);
 
     if (seekerData.length === 0) {
-      return res.status(HttpStatusCode.NotFound).json({ message: "Job seekers not found." });
+      return res.status(HttpStatusCode.Accepted).json({ message: "Job seekers not found." });
     }
 
     let hours = Math.floor(workHours);
@@ -44,16 +43,9 @@ module.exports = async function jobTimer(req, res) {
       }
 
       let formattedTime = moment.utc(jobDuration.asMilliseconds()).format('HH:mm:ss');
-      req.app.get('io').to(jobId).emit('timerStarted', { timer: formattedTime });
+      req.app.get('io').to(jobId).emit('timerStarted', { timer: formattedTime, jobId: jobId });
 
     }, 1000);
-
-    // for (const seeker of seekerData) {
-    //   const name = seeker.FirstName;
-    //   const mobNo = seeker.TpNumber;
-    //   const message = `Dear ${name},\n\nYour position as a ${jobTitle} (Job ID:${jobId}), has officially started. Welcome aboard!\n\n**Please reach to the job location immediately.\nIf you have arrived already, disregard this message.\nThank you`;
-    //   await sendMobNotify(mobNo, message);
-    // }
 
     return res.status(HttpStatusCode.Ok).json({ message: "Timer started successfully." });
 

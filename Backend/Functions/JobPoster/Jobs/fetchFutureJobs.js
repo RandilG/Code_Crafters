@@ -21,7 +21,6 @@ module.exports = async function fetchFutureJobs(req, res) {
     if(futureJobs.length>0){
       if(assignedJobs.length>0){
         for(const futureJob of futureJobs){
-          console.log(futureJob);
           const matchingJobs = assignedJobs.filter((job) => job.assigned_job === futureJob.job_id);
           if(matchingJobs){
               const count = matchingJobs.length;

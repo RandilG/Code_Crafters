@@ -1,4 +1,4 @@
-// Import necessary components and libraries from React Native and other dependencies
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import VectorIcon from '../utils/Vectoricons';
 import {Card} from 'react-native-paper';
@@ -20,10 +19,7 @@ import ErrorPopup from '../components/errorPopUp';
 import AppLoader from '../components/appLoader';
 import {io} from 'socket.io-client';
 
-// Initialize the socket connection
-const socket = io('http://10.0.2.2:3000');
-
-const FutureJobs: React.FC<any> = (props) => {
+const FutureJobs = (props:any) => {
   // Define state variables using the 'useState'
   const [futureJobs, setFutureJobs] = useState<any[]>([]);
   const [isError, setIsError] = useState(false);
@@ -68,11 +64,7 @@ const FutureJobs: React.FC<any> = (props) => {
     setIsError(false);
     setIsLoading(true);
     getFutureJobs();
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []); // Empty dependency array means this effect runs only once after initial render
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
@@ -112,7 +104,7 @@ const FutureJobs: React.FC<any> = (props) => {
           {isLoading ? <AppLoader /> : null}
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {futureJobs.length !== 0 ? (
+            {futureJobs.length !== 0 ? 
               futureJobs.map((item, index) => (
                 <JobsCard
                   key={index}
@@ -128,9 +120,9 @@ const FutureJobs: React.FC<any> = (props) => {
                   userName={userName}
                 />
               ))
-            ) : (
+             : 
               <Text style={styles.noContentText}>No Content...</Text>
-            )}
+            }
           </ScrollView>
         </View>
       </View>
@@ -150,17 +142,33 @@ const JobsCard: React.FC<any> = ({
   appliedCount,
   jobId,
 }) => {
-  const [timeLeft, setTimeLeft] = useState<string>('');
+  const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
+  const [startedJobId, setStartedJobId] = useState(true);
 
-  const isToday: boolean = jobDate === moment(new Date()).format('YYYY-MM-DD');
+  // Initialize the socket connection
+const socket = io('http://10.0.2.2:3000');
+
+  const isToday: boolean = jobDate === moment().format('YYYY-MM-DD');
+
+  const handleStartPress = async () => {
+    try {
+      const resp = await axios.post(server + 'jobTimer', {jobId: jobId});
+      console.log(resp.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    if (isToday) {
+    const currentDate = moment().format('YYYY-MM-DD');
+    if (currentDate === jobDate) {
       socket.emit('joinJobRoom', jobId);
 
       socket.on('timerStarted', data => {
         setTimeLeft(data.timer);
+        setStartedJobId(data.jobId);
+        setIsTimerRunning(true);
       });
 
       return () => {
@@ -168,17 +176,6 @@ const JobsCard: React.FC<any> = ({
       };
     }
   }, []);
-
-  const handleStartPress = async () => {
-    try {
-      setIsTimerRunning(true);
-
-      const resp = await axios.post(server + 'jobTimer', {jobId: jobId});
-      console.log(resp.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <Card
@@ -189,7 +186,9 @@ const JobsCard: React.FC<any> = ({
       }>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={styles.cardTitle}>{title}</Text>
-        <Text style={styles.timerText}>{timeLeft}</Text>
+        {timeLeft != 0 && startedJobId === jobId? (
+          <Text style={styles.timerText}>{timeLeft}</Text>
+        ) : null}
       </View>
       <View style={{flexDirection: 'row'}}>
         <View>
@@ -237,12 +236,12 @@ const JobsCard: React.FC<any> = ({
                 isToday && !isTimerRunning ? '#FE8235' : '#908883',
             },
           }}
-          onPress={() => handleStartPress()}>
+          onPress={handleStartPress}>
           <Text style={styles.buttonTextRight}>Start</Text>
         </TouchableOpacity>
       </Card.Actions>
     </Card>
-  );
+  )
 };
 
 const styles = StyleSheet.create({
