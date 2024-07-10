@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import ErrorPopup from '../components/errorPopUp';
 import AppLoader from '../components/appLoader';
 import {io} from 'socket.io-client';
 
-const FutureJobs = (props:any) => {
+const FutureJobs = (props: any) => {
   // Define state variables using the 'useState'
   const [futureJobs, setFutureJobs] = useState<any[]>([]);
   const [isError, setIsError] = useState(false);
@@ -104,7 +104,7 @@ const FutureJobs = (props:any) => {
           {isLoading ? <AppLoader /> : null}
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {futureJobs.length !== 0 ? 
+            {futureJobs.length !== 0 ? (
               futureJobs.map((item, index) => (
                 <JobsCard
                   key={index}
@@ -120,9 +120,9 @@ const FutureJobs = (props:any) => {
                   userName={userName}
                 />
               ))
-             : 
+            ) : (
               <Text style={styles.noContentText}>No Content...</Text>
-            }
+            )}
           </ScrollView>
         </View>
       </View>
@@ -142,12 +142,13 @@ const JobsCard: React.FC<any> = ({
   appliedCount,
   jobId,
 }) => {
+  // Initialize the socket connection
+  const socket = io('http://10.0.2.2:3000');
+
   const [timeLeft, setTimeLeft] = useState(0);
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const [startedJobId, setStartedJobId] = useState(true);
-
-  // Initialize the socket connection
-const socket = io('http://10.0.2.2:3000');
+  const intervalRef = useRef<any>(null);
 
   const isToday: boolean = jobDate === moment().format('YYYY-MM-DD');
 
@@ -169,13 +170,43 @@ const socket = io('http://10.0.2.2:3000');
         setTimeLeft(data.timer);
         setStartedJobId(data.jobId);
         setIsTimerRunning(true);
+
+        // Clear any existing interval
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+
+        // Start a new interval
+        intervalRef.current = setInterval(() => {
+          setTimeLeft(prev => prev - 1);
+        }, 1000);
       });
 
       return () => {
         socket.off('timerStarted');
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
       };
     }
+  }, [jobDate, jobId]);
+
+  useEffect(() => {
+    // Cleanup interval on component unmount
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    if (timeLeft < 0) {
+      clearInterval(intervalRef.current);
+      setIsTimerRunning(false);
+      setTimeLeft(0);
+    }
+  }, [timeLeft]);
 
   return (
     <Card
@@ -186,7 +217,7 @@ const socket = io('http://10.0.2.2:3000');
       }>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text style={styles.cardTitle}>{title}</Text>
-        {timeLeft != 0 && startedJobId === jobId? (
+        {timeLeft != 0 ? (
           <Text style={styles.timerText}>{timeLeft}</Text>
         ) : null}
       </View>
@@ -241,7 +272,7 @@ const socket = io('http://10.0.2.2:3000');
         </TouchableOpacity>
       </Card.Actions>
     </Card>
-  )
+  );
 };
 
 const styles = StyleSheet.create({

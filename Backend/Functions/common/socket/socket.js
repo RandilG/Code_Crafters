@@ -8,7 +8,6 @@ module.exports = function initializeSocket(server) {
     console.log("A user connected");
 
     socket.on("joinJobRoom", (jobId) => {
-      console.log("joined")
       socket.join(jobId);
     });
 
