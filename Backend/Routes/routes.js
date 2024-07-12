@@ -25,6 +25,9 @@ const displayJobData = require('../Functions/User/JobPoster/displayJobData')
 const updateProfile = require('../Functions/User/JobPoster/updateProfile')
 const updateProfilePicture = require('../Functions/User/JobPoster/updateProfilePicture')
 const displayProfileInfo = require('../Functions/User/JobPoster/displayProfileInfo')
+const displayPosterRating = require('../Functions/User/JobPoster/displayPosterRating')
+const displayCalRating = require('../Functions/User/JobPoster/displayCalRating')
+const getDataDashBoard = require('../Functions/User/JobPoster/getDataDashBoard')
 /*const cancelJob = require('../Functions/User/JobPoster/cancelJob')*/
 
 
@@ -120,6 +123,18 @@ router.put('/updateProfilePicture/:id', (req, res) => {
 
 router.get('/displayProfileInfo/:EmailAddress', (req, res) => {    
   displayProfileInfo(req, res)
+})
+
+router.get('/displayPosterRating/:poster', (req, res) => {    
+  displayPosterRating(req, res)
+})
+
+router.get('/displayCalRating/:poster', (req, res) => {    
+  displayCalRating(req, res)
+})
+
+router.get('/getDataDashBoard/:EmailAddress', (req, res) => {    
+  getDataDashBoard(req, res)
 })
 
 /*router.put('/cancelJob/:id', (req, res) => {  
