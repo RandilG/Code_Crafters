@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const columns = [
     {
@@ -36,7 +38,7 @@ const RevenueInfoTableJobPoster = () => {
                 setData(response.data);
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                message.error('Error fetching data');
             });
     }, []);
 
@@ -45,6 +47,30 @@ const RevenueInfoTableJobPoster = () => {
     };
 
     const currentData = data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+    const generatePDF = () => {
+        const doc = new jsPDF();
+        doc.setFontSize(12);
+        doc.text("Revenue Information From Job Posters", 14, 16);
+        doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 22);
+
+        const tableData = data.map((item, index) => [
+            index + 1,
+            item.payment_id,
+            new Date(item.payment_date).toLocaleDateString(),
+            item.service_charge,
+            item.posterName,
+        ]);
+
+        doc.autoTable({
+            head: [['#', 'Payment ID', 'Date', 'Service Charge', 'Job Poster']],
+            body: tableData,
+            startY: 30,
+        });
+
+        const reportName = `Revenue_Report_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(reportName);
+    };
 
     return (
         <div style={{ padding: '20px' }}>
@@ -75,6 +101,14 @@ const RevenueInfoTableJobPoster = () => {
                             onClick={() => handlePageChange(currentPage + 1)}
                         >
                             Next
+                        </Button>
+                    </div>
+                    <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                        <Button
+                            onClick={generatePDF}
+                            style={{ backgroundColor: '#ffa500', borderColor: '#ffa500', color: 'white' }}
+                        >
+                            Download PDF
                         </Button>
                     </div>
                 </div>
