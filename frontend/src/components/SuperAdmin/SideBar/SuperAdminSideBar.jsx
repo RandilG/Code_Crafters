@@ -9,6 +9,7 @@ import {
   UserAddOutlined,
   ProfileOutlined,
   EyeOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -96,6 +97,9 @@ const SuperAdminSideBar = () => {
             <Link to="deletereview">Delete Review</Link>
           </Menu.Item>
         </Menu.SubMenu>
+        <Menu.Item key="job-cancel-requests" icon={<CloseCircleOutlined />}>
+          <Link to="jobcancelrequests">Job Cancel Requests</Link>
+        </Menu.Item>
 
         <Menu.Item key="SuperAdminUserProfile" icon={<SettingOutlined />}>
           <Link to="SuperAdminUserProfile">Account Settings</Link>
