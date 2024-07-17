@@ -2,7 +2,7 @@ const connection = require("../../../Services/connection");
 
 async function countJPApprovedJobs(req, res) {
   const sql =
-    "SELECT COUNT(*) AS activeAccountCount FROM parttime_srilanka.job_poster WHERE ApprovedStatus = 'approved' ;";
+    "SELECT COUNT(*) AS activeAccountCount FROM parttime_srilanka.job_poster WHERE ApprovedStatus = 'approved' && ActiveStatus = '1';";
 
   connection.query(sql, (err, result) => {
     if (err) {
