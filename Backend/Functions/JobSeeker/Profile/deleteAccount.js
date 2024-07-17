@@ -16,7 +16,7 @@ module.exports = async function deleteAccount(req, res){
 
         if (!isMatch) return res.json(HttpStatusCode.NotAcceptable);
 
-        const query2 = "UPDATE `parttime_srilanka`.`job_seeker` SET `terminated` = '1' WHERE (`UserName` = ?);";
+        const query2 = "UPDATE `parttime_srilanka`.`job_seeker` SET `deleted` = '1' WHERE (`UserName` = ?);";
 
         await queryAsync(query2, userName);
       

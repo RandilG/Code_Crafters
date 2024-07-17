@@ -114,10 +114,6 @@ const Dashboard = (props: any) => {
         }
     }
 
-    async function Logout() {
-
-    }
-
     return (
         <SafeAreaView style={extStyles.body}>
             <View style={styles.mainConatiner}>
