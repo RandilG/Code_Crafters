@@ -1,0 +1,23 @@
+.adminChatContainer{
+  padding: 10px;
+  background-color: rgb(21, 69, 13);
+  color: rgb(255, 255, 255);
+  gap: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  min-width: 20%;
+  max-width: 60%;
+   align-self: flex-end;
+}
+
+.adminMessage{
+  font-size: 16px;
+  gap: 20px;
+    text-align: right;
+}
+
+.adminMimeStamp{
+  font-size: 12px;
+  font-weight: bold;
+  /* text-align: left; */
+}

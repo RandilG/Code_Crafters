@@ -1,0 +1,123 @@
+.mainChatContainer {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+}
+
+.chatListContainer {
+  background-color: #0a3215;
+  flex:1.5;
+}
+
+.chatHeader{
+  color: white;
+  padding: 25px;
+  font-weight: bold;
+  border-bottom: 1px solid #ffffff95;
+  margin-bottom: 10px;
+  
+}
+.msgContainer {
+  background-image: url("./../../../../../frontend/src/Assets/chatbg.jpg");
+  flex: 4.5;
+  border-left: 2px solid #dddddd35;
+  border-right: 2px solid #dddddd35;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.msgContainerTop{
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid #dddddd35;
+  background-color: #0a3215;
+  color: #fff;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.user.texts {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: #fff;
+}
+
+.user span {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.user p {
+  font-size: 14px;
+  font-weight: 300;
+  color: #a5a5a5a5;
+}
+
+.back-button {
+  background-color: rgb(240, 138, 65);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.msgContainerCenter{
+  padding: 20px;
+  flex: 1;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+  background-color: rgba(17, 25, 40, 0);
+  backdrop-filter: blur(2px);
+}
+
+
+.msgContainerBottom {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px solid #144e3135;
+  gap: 20px;
+  margin-top: auto;
+  background-color: #fff;
+}
+
+input {
+  flex: 1;
+  background-color: rgba(155, 155, 155, 0.241);
+  border: none;
+  outline: none;
+  color: rgb(0, 0, 0);
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.sendBtn {
+  background-color: rgb(240, 138, 65);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}

@@ -35,6 +35,9 @@ import ProfileAdminDashboard from "../../Pages/ProfileAdmin/Dashboard/Dashboard"
 import JobPosterPayment from "../../Pages/FinancialAdmin/Payments/JobPosterPayment";
 import JobSeekerPayments from "../../Pages/FinancialAdmin/Payments/JobSeekerPayments";
 import JobCancelRequests from "../../Pages/ProfileAdmin/JobCancelRequests/JobCancelRequests";
+import MainChat from "../ProfileAdmin/mainChat/MainChat.jsx";
+import MainChatPoster from "../ProfileAdmin/mainChatPoster/MainChatPoster.jsx"
+
 
 
 function AppRoutes() {
@@ -90,6 +93,8 @@ function AppRoutes() {
                 <Route path='declinedjobseekers' element={<JobSeekerDeclinedProfiles />} />
                 <Route path='deactivatedjobseekers' element={<JobSeekerDeactivatedProfiles />} />
                 <Route path='jobcancelrequests' element={<JobCancelRequests/>} />
+                <Route path='jobseekerchat' element={<MainChat />} />
+                <Route path='jobposterchat' element={<MainChatPoster />} />
             </Route>
 
         </Routes>

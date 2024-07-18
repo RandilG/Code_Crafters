@@ -188,6 +188,14 @@ const totalrequestCount = require("../Functions/ProfileAdmin/TotalProfileRequest
 const getJobCancelRequests = require('../Functions/ProfileAdmin/GetJobCancelRequests/GetJobCancelRequests');
 const approveJobCancelRequest = require('../Functions/ProfileAdmin/ApproveJobCancelRequest/ApproveJobCancelRequest');
 const rejectJobCancelRequest = require('../Functions/ProfileAdmin/RejectJobCancelRequest/RejectJobCancelRequest');
+const getMessagePoster = require("../Functions/ProfileAdmin/Chat/JobPoster/posterChat/getMessagePoster");
+const getMessageSeeker = require("../Functions/ProfileAdmin/Chat/JobSeeker/seekerChat/getMessageSeeker");
+const sendMessagePoster = require("../Functions/ProfileAdmin/Chat/JobPoster/posterChat/sendMessagePoster");
+const sendMessageSeeker = require("../Functions/ProfileAdmin/Chat/JobSeeker/seekerChat/sendMessageSeeker");
+const getSeekers = require("../Functions/ProfileAdmin/Chat/Admin/chat/fetchSeekerChats");
+const getPosters = require("../Functions/ProfileAdmin/Chat/Admin/chat/fetchPosters");
+const fetchPosterChats = require("../Functions/ProfileAdmin/Chat/Admin/chat/fetchPosterChats");
+const fetchSeekerChats = require('../Functions/ProfileAdmin/Chat/Admin/chat/fetchSeekerChats');
 
 
 router.get("/jobposterrequests", (req, res) => {
@@ -302,5 +310,39 @@ router.put('/approve-job-cancel-request', (req, res) => {
 router.delete('/reject-job-cancel-request', (req, res) => {
   rejectJobCancelRequest(req, res);
 })
+
+router.get("/fetchSeekerChats", (req,res) => {
+  fetchSeekerChats(req, res)
+})
+
+router.get("/fetchPosterChats", (req, res) => {
+    fetchPosterChats(req, res);
+})
+
+router.get("/getMessagePoster/:jobPoster", (req, res) => {
+  getMessagePoster(req, res);
+});
+
+router.get("/getMessageSeeker/:jobSeeker", (req, res) => {
+  getMessageSeeker(req, res);
+});
+
+router.post("/sendMessagePoster", (req, res) => {
+  sendMessagePoster(req, res);
+});
+
+router.post("/sendMessageSeeker", (req, res) => {
+  sendMessageSeeker(req, res);
+});
+
+router.get("/fetchPosters", (req, res) => {
+  getPosters(req, res);
+});
+
+router.get("/fetchSeekers", (req, res) => {
+  getSeekers(req, res);
+});
+
+
 
 module.exports = router;

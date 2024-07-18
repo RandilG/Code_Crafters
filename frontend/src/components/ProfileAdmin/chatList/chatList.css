@@ -1,0 +1,23 @@
+.containerChatList{
+  color: #fff;
+  background-color: #0800004e;
+  padding: 20px;
+  border-bottom: 1px solid #ffffff3a;
+  display: flex;
+  flex-direction: column;
+  margin: 2px;
+
+  &&:hover{
+    background-color: #0800008f;
+  }
+}
+
+.containerChatList h3{
+  color: #ffffff;
+  align-self: flex-start;
+}
+
+.containerChatList p{
+  color: #9a9a9a;
+  align-self: flex-start;
+}

@@ -6,6 +6,7 @@ import {
   EyeOutlined,
   SettingOutlined,
   DashboardOutlined,
+  MessageOutlined,
   CloseCircleOutlined
 } from "@ant-design/icons";
 import Logo from "../../Common/Logo/Logo";
@@ -82,6 +83,16 @@ const ProfileAdminSideBar = () => {
         <Menu.Item key="UserProfile" icon={<SettingOutlined />}>
           <Link to="UserProfile">Account Settings</Link>
         </Menu.Item>
+
+        <Menu.SubMenu key="chat" icon={<MessageOutlined />} title="Chat">
+      <Menu.Item key="job-poster-chat">
+        <Link to="jobposterchat">Job Poster Chat</Link>
+      </Menu.Item>
+      <Menu.Item key="job-seeker-chat">
+        <Link to="jobseekerchat">Job Seeker Chat</Link>
+      </Menu.Item>
+    </Menu.SubMenu>
+
       </Menu>
     </Sider>
   );
