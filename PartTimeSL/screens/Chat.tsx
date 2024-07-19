@@ -1,11 +1,30 @@
-import React from "react";
-import { StyleSheet, Text } from "react-native";
+import React, { useEffect } from "react";
+import { BackHandler, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import extStyles from "../global/styles/extStyles";
 import { View } from "react-native";
 import LottieView from "lottie-react-native";
 
 const Chat = (props:any) => {
+    //Handle back event
+    useEffect(() => {
+        const backAction = () => {
+            props.navigation.reset({
+                index: 0,
+                routes: [{
+                    name: 'Dashboard',
+                }]
+            })
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
     return(
         <SafeAreaView style={extStyles.body}>
             <View style={styles.container}>
