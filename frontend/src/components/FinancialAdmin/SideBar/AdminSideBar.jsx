@@ -5,7 +5,6 @@ import {
   DashboardOutlined,
   DollarOutlined,
   PlusCircleOutlined,
-  BellOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
@@ -47,10 +46,6 @@ const FinancialAdminSideBar = () => {
 
         <Menu.Item key="Revenue" icon={<PlusCircleOutlined />}>
           <Link to="Revenue">Revenue</Link>
-        </Menu.Item>
-
-        <Menu.Item key="Notification" icon={<BellOutlined />}>
-          <Link to="Notification">Notification</Link>
         </Menu.Item>
 
         <Menu.Item key="UserProfile" icon={<SettingOutlined />}>

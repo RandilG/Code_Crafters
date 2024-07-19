@@ -93,9 +93,6 @@ const SuperAdminSideBar = () => {
           <Menu.Item key="review-hold">
             <Link to="jobposteravgratings">Job Poster Ratings</Link>
           </Menu.Item>
-          <Menu.Item key="delete-review">
-            <Link to="deletereview">Delete Review</Link>
-          </Menu.Item>
         </Menu.SubMenu>
         <Menu.Item key="job-cancel-requests" icon={<CloseCircleOutlined />}>
           <Link to="jobcancelrequests">Job Cancel Requests</Link>
